@@ -4,18 +4,25 @@
 #include "gf2d_graphics.h"
 #include "gf2d_sprite.h"
 
+#include "entity.h"
+#include "player.h"
+
+
 int main(int argc, char * argv[])
 {
     /*variable declarations*/
     int done = 0;
     const Uint8 * keys;
     Sprite *sprite;
+    Entity *player;
     
     int mx,my;
     float mf = 0;
     Sprite *mouse;
     GFC_Color mouseGFC_Color = gfc_color8(255,100,255,200);
+    entity_system_init(32);
     
+
     /*program initializtion*/
     init_logger("gf2d.log",0);
     slog("---==== BEGIN ====---");
@@ -32,9 +39,13 @@ int main(int argc, char * argv[])
     SDL_ShowCursor(SDL_DISABLE);
     
     /*demo setup*/
-    sprite = gf2d_sprite_load_image("images/backgrounds/bg_flat.png");
+    sprite = gf2d_sprite_load_image("images/backgrounds/SMTtokyo.png");
     mouse = gf2d_sprite_load_all("images/pointer.png",32,32,16,0);
+
     slog("press [escape] to quit");
+    
+    player = player_new_entity(gfc_vector2d(20, 20)); //player not spawning right
+
     /*main game loop*/
     while(!done)
     {
@@ -49,6 +60,8 @@ int main(int argc, char * argv[])
         // all drawing should happen betweem clear_screen and next_frame
             //backgrounds drawn first
             gf2d_sprite_draw_image(sprite,gfc_vector2d(0,0));
+
+            entity_system_draw_all();
             
             //UI elements last
             gf2d_sprite_draw(
@@ -66,6 +79,7 @@ int main(int argc, char * argv[])
         if (keys[SDL_SCANCODE_ESCAPE])done = 1; // exit condition
         //slog("Rendering at %f FPS",gf2d_graphics_get_frames_per_second());
     }
+    entity_free(player);
     slog("---==== END ====---");
     return 0;
 }
