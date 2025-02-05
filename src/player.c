@@ -11,6 +11,7 @@ Entity *player_new_entity(GFC_Vector2D position)
 		slog("failed to spawn player entity");
 		return NULL;
 	}
+	self->think = player_think;
 	gfc_vector2d_copy(self->position, position);
 	self->sprite = gf2d_sprite_load_all(
 		"images/space_bug.png",
@@ -20,6 +21,11 @@ Entity *player_new_entity(GFC_Vector2D position)
 		0
 	);
 	return self;
+}
+
+void player_think(Entity* self) {
+	if (!self)return;
+
 }
 
 

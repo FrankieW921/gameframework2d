@@ -14,6 +14,7 @@ typedef struct Entity_S
 	GFC_Vector2D	position; //where to draw
 	GFC_Vector2D	velocity; //how to move
 	GFC_Vector2D	acceleration;
+	void			(*think)(struct Entity_S* self); /*pointer to think function*/
 }Entity;
 
 /**

@@ -10,4 +10,10 @@
 */
 Entity *player_new_entity(GFC_Vector2D position); 
 
+/*
+* @brief player entity think
+* @param player entity
+*/
+void player_think(Entity* self);
+
 #endif

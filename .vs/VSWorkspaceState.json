@@ -1,7 +1,14 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\defs",
+    "\\gfc",
+    "\\gfc\\include",
+    "\\gfc\\simple_json",
+    "\\gfc\\simple_json\\include",
+    "\\gfc\\src",
+    "\\include",
+    "\\src"
   ],
-  "SelectedNode": "\\IT366-2D Game.sln",
   "PreviewInSolutionExplorer": false
 }

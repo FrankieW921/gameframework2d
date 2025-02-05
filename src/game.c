@@ -3,6 +3,7 @@
 
 #include "gf2d_graphics.h"
 #include "gf2d_sprite.h"
+#include "gfc_input.h""
 
 #include "entity.h"
 #include "player.h"
@@ -20,7 +21,8 @@ int main(int argc, char * argv[])
     float mf = 0;
     Sprite *mouse;
     GFC_Color mouseGFC_Color = gfc_color8(255,100,255,200);
-    entity_system_init(32);
+    entity_system_init(1024);
+    gfc_input_update();
     
 
     /*program initializtion*/

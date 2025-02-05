@@ -2,6 +2,7 @@
 #include "gfc_types.h"
 
 #include "entity.h"
+#include "player.h"
 
 
 typedef struct
@@ -10,7 +11,7 @@ typedef struct
 	Entity* entity_list;
 }EntitySystem;
 
-static EntitySystem entity_system = { 32, 32 };
+static EntitySystem entity_system = { 0 };
 
 void entity_system_close() {
 	if (entity_system.entity_list)
@@ -27,7 +28,7 @@ void entity_system_init(Uint32 maxEnts)
 		slog("Cannot initialize entity system with 0 or undefined amount of entities");
 		return;
 	}
-	entity_system.entity_list = gfc_allocate_array(sizeof(Entity), entity_system.entity_list);
+	entity_system.entity_list = gfc_allocate_array(sizeof(Entity), maxEnts);
 	if (!entity_system.entity_list)
 	{
 		slog("failed to allocate %i entities", maxEnts);
