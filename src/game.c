@@ -22,9 +22,8 @@ int main(int argc, char * argv[])
     Sprite *mouse;
     GFC_Color mouseGFC_Color = gfc_color8(255,100,255,200);
     entity_system_init(1024);
-    gfc_input_update();
     
-
+    
     /*program initializtion*/
     init_logger("gf2d.log",0);
     slog("---==== BEGIN ====---");
@@ -46,7 +45,7 @@ int main(int argc, char * argv[])
 
     slog("press [escape] to quit");
     
-    player = player_new_entity(gfc_vector2d(20, 20)); //player not spawning right
+    player = player_new_entity(gfc_vector2d(20, 20)); 
 
     /*main game loop*/
     while(!done)
@@ -64,6 +63,7 @@ int main(int argc, char * argv[])
             gf2d_sprite_draw_image(sprite,gfc_vector2d(0,0));
 
             entity_system_draw_all();
+            entity_system_think_all();
             
             //UI elements last
             gf2d_sprite_draw(
@@ -77,7 +77,9 @@ int main(int argc, char * argv[])
                 (int)mf);
 
         gf2d_graphics_next_frame();// render current draw frame and skip to the next frame
-        
+
+
+
         if (keys[SDL_SCANCODE_ESCAPE])done = 1; // exit condition
         //slog("Rendering at %f FPS",gf2d_graphics_get_frames_per_second());
     }

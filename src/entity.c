@@ -59,6 +59,21 @@ void entity_system_draw_all()
 	}
 }
 
+void entity_system_think_all() 
+{
+	int i;
+	for (i = 0; i < entity_system.entity_max; i++) {
+		if (!entity_system.entity_list[i]._inuse)continue;
+		entity_think(&entity_system.entity_list[i]);
+	}
+}
+
+void entity_think(Entity *self)
+{
+	if (!self)return;
+	if (self->think)self->think(self);
+}
+
 
 Entity *entity_new()
 {

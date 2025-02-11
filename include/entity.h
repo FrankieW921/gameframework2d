@@ -34,6 +34,16 @@ void entity_system_free_all();
 void entity_system_draw_all();
 
 /**
+* @brief call the think function on all entities that have a pointer to one
+*/
+void entity_system_think_all();
+
+/*
+* @brief called every frame for entities that have a think function
+*/
+void entity_think(Entity *self);
+
+/**
  * @brief get a new empty entity to use
  * @return NULL if out of entities, or a blank entity otherwise
  */
