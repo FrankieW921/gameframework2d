@@ -18,9 +18,9 @@ int main(int argc, char * argv[])
     Entity *player;
     
     int mx,my;
-    float mf = 0;
+    float mousef = 0;
     Sprite *mouse;
-    GFC_Color mouseGFC_Color = gfc_color8(255,100,255,200);
+    GFC_Color mouseGFC_Color = gfc_color8(255,255,255,255);
     entity_system_init(1024);
     
     
@@ -41,8 +41,8 @@ int main(int argc, char * argv[])
     
     /*demo setup*/
     sprite = gf2d_sprite_load_image("images/backgrounds/SMTtokyo.png");
-    mouse = gf2d_sprite_load_all("images/pointer.png",32,32,16,0);
-
+    mouse = gf2d_sprite_load_all("images/smtDemonIcon.png",-1,-1,1,0);
+    //mouse = gf2d_sprite_load_image("images/smtDemonIcon.png");
     slog("press [escape] to quit");
     
     player = player_new_entity(gfc_vector2d(20, 20)); 
@@ -54,8 +54,10 @@ int main(int argc, char * argv[])
         keys = SDL_GetKeyboardState(NULL); // get the keyboard state for this frame
         /*update things here*/
         SDL_GetMouseState(&mx,&my);
-        mf+=0.1;
-        if (mf >= 16.0)mf = 0;
+        
+        /*mousef += 0.1;
+        if (mousef >= 16.0)mousef = 0;
+        */
         
         gf2d_graphics_clear_screen();// clears drawing buffers
         // all drawing should happen betweem clear_screen and next_frame
@@ -74,7 +76,7 @@ int main(int argc, char * argv[])
                 NULL,
                 NULL,
                 &mouseGFC_Color,
-                (int)mf);
+                (int)mousef);
 
         gf2d_graphics_next_frame();// render current draw frame and skip to the next frame
 
