@@ -16,6 +16,7 @@ int main(int argc, char * argv[])
     const Uint8 * keys;
     Sprite *sprite;
     Entity *player;
+    Entity* enemy;
     
     int mx,my;
     float mousef = 0;
@@ -46,6 +47,7 @@ int main(int argc, char * argv[])
     slog("press [escape] to quit");
     
     player = player_new_entity(gfc_vector2d(20, 20)); 
+    enemy = enemy_new_entity(gfc_vector2d(200, 200));
 
     /*main game loop*/
     while(!done)
