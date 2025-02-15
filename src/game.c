@@ -7,6 +7,8 @@
 
 #include "entity.h"
 #include "player.h"
+#include "enemy.h"
+#include "world.h"
 
 
 int main(int argc, char * argv[])
@@ -14,9 +16,11 @@ int main(int argc, char * argv[])
     /*variable declarations*/
     int done = 0;
     const Uint8 * keys;
-    Sprite *sprite;
+    //Sprite* sprite;
     Entity *player;
     Entity* enemy;
+
+    World *testWorld;
     
     int mx,my;
     float mousef = 0;
@@ -41,10 +45,11 @@ int main(int argc, char * argv[])
     SDL_ShowCursor(SDL_DISABLE);
     
     /*demo setup*/
-    sprite = gf2d_sprite_load_image("images/backgrounds/SMTtokyo.png");
+    //sprite = gf2d_sprite_load_image("images/backgrounds/SMTtokyo.png");
     mouse = gf2d_sprite_load_all("images/smtDemonIcon.png",-1,-1,1,0);
     //mouse = gf2d_sprite_load_image("images/smtDemonIcon.png");
     slog("press [escape] to quit");
+    testWorld = world_test_new();
     
     player = player_new_entity(gfc_vector2d(20, 20)); 
     enemy = enemy_new_entity(gfc_vector2d(200, 200));
@@ -64,7 +69,8 @@ int main(int argc, char * argv[])
         gf2d_graphics_clear_screen();// clears drawing buffers
         // all drawing should happen betweem clear_screen and next_frame
             //backgrounds drawn first
-            gf2d_sprite_draw_image(sprite,gfc_vector2d(0,0));
+            //gf2d_sprite_draw_image(sprite,gfc_vector2d(0,0));
+            world_draw(testWorld);
 
             entity_system_draw_all();
             entity_system_think_all();
@@ -88,6 +94,7 @@ int main(int argc, char * argv[])
         //slog("Rendering at %f FPS",gf2d_graphics_get_frames_per_second());
     }
     entity_free(player);
+    world_free(testWorld);
     slog("---==== END ====---");
     return 0;
 }
