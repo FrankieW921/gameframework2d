@@ -8,7 +8,7 @@ World* world_test_new() {
 	int w = 75, h = 45; //hardcode version of the vector2d below
 
 	World* world;
-	world = world_new(gfc_vector2d(65.0, 35.0)); 
+	world = world_new(gfc_vector2d(75.0, 45.0)); 
 	if (!world)return NULL;
 
 	world->background = gf2d_sprite_load_image("images/backgrounds/SMTtokyo.png");
@@ -81,7 +81,7 @@ void world_draw(World* world) {
 			index = i + (j * (int)world->tileMapSize.x);
 			if (world->tileMap[index] == 0)continue;
 			position.x = i * world->tileSet->frame_w;
-			position.x = j * world->tileSet->frame_h;
+			position.y = j * world->tileSet->frame_h;
 			frame = world->tileMap[index] - 1;
 
 			gf2d_sprite_draw(
