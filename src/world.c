@@ -5,7 +5,7 @@
 
 World* world_test_new() {
 	int i, j;
-	int w = 75, h = 45; //hardcode version of the vector2d below
+	int w = 75, h = 45; //hardcode version of the vector2d below, JSONify it 
 
 	World* world;
 	world = world_new(gfc_vector2d(75.0, 45.0)); 
@@ -21,8 +21,8 @@ World* world_test_new() {
 	);
 
 	for (int i = 0; i < w; i++) {
-		world->tileMap[i] = 1;
-		world->tileMap[i + (((int)world->tileMapSize.y - 1) * (int)world->tileMapSize.x)] = 1;
+		world->tileMap[i] = 2;
+		world->tileMap[i + (((int)world->tileMapSize.y - 1) * (int)world->tileMapSize.x)] = 2;
 	}
 	for (int i = 0; i < w; i++) {
 		world->tileMap[i * (int)world->tileMapSize.x] = 1;

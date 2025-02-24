@@ -1,5 +1,7 @@
 #include "simple_logger.h"
 #include "gfc_types.h"
+#include "gfc_shape.h"
+#include "gfc_vector.h""
 
 #include "entity.h"
 #include "player.h"
@@ -39,16 +41,6 @@ void entity_system_init(Uint32 maxEnts)
 	slog("entity system initialized");
 }
 
-void entity_system_free_all()
-{
-	int i;
-	for (i = 0; i < entity_system.entity_max; i++) {
-		if (entity_system.entity_list[i]._inuse)
-		{
-			entity_free(&entity_system.entity_list[i]);
-		}
-	}
-}
 
 void entity_system_draw_all()
 {
@@ -75,7 +67,7 @@ void entity_think(Entity *self)
 }
 
 
-Entity *entity_new()
+Entity* entity_new()
 {
 	int i;
 	for (i = 0; i < entity_system.entity_max; i++) {
@@ -95,6 +87,22 @@ void entity_free(Entity* self)
 	{
 		gf2d_sprite_free(self->sprite);
 	}
+	//more things to free here
+
+	self->_inuse = 0;
+	memset(self, 0, sizeof(self));
+	slog("Entity freed");
+}
+
+void entity_system_free_all()
+{
+	int i;
+	for (i = 0; i < entity_system.entity_max; i++) {
+		if (entity_system.entity_list[i]._inuse)
+		{
+			entity_free(&entity_system.entity_list[i]);
+		}
+	}
 }
 
 void entity_draw(Entity* self) 
@@ -110,6 +118,44 @@ void entity_draw(Entity* self)
 		NULL,
 		NULL,
 		(Uint32)self->frame);
+}
+
+Uint8 entity_collision_check(Entity* self, Entity* other) {
+	GFC_Rect bounds1, bounds2;
+	if (!self || !other) {
+		return 0;
+	}
+	if (self->type == other->type) { //don't collide if the same type of thing
+		return 0;
+	}
+	if (!((self->type == ET_None) || (other->type == ET_None))){ //don't collide if you dont have a type
+		return 0;
+	}
+
+	gfc_rect_copy(bounds1, self->bounds);
+	gfc_rect_copy(bounds2, other->bounds);
+
+	gfc_vector2d_add(bounds1, bounds1, self->position);
+	gfc_vector2d_add(bounds2, bounds2, other->position);
+
+	return gfc_rect_overlap(bounds1, bounds2);
+}
+
+GFC_List* entity_collide_all(Entity* self) {
+	int i;
+	GFC_List* entities = gfc_list_new();
+	if (!self) return;
+	for (i = 0; i < entity_system.entity_max; ++i) {
+		if (!entity_system.entity_list[i]._inuse)continue;
+		if (self == &entity_system.entity_list[i])continue;
+		if (entity_collision_check(self, &entity_system.entity_list[i])) {
+			gfc_list_append(entities, &entity_system.entity_list[i]);
+		}
+	}
+	if (!gfc_list_count(entities)) {
+		gfc_list_delete(entities); return NULL;
+	}
+	return entities;
 }
 
 /*eol@eof*/

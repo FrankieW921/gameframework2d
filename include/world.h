@@ -1,21 +1,29 @@
 #ifndef __WORLD_H__
 #define __WORLD_H__
 
+#include "simple_json.h"
+
 #include "gfc_text.h"
 #include "gfc_vector.h"
 #include "gfc_list.h"
+
 
 #include "gf2d_sprite.h"
 
 typedef struct
 {
-	GFC_TextLine	name;
-	Sprite			*background;
-	GFC_Vector2D	worldSize;
-	Sprite			*tileSet;
-	Uint8			*tileMap;
-	GFC_Vector2D	tileMapSize;
-	GFC_List		*entityList;
+	GFC_TextLine	name; //name of world instance
+	Sprite			*background; //background image of the world
+	GFC_Vector2D	worldSize; //width and height IN TILES, 1200 x 720 resolution is 75 x 45 for 16x16 tiles
+	Sprite			*tileSet; //tile image from which tile textures are taken 
+	Uint8			*tileMap; //the numerical representation of the world's tile layout
+	GFC_Vector2D	tileMapSize; //tile width and height
+
+	Sprite			*tileLayer;	//prerendered tile image
+
+	GFC_List		*entityList; //list of entity's within the world
+
+	
 }World;
 
 /*

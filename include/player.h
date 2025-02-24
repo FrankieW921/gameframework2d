@@ -16,4 +16,9 @@ Entity *player_new_entity(GFC_Vector2D position);
 */
 void player_think(Entity* self);
 
+/*
+* @brief incomplete shoot function, shoots a projectile from the player in the direction of the player's mouse
+*/
+void player_shoot(GFC_Vector2D position, GFC_Vector2D velocity);
+
 #endif

@@ -1,6 +1,7 @@
 #include "simple_logger.h"
 
 #include "player.h"
+#include "projectile.h"
 #include "gfc_input.h"
 
 Entity *player_new_entity(GFC_Vector2D position)
@@ -26,6 +27,8 @@ Entity *player_new_entity(GFC_Vector2D position)
 }
 
 void player_think(Entity* self) {
+	Uint32 mouseState;
+
 	if (!self)return;
 	GFC_Vector2D movement = { 0 };
 	self->velocity.x = 0;
@@ -54,7 +57,21 @@ void player_think(Entity* self) {
 	gfc_vector2d_normalize(&self->velocity);
 	self->position.x += self->velocity.x * .8;
 	self->position.y += self->velocity.y * .8;
+
+	mouseState = SDL_GetRelativeMouseState(NULL, NULL);
+	if (mouseState & 1) {
+		player_shoot(self->position, self->velocity); //TODO update to pass in projectile type to spawn
+	}
 }
 
+void player_shoot(GFC_Vector2D position, GFC_Vector2D velocity) { //TODO update to pass in projectile type to spawn
+	int mx, my;
+	SDL_GetMouseState(&mx, &my);
+
+	GFC_Vector2D pv = gfc_vector2d(mx-position.x, my-position.y);
+	gfc_vector2d_normalize(&pv);
+
+	projectile_new_entity(position, pv);
+}
 
 /*eol@eof*/
