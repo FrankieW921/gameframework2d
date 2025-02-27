@@ -14,6 +14,8 @@ Entity *player_new_entity(GFC_Vector2D position)
 		return NULL;
 	}
 	self->think = player_think;
+	self->shootCooldown = 0;
+	self->cooldownValue = 60;  //current implementation is hard to create an actual time metric for
 	gfc_vector2d_copy(self->position, position);
 	self->sprite = gf2d_sprite_load_all(
 		"images/space_bug.png",
@@ -30,6 +32,9 @@ void player_think(Entity* self) {
 	Uint32 mouseState;
 
 	if (!self)return;
+
+	if (self->shootCooldown > 0)self->shootCooldown -= 1;
+
 	GFC_Vector2D movement = { 0 };
 	self->velocity.x = 0;
 	self->velocity.y = 0;
@@ -59,8 +64,9 @@ void player_think(Entity* self) {
 	self->position.y += self->velocity.y * .8;
 
 	mouseState = SDL_GetRelativeMouseState(NULL, NULL);
-	if (mouseState & 1) {
+	if ((mouseState & 1) && self->shootCooldown == 0) {
 		player_shoot(self->position, self->velocity); //TODO update to pass in projectile type to spawn
+		self->shootCooldown = self->cooldownValue;
 	}
 }
 

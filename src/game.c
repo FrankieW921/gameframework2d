@@ -34,9 +34,9 @@ int main(int argc, char * argv[])
     slog("---==== BEGIN ====---");
     gf2d_graphics_initialize(
         "gf2d",
-        1200,
+        1280,
         720,
-        1200,
+        1280,
         720,
         gfc_vector4d(0,0,0,255),
         0);
@@ -51,7 +51,7 @@ int main(int argc, char * argv[])
     slog("press [escape] to quit");
     testWorld = world_test_new();
     
-    player = player_new_entity(gfc_vector2d(20, 20)); 
+    player = player_new_entity(gfc_vector2d(80, 80)); 
     enemy = enemy_new_entity(gfc_vector2d(200, 200));
 
     /*main game loop*/
@@ -70,6 +70,7 @@ int main(int argc, char * argv[])
         // all drawing should happen betweem clear_screen and next_frame
             //backgrounds drawn first
             //gf2d_sprite_draw_image(sprite,gfc_vector2d(0,0));
+            
             
             world_draw(testWorld);
 

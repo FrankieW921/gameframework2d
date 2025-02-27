@@ -26,6 +26,8 @@ typedef struct Entity_S
 	GFC_Vector2D	acceleration;
 	void			(*think)(struct Entity_S* self); /*pointer to think function*/
 	Uint8			timeToLive; //time to live for projectiles specifically
+	Uint8			shootCooldown; //millisecond countdown/cooldown for player firing
+	Uint8			cooldownValue; //shootCooldown gets set to this value, this value changes with the selected weapon
 	GFC_Rect		bounds; //collision bounds of the entity
 }Entity;
 

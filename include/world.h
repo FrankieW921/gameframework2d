@@ -14,10 +14,9 @@ typedef struct
 {
 	GFC_TextLine	name; //name of world instance
 	Sprite			*background; //background image of the world
-	GFC_Vector2D	worldSize; //width and height IN TILES, 1200 x 720 resolution is 75 x 45 for 16x16 tiles
 	Sprite			*tileSet; //tile image from which tile textures are taken 
 	Uint8			*tileMap; //the numerical representation of the world's tile layout
-	GFC_Vector2D	tileMapSize; //tile width and height
+	GFC_Vector2I	tileMapSize; //tile width and height
 
 	Sprite			*tileLayer;	//prerendered tile image
 
@@ -32,11 +31,19 @@ typedef struct
 */
 World* world_test_new();
 
+
+/*
+* @brief prebuilds the tileLayer sprite to render
+* @param world the world to prerender the tileLayer for
+*/
+void world_tile_layer_build(World* world);
+
 /*
 * @brief allocate a new empty world
+* @param worldSize world dimensions in tiles (i.e. 80 x 45)
 * @return NULL on error, blank world otherwise
 */
-World* world_new();
+World* world_new(GFC_Vector2I worldSize);
 
 /*
 * @brief free an allocated world
