@@ -2,8 +2,9 @@
 #define __CAMERA_H__
 
 #include "gfc_shape.h"
+#include "gfc_vector.h"
 
-typedef struct {
+typedef struct Camera_S{
 	GFC_Rect camera;
 	GFC_Rect bounds;
 }Camera;
@@ -28,7 +29,7 @@ void camera_set_size(GFC_Vector2D size);
 /*
 * @brief set the camera's bounds
 */
-void camera_set_bounds(GFC_Vector2D bounds);
+void camera_set_bounds(GFC_Rect bounds);
 
 /*
 * @brief get an offset for the camera

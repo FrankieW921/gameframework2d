@@ -4,6 +4,7 @@
 #include "gfc_vector.h""
 
 #include "entity.h"
+#include "camera.h"
 #include "player.h"
 
 
@@ -66,6 +67,21 @@ void entity_think(Entity *self)
 	if (self->think)self->think(self);
 }
 
+void entity_update(Entity* self)
+{
+	if (!self)return;
+	if (self->update)self->update(self);
+}
+
+void entity_system_update_all()
+{
+	int i;
+	for (i = 0; i < entity_system.entity_max; i++) {
+		if (!entity_system.entity_list[i]._inuse)continue;
+		entity_update(&entity_system.entity_list[i]);
+	}
+}
+
 
 Entity* entity_new()
 {
@@ -107,11 +123,14 @@ void entity_system_free_all()
 
 void entity_draw(Entity* self) 
 {
+	GFC_Vector2D position, offset;
 	if (!self) return;
 	if (!self->sprite) return;
+	offset = camera_get_offset();
+	gfc_vector2d_add(position, self -> position, offset);
 	gf2d_sprite_draw(
 		self->sprite,
-		self->position,
+		position,
 		NULL,
 		NULL,
 		NULL,
@@ -158,4 +177,3 @@ GFC_List* entity_collide_all(Entity* self) {
 	return entities;
 }
 
-/*eol@eof*/

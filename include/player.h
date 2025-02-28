@@ -12,9 +12,15 @@ Entity *player_new_entity(GFC_Vector2D position);
 
 /*
 * @brief player entity think
-* @param player entity
+* @param self the player entity entity
 */
 void player_think(Entity* self);
+
+/*
+* @brief player entity update
+* @param self the player entity
+*/
+void player_update(Entity* self);
 
 /*
 * @brief incomplete shoot function, shoots a projectile from the player in the direction of the player's mouse

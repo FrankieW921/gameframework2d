@@ -34,4 +34,3 @@ void projectile_think(Entity* self) {
 	if (self->timeToLive <= 0) entity_free(self);
 }
 
-/*eol@eof*/

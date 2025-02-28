@@ -7,7 +7,6 @@
 #include "gfc_vector.h"
 #include "gfc_list.h"
 
-
 #include "gf2d_sprite.h"
 
 typedef struct
@@ -39,6 +38,13 @@ World* world_test_new();
 void world_tile_layer_build(World* world);
 
 /*
+* @brief loads a world from a given JSON file
+* @param filename the JSON file's name to load from
+* @returns NULL on error, or a usable world
+*/
+World* world_load(const char* filename);
+
+/*
 * @brief allocate a new empty world
 * @param worldSize world dimensions in tiles (i.e. 80 x 45)
 * @return NULL on error, blank world otherwise
@@ -56,5 +62,11 @@ void world_free(World* world);
 * @param world the world to draw
 */
 void world_draw(World* world);
+
+/*
+* @brief set bounds for global camera based on the world and its size
+* @param world the world to base camera bounds on
+*/
+void world_setup_camera(World* world);
 #endif
 

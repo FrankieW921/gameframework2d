@@ -4,11 +4,14 @@
 #include "gf2d_graphics.h"
 #include "gf2d_sprite.h"
 #include "gfc_input.h""
+#include "gfc_vector.h"
+#include "gfc_shape.h"
 
 #include "entity.h"
 #include "player.h"
 #include "enemy.h"
 #include "world.h"
+#include "camera.h"
 
 
 int main(int argc, char * argv[])
@@ -43,13 +46,16 @@ int main(int argc, char * argv[])
     gf2d_graphics_set_frame_delay(16);
     gf2d_sprite_init(1024);
     SDL_ShowCursor(SDL_DISABLE);
+    camera_set_size(gfc_vector2d(1280, 720));
     
     /*demo setup*/
     sprite = gf2d_sprite_load_image("images/backgrounds/SMTtokyo.png");
     mouse = gf2d_sprite_load_all("images/smtDemonIcon.png",-1,-1,1,0);
     //mouse = gf2d_sprite_load_image("images/smtDemonIcon.png");
     slog("press [escape] to quit");
-    testWorld = world_test_new();
+    //testWorld = world_test_new();
+    testWorld = world_load("maps/testWorld.json");
+    world_setup_camera(testWorld);
     
     player = player_new_entity(gfc_vector2d(80, 80)); 
     enemy = enemy_new_entity(gfc_vector2d(200, 200));
@@ -74,8 +80,9 @@ int main(int argc, char * argv[])
             
             world_draw(testWorld);
 
-            entity_system_draw_all();
             entity_system_think_all();
+            entity_system_update_all();
+            entity_system_draw_all();
             
             //UI elements last
             gf2d_sprite_draw(

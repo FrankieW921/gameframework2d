@@ -1,6 +1,7 @@
 #include "simple_logger.h"
 
 #include "player.h"
+#include "camera.h"
 #include "projectile.h"
 #include "gfc_input.h"
 
@@ -14,6 +15,7 @@ Entity *player_new_entity(GFC_Vector2D position)
 		return NULL;
 	}
 	self->think = player_think;
+	self->update = player_update;
 	self->shootCooldown = 0;
 	self->cooldownValue = 60;  //current implementation is hard to create an actual time metric for
 	gfc_vector2d_copy(self->position, position);
@@ -40,34 +42,37 @@ void player_think(Entity* self) {
 	self->velocity.y = 0;
 	gfc_input_update();
 	if (gfc_input_command_down("moveUp")) {
-		//movement.y -= 1;
 		self->velocity.y -= 1;
-		slog("moveUp is held down");
+		//slog("moveUp is held down");
 	}
 	if (gfc_input_command_down("moveDown")) {
-		//movement.y += 1;
 		self->velocity.y += 1;
-		slog("moveDown is held down");
+		//slog("moveDown is held down");
 	}
 	if (gfc_input_command_down("moveRight")) {
-		//movement.x += 1;
 		self->velocity.x += 1;
-		slog("moveRight is held down");
+		//slog("moveRight is held down");
 	}
 	if (gfc_input_command_down("moveLeft")) {
-		//movement.x -= 1;
 		self->velocity.x -= 1;
-		slog("moveLeft is held down");
+		//slog("moveLeft is held down");
 	}
+
+
 	gfc_vector2d_normalize(&self->velocity);
-	self->position.x += self->velocity.x * .8;
-	self->position.y += self->velocity.y * .8;
 
 	mouseState = SDL_GetRelativeMouseState(NULL, NULL);
 	if ((mouseState & 1) && self->shootCooldown == 0) {
 		player_shoot(self->position, self->velocity); //TODO update to pass in projectile type to spawn
 		self->shootCooldown = self->cooldownValue;
 	}
+}
+
+void player_update(Entity* self) {
+	self->position.x += self->velocity.x * 3;
+	self->position.y += self->velocity.y * 3;
+	camera_center_on(self->position);
+	camera_bounds_check();
 }
 
 void player_shoot(GFC_Vector2D position, GFC_Vector2D velocity) { //TODO update to pass in projectile type to spawn
@@ -80,4 +85,3 @@ void player_shoot(GFC_Vector2D position, GFC_Vector2D velocity) { //TODO update 
 	projectile_new_entity(position, pv);
 }
 
-/*eol@eof*/

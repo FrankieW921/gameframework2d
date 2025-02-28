@@ -4,6 +4,7 @@
 #include "gf2d_graphics.h"
 
 #include "world.h"
+#include "camera.h"
 
 World* world_test_new() {
 	int i, j;
@@ -89,6 +90,89 @@ void world_tile_layer_build(World* world) {
 	slog("Tile layer built and set");
 }
 
+World* world_load(const char* filename) {
+	World* world = NULL;
+	SJson* json = NULL;
+	SJson* wjson = NULL;
+	SJson* vertical, * horizontal;
+	int w = 0, h = 0;
+	GFC_Vector2I dimensions;
+	int i, j;
+	SJson* row;
+	int tile = 0;
+	const char* tileSet;
+	const char* background;
+	int frame_w, frame_h;
+	int frames_per_line;
+
+	if (!filename) {
+		slog("No file name given for world");
+		return NULL;
+	}
+	json = sj_load(filename);
+	if (!json) {
+		slog("Failed to load file %s", filename);
+		return NULL;
+	}
+	wjson = sj_object_get_value(json, "world");
+	if (!wjson) {
+		slog("Failed to load world object from file %s", filename);
+		sj_free(json);
+		return NULL;
+	}
+	vertical = sj_object_get_value(wjson, "tileMap");
+	if (!vertical) {
+		slog("Missing tileMap in %s", filename);
+		sj_free(json);
+		return NULL;
+	}
+	h = sj_array_get_count(vertical);
+	horizontal = sj_array_get_nth(vertical, 0);
+	w = sj_array_get_count(horizontal);
+
+	dimensions.x = w;
+	dimensions.y = h;
+	world = world_new(dimensions);
+	if (!world) {
+		slog("failed to create world from %s", filename);
+		sj_free(json);
+		return NULL;
+	}
+
+	//set the tileMap values
+	for (j = 0; j < h; j++) {
+		horizontal = sj_array_get_nth(vertical, j);
+		if (!horizontal) {
+			continue;
+		}
+		for (i = 0; i < w; i++) {
+			row = sj_array_get_nth(horizontal, i);
+			if (!row)continue; 
+			sj_get_integer_value(row, &tile);
+			world->tileMap[i + (j * w)] = tile;
+			//slog("Setting tile %i / %i to %i", i, j, tile);
+		}
+	}
+	background = sj_object_get_value_as_string(wjson, "background");
+	world->background = gf2d_sprite_load_image(background);
+
+	tileSet = sj_object_get_value_as_string(wjson, "tileSet");
+	sj_object_get_value_as_int(wjson, "frame_w", &frame_w);
+	sj_object_get_value_as_int(wjson, "frame_h", &frame_h);
+	sj_object_get_value_as_int(wjson, "frames_per_line", &frames_per_line);
+	world->tileSet = gf2d_sprite_load_all(
+		tileSet,
+		frame_w,
+		frame_h,
+		frames_per_line,
+		1
+	);
+	world_tile_layer_build(world);
+
+	sj_free(json);
+	return world;
+}
+
 World* world_new(GFC_Vector2I worldSize) {
 	World* world;
 
@@ -123,15 +207,25 @@ void world_free(World* world) {
 }
 
 void world_draw(World* world) {
-	int i, j, frame, index;
-	GFC_Vector2D position;
+	GFC_Vector2D offset;
 
 	if (!world) return; //need a world
 	if (!world->tileSet) return; //world needs a tileset to draw
 	if (!world->background) return; //world needs a background
-
+	offset = camera_get_offset();
 	gf2d_sprite_draw_image(world->background, gfc_vector2d(0, 0)); //draw background image
-	gf2d_sprite_draw_image(world->tileLayer, gfc_vector2d(0, 0)); //draw tileLayer image
+	gf2d_sprite_draw_image(world->tileLayer, offset); //draw tileLayer image
 }
 
-/*eol@eof*/
+void world_setup_camera(World* world)
+{
+	//GFC_Rect bounds = gfc_rect(0, 0, 1280, 720);
+	if (!world)return;
+	if ((!world->tileLayer) || (!world->tileLayer->surface))
+	{
+		slog("no tile layer set for world");
+		return;
+	}
+	camera_set_bounds(gfc_rect(0, 0, world->tileLayer->surface->w, world->tileLayer->surface->h));
+	camera_bounds_check();
+}

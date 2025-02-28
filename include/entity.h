@@ -25,6 +25,7 @@ typedef struct Entity_S
 	GFC_Vector2D	velocity; //how to move
 	GFC_Vector2D	acceleration;
 	void			(*think)(struct Entity_S* self); /*pointer to think function*/
+	void			(*update)(struct Entity_S* self); /*pointer to update function*/
 	Uint8			timeToLive; //time to live for projectiles specifically
 	Uint8			shootCooldown; //millisecond countdown/cooldown for player firing
 	Uint8			cooldownValue; //shootCooldown gets set to this value, this value changes with the selected weapon
@@ -56,6 +57,16 @@ void entity_system_think_all();
 * @brief called every frame for entities that have a think function
 */
 void entity_think(Entity *self);
+
+/*
+* @brief called every frame for entities that have a update function
+*/
+void entity_update(Entity* self);
+
+/**
+* @brief call the update function on all entities that have a pointer to one
+*/
+void entity_system_update_all();
 
 /**
  * @brief get a new empty entity to use
