@@ -25,6 +25,17 @@ typedef struct World_S
 }World;
 
 /*
+* @brief return the current static/global world
+*/
+World* get_current_world();
+
+/*
+* @brief set the static/global world to a new world
+* @param newWorld the world to set as the new world, use the world_load() function
+*/
+void set_current_world(World* newWorld);
+
+/*
 * @brief test function, builds a hardcoded world
 * @return NULL on failure, test world otherwise
 */
@@ -65,8 +76,7 @@ void world_draw(World* world);
 
 /*
 * @brief set bounds for global camera based on the world and its size
-* @param world the world to base camera bounds on
 */
-void world_setup_camera(World* world);
+void world_setup_camera();
 #endif
 

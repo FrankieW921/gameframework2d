@@ -1,0 +1,10 @@
+{
+  "projectiles": [
+    {
+      "name": "bullet",
+      "imageFileName": "images/testprojectile.png",
+      "speed": 3,
+    }
+  ]
+
+}

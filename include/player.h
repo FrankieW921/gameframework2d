@@ -3,6 +3,11 @@
 
 #include "entity.h"
 
+typedef struct {
+	Uint8			shootCooldown; //millisecond countdown/cooldown for player firing
+	Uint8			cooldownValue; //shootCooldown gets set to this value, this value changes with the selected weapon
+}PlayerData;
+
 /**
 * @brief spawn a new player entity
 * @param position where to spawn

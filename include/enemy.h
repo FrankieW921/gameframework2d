@@ -16,4 +16,11 @@ Entity* enemy_new_entity(GFC_Vector2D position);
 */
 void enemy_think(Entity* self);
 
+/*
+* @brief enemy entity update
+* @param enemy entity
+*/
+
+void enemy_update(Entity* self);
+
 #endif

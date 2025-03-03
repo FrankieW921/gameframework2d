@@ -12,6 +12,7 @@ Entity* enemy_new_entity(GFC_Vector2D position)
 		return NULL;
 	}
 	self->think = enemy_think;
+	self->update = enemy_update;
 	gfc_vector2d_copy(self->position, position);
 	self->sprite = gf2d_sprite_load_image("images/smtDemonIcon.png");
 	return self;
@@ -26,10 +27,9 @@ void enemy_think(Entity* self) {
 	self->velocity.x += r;
 	r = rand() % 2;
 	self->velocity.y += r;
-
-	self->position.x += self->velocity.x * .05;
-	self->position.y += self->velocity.y * .05;
-
 }
 
-/*eol@eof*/
+void enemy_update(Entity* self) {
+	self->position.x += self->velocity.x * .05;
+	self->position.y += self->velocity.y * .05;
+}

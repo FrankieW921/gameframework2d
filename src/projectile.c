@@ -2,8 +2,10 @@
 
 #include "projectile.h"
 
+//TODO take in desired projectile type and assign sprite, velocity, and timetolive
 Entity* projectile_new_entity(GFC_Vector2D position, GFC_Vector2D velocity) {
 	Entity* self;
+	ProjectileData* data;
 	self = entity_new();
 	if (!self)
 	{
@@ -12,9 +14,14 @@ Entity* projectile_new_entity(GFC_Vector2D position, GFC_Vector2D velocity) {
 	}
 
 	self->think = projectile_think;
+	self->update = projectile_update;
 	gfc_vector2d_copy(self->position, position);
 	gfc_vector2d_copy(self->velocity, velocity); //ADJUST VELOCITY BASED ON PROJECTILE TYPE
-	self->timeToLive = 120 * 16; //ADJUST TIME TO LIVE BASED ON PROJECTILE TYPE, i.e. replacing 120 with however many frames you want the proj to live
+	data = gfc_allocate_array(sizeof(ProjectileData), 1);
+	if (data) {
+		data->timeToLive = 120 * 16; //ADJUST TIME TO LIVE BASED ON PROJECTILE TYPE, i.e. replacing 120 with however many frames you want the proj to live
+	}
+	self->data = data;
 	self->sprite = gf2d_sprite_load_all(
 		"images/testprojectile.png",
 		16,
@@ -27,10 +34,18 @@ Entity* projectile_new_entity(GFC_Vector2D position, GFC_Vector2D velocity) {
 }
 
 void projectile_think(Entity* self) {
+	ProjectileData* data;
+	data = self->data;
+	data->timeToLive -= 1;
+}
+
+void projectile_update(Entity* self) {
+	ProjectileData* data;
+	data = self->data;
 	//ADJUST VELOCITY BASED ON PROJECTILE TYPE (entity struct attribute?, entity enum?, switch case?)
 	self->position.x += self->velocity.x * 3;
 	self->position.y += self->velocity.y * 3;
-	self->timeToLive -= 1;
-	if (self->timeToLive <= 0) entity_free(self);
+
+	if (data->timeToLive <= 0) entity_free(self);
 }
 

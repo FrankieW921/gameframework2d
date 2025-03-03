@@ -7,6 +7,17 @@
 #include "camera.h"
 #include "enemy.h"
 
+static World* world = NULL;
+//void world_tile_layer_build(world);
+
+World* get_current_world() {
+	return world;
+}
+
+void set_current_world(World* newWorld) {
+	world = newWorld;
+}
+
 World* world_test_new() {
 	int i, j;
 	int w = 20, h = 12; //hardcode version of the vector2d below, JSONify it 
@@ -92,7 +103,7 @@ void world_tile_layer_build(World* world) {
 }
 
 World* world_load(const char* filename) {
-	World* world = NULL;
+	//World* world = NULL;
 	SJson* json = NULL;
 	SJson* wjson = NULL;
 	SJson* vertical, * horizontal;
@@ -241,7 +252,7 @@ void world_spawn_entity() {
 
 }
 
-void world_setup_camera(World* world)
+void world_setup_camera()
 {
 	//GFC_Rect bounds = gfc_rect(0, 0, 1280, 720);
 	if (!world)return;
@@ -252,4 +263,8 @@ void world_setup_camera(World* world)
 	}
 	camera_set_bounds(gfc_rect(0, 0, world->tileLayer->surface->w, world->tileLayer->surface->h));
 	camera_bounds_check();
+}
+
+int world_test_shape(World* world, GFC_Shape shape) { //test if the shape is colliding with tiles and sto stop movement depending on how
+
 }

@@ -23,7 +23,7 @@ int main(int argc, char * argv[])
     Entity *player;
     //Entity* enemy;
 
-    World *testWorld;
+    //World *testWorld;
     
     int mx,my;
     float mousef = 0;
@@ -54,8 +54,9 @@ int main(int argc, char * argv[])
     //mouse = gf2d_sprite_load_image("images/smtDemonIcon.png");
     slog("press [escape] to quit");
     //testWorld = world_test_new();
-    testWorld = world_load("maps/testWorld.json");
-    world_setup_camera(testWorld);
+    //testWorld = world_load("maps/testWorld.json");
+    set_current_world(world_load("maps/testWorld.json"));
+    world_setup_camera();
     
     player = player_new_entity(gfc_vector2d(80, 80)); 
     //enemy = enemy_new_entity(gfc_vector2d(200, 200));
@@ -78,7 +79,7 @@ int main(int argc, char * argv[])
             //gf2d_sprite_draw_image(sprite,gfc_vector2d(0,0));
             
             
-            world_draw(testWorld);
+            world_draw(get_current_world());
 
             entity_system_think_all();
             entity_system_update_all();
@@ -104,7 +105,7 @@ int main(int argc, char * argv[])
     }
     //entity_free(player);
     //entity_free(enemy);
-    world_free(testWorld);
+    world_free(get_current_world());
     entity_system_free_all();
     slog("---==== END ====---");
     return 0;
