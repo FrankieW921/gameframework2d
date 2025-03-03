@@ -5,6 +5,7 @@
 
 #include "world.h"
 #include "camera.h"
+#include "enemy.h"
 
 World* world_test_new() {
 	int i, j;
@@ -98,12 +99,16 @@ World* world_load(const char* filename) {
 	int w = 0, h = 0;
 	GFC_Vector2I dimensions;
 	int i, j;
-	SJson* row;
+	SJson* item;
 	int tile = 0;
 	const char* tileSet;
 	const char* background;
 	int frame_w, frame_h;
 	int frames_per_line;
+	SJson* enemies;
+	SJson* enemy;
+	int numEnemies, enemyType;
+	float enemyPosX, enemyPosY;
 
 	if (!filename) {
 		slog("No file name given for world");
@@ -146,9 +151,9 @@ World* world_load(const char* filename) {
 			continue;
 		}
 		for (i = 0; i < w; i++) {
-			row = sj_array_get_nth(horizontal, i);
-			if (!row)continue; 
-			sj_get_integer_value(row, &tile);
+			item = sj_array_get_nth(horizontal, i);
+			if (!item)continue;
+			sj_get_integer_value(item, &tile);
 			world->tileMap[i + (j * w)] = tile;
 			//slog("Setting tile %i / %i to %i", i, j, tile);
 		}
@@ -168,6 +173,21 @@ World* world_load(const char* filename) {
 		1
 	);
 	world_tile_layer_build(world);
+
+	enemies = sj_object_get_value(wjson, "enemies");
+	numEnemies = sj_array_get_count(enemies);
+
+	for (i = 0; i < numEnemies; i++) {
+		enemy = sj_array_get_nth(enemies, i);
+		if (!enemy)continue;
+		item = sj_array_get_nth(enemy, 0); //getting enemy type
+		sj_get_integer_value(item, &enemyType);
+		item = sj_array_get_nth(enemy, 1); //getting x position
+		sj_get_float_value(item, &enemyPosX);
+		item = sj_array_get_nth(enemy, 2); //getting y position
+		sj_get_float_value(item, &enemyPosY);
+		gfc_list_append(&world->entityList, enemy_new_entity(gfc_vector2d(enemyPosX, enemyPosY)));
+	}
 
 	sj_free(json);
 	return world;
@@ -215,6 +235,10 @@ void world_draw(World* world) {
 	offset = camera_get_offset();
 	gf2d_sprite_draw_image(world->background, gfc_vector2d(0, 0)); //draw background image
 	gf2d_sprite_draw_image(world->tileLayer, offset); //draw tileLayer image
+}
+
+void world_spawn_entity() {
+
 }
 
 void world_setup_camera(World* world)

@@ -21,7 +21,7 @@ int main(int argc, char * argv[])
     const Uint8 * keys;
     Sprite* sprite;
     Entity *player;
-    Entity* enemy;
+    //Entity* enemy;
 
     World *testWorld;
     
@@ -58,7 +58,7 @@ int main(int argc, char * argv[])
     world_setup_camera(testWorld);
     
     player = player_new_entity(gfc_vector2d(80, 80)); 
-    enemy = enemy_new_entity(gfc_vector2d(200, 200));
+    //enemy = enemy_new_entity(gfc_vector2d(200, 200));
 
     /*main game loop*/
     while(!done)
@@ -102,8 +102,8 @@ int main(int argc, char * argv[])
         if (keys[SDL_SCANCODE_ESCAPE])done = 1; // exit condition
         //slog("Rendering at %f FPS",gf2d_graphics_get_frames_per_second());
     }
-    entity_free(player);
-    entity_free(enemy);
+    //entity_free(player);
+    //entity_free(enemy);
     world_free(testWorld);
     entity_system_free_all();
     slog("---==== END ====---");

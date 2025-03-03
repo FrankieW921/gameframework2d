@@ -9,7 +9,7 @@
 
 #include "gf2d_sprite.h"
 
-typedef struct
+typedef struct World_S
 {
 	GFC_TextLine	name; //name of world instance
 	Sprite			*background; //background image of the world
@@ -19,7 +19,7 @@ typedef struct
 
 	Sprite			*tileLayer;	//prerendered tile image
 
-	GFC_List		*entityList; //list of entity's within the world
+	GFC_List		entityList; //list of entity's within the world
 
 	
 }World;
