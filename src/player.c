@@ -22,12 +22,12 @@ Entity *player_new_entity(GFC_Vector2D position)
 
 	//player specific attributes
 	data = gfc_allocate_array(sizeof(PlayerData), 1);
-	if (data) { //pray this executes or crash
+	if (data) {
 		data->shootCooldown = 0;
 		data->cooldownValue = 60;  //current implementation is hard to create an actual time metric for
 		file = sj_load("defs/heads.json");
 		data->heads = sj_object_get_value(file, "heads");
-		data->currentHead = player_set_head(sj_array_get_nth(data->heads, 0));
+		data->currentHead = player_set_head(sj_array_get_nth(data->heads, 0));	
 
 		file = sj_load("defs/arms.json");
 		data->arms = sj_object_get_value(file, "arms");
@@ -39,6 +39,9 @@ Entity *player_new_entity(GFC_Vector2D position)
 		data->legs = sj_object_get_value(file, "legs");
 	}
 	self->data = data;
+
+	slog("Current head name: %s", data->currentHead->name);
+	slog("Current head health: %i", data->currentHead->health);
 
 	gfc_vector2d_copy(self->position, position);
 	self->sprite = gf2d_sprite_load_all(
@@ -118,7 +121,8 @@ void player_shoot(GFC_Vector2D position, GFC_Vector2D velocity) { //TODO update 
 Head* player_set_head(SJson* selectedHead) {
 	Head* rHead = gfc_allocate_array(sizeof(Head), 1);
 	rHead->name = sj_object_get_value_as_string(selectedHead, "name");
-	slog(rHead->name);
+	sj_object_get_value_as_int(selectedHead, "health", &rHead->health);
+	slog("Setting current head part");
 	return rHead;
 }
 
