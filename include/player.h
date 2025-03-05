@@ -2,10 +2,41 @@
 #define __PLAYER_H__
 
 #include "entity.h"
+#include "projectile.h"
 
 typedef struct {
+	const char*			name;
+	Uint8			health;
+}Head;
+
+typedef struct {
+	const char*			name;
+	ProjectileType	projectileType;
+}Arm;
+
+typedef struct {
+	const char*			name;
+	Uint8			health;
+}Torso;
+
+typedef struct {
+	const char*			name;
+	Uint8			health;
+}Leg;
+
+typedef struct {
+	Uint8			maxHealth;
+	Uint8			currentHealth;
 	Uint8			shootCooldown; //millisecond countdown/cooldown for player firing
 	Uint8			cooldownValue; //shootCooldown gets set to this value, this value changes with the selected weapon
+	SJson*			heads;
+	SJson*			arms;
+	SJson*			torsos;
+	SJson*			legs;
+	Head			*currentHead;
+	Arm				*currentArm;
+	Torso			*currentTorso;
+	Leg* currentLeg;
 }PlayerData;
 
 /**
@@ -31,5 +62,38 @@ void player_update(Entity* self);
 * @brief incomplete shoot function, shoots a projectile from the player in the direction of the player's mouse
 */
 void player_shoot(GFC_Vector2D position, GFC_Vector2D velocity);
+
+/*
+* @brief set player attributes based on head parts in the def files
+* @param selectedHead json head to build the head data struct out of
+* @returns head struct to set to the player's current head
+*/
+Head* player_set_head(SJson* selectedHead);
+
+/*
+* @brief set player attributes based on arm parts in the def files
+* @param selectedArm json arm to build the arm data struct out of
+* @returns arm struct to set to the player's current arm
+*/
+Arm* player_set_arm(SJson* selectedArm);
+
+/*
+* @brief set player attributes based on torso parts in the def files
+* @param selectedTorso json torso to build the torso data struct out of
+* @returns torso struct to set to the player's current head
+*/
+Torso* player_set_torso(SJson* selectedTorso);
+
+/*
+* @brief set player attributes based on leg parts in the def files
+* @param selectedLeg json leg to build the leg data struct out of
+* @returns leg struct to set to the player's current leg
+*/
+Leg* player_set_leg(SJson* selectedLeg);
+
+/*
+* @brief updates the players max health based on equipped parts
+*/
+void player_update_max_health(Entity* self);
 
 #endif

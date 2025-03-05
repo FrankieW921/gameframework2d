@@ -1,10 +1,22 @@
 {
   "projectiles": [
     {
-      "name": "bullet",
+      "name": "Small Bullet",
+      "imageFileName": "images/testprojectile.png",
+      "speed": 6,
+      "damage": 1
+    },
+    {
+      "name": "Energy Ball",
+      "imageFileName": "images/testprojectile.png",
+      "speed": 2,
+      "damage": 4
+    },
+    {
+      "name": "Small Rocket",
       "imageFileName": "images/testprojectile.png",
       "speed": 3,
+      "damage": 6
     }
   ]
-
 }

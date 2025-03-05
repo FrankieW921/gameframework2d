@@ -14,6 +14,12 @@ typedef enum {
 	ET_EnemyProjectile,
 }EntityType;
 
+typedef enum {
+	Small_Bullet,
+	Energy_Ball,
+	Small_Rocket
+}ProjectileType;
+
 typedef struct Entity_S
 {
 	Uint8			_inuse; /**mem management flag*/
@@ -26,9 +32,7 @@ typedef struct Entity_S
 	GFC_Vector2D	acceleration;
 	void			(*think)(struct Entity_S* self); /*pointer to think function*/
 	void			(*update)(struct Entity_S* self); /*pointer to update function*/
-	Uint8			shootCooldown; //millisecond countdown/cooldown for player firing
-	Uint8			cooldownValue; //shootCooldown gets set to this value, this value changes with the selected weapon
-	GFC_Rect		bounds; //collision bounds of the entity
+	GFC_Rect		bounds; //collision bounds of the entity, calculate via image or something
 	void			*data;
 }Entity;
 

@@ -1,0 +1,19 @@
+{
+  "torsos": [
+    {
+      "name": "Moderate",
+      "health": 50,
+      "boundsAdjustment": 1.0
+    },
+    {
+      "name": "Hulking",
+      "health": 80,
+      "boundsAdjustment": 1.3
+    },
+    {
+      "name": "Scrawny",
+      "health": 30,
+      "boundAdjustment": 0.7
+    }
+  ]
+}

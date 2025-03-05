@@ -1,0 +1,16 @@
+{
+  "arms": [
+    {
+      "name": "Handgun Arm",
+      "projectileType": 1
+    },
+    {
+      "name": "Energy Blaster",
+      "projectileType": 2
+    },
+    {
+      "name": "Wrist Rockets",
+      "projectileType": 3
+    }
+  ]
+}

@@ -5,6 +5,7 @@
 
 typedef struct {
 	Uint8			timeToLive; //time to live for projectiles specifically
+	SJson*			projectileDefs; //def file to read projectiles from
 }ProjectileData;
 
 /**

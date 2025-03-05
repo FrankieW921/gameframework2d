@@ -1,0 +1,16 @@
+{
+  "heads": [
+    {
+      "name": "Model-D",
+      "health": 25
+    },
+    {
+      "name": "F-eye-nder",
+      "health": 20
+    },
+    {
+      "name": "GoPro",
+      "health": 30
+    }
+  ]
+}
