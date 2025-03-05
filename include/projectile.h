@@ -4,6 +4,8 @@
 #include "entity.h"
 
 typedef struct {
+	Uint8			damage;
+	Uint8			speed;
 	Uint8			timeToLive; //time to live for projectiles specifically
 	SJson*			projectileDefs; //def file to read projectiles from
 }ProjectileData;

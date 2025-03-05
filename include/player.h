@@ -36,8 +36,15 @@ typedef struct {
 	Head			*currentHead;
 	Arm				*currentArm;
 	Torso			*currentTorso;
-	Leg* currentLeg;
+	Leg				*currentLeg;
 }PlayerData;
+
+/*
+* @brief returns the static player entity
+* @returns the static player ent
+*/
+Entity* get_the_player();
+
 
 /**
 * @brief spawn a new player entity
@@ -45,6 +52,8 @@ typedef struct {
 * @return NULL on error, pointer to the spawn player entity
 */
 Entity *player_new_entity(GFC_Vector2D position); 
+
+void player_data_new(PlayerData* data);
 
 /*
 * @brief player entity think
@@ -68,32 +77,32 @@ void player_shoot(GFC_Vector2D position, GFC_Vector2D velocity);
 * @param selectedHead json head to build the head data struct out of
 * @returns head struct to set to the player's current head
 */
-Head* player_set_head(SJson* selectedHead);
+void player_set_head(Head* currentHead, SJson* selectedHead);
 
 /*
 * @brief set player attributes based on arm parts in the def files
 * @param selectedArm json arm to build the arm data struct out of
 * @returns arm struct to set to the player's current arm
 */
-Arm* player_set_arm(SJson* selectedArm);
+void player_set_arm(Arm* currentArm, SJson* selectedArm);
 
 /*
 * @brief set player attributes based on torso parts in the def files
 * @param selectedTorso json torso to build the torso data struct out of
 * @returns torso struct to set to the player's current head
 */
-Torso* player_set_torso(SJson* selectedTorso);
+void player_set_torso(Torso* currentTorso, SJson* selectedTorso);
 
 /*
 * @brief set player attributes based on leg parts in the def files
 * @param selectedLeg json leg to build the leg data struct out of
 * @returns leg struct to set to the player's current leg
 */
-Leg* player_set_leg(SJson* selectedLeg);
+void player_set_leg(Leg* currentLeg, SJson* selectedLeg);
 
 /*
 * @brief updates the players max health based on equipped parts
 */
-void player_update_max_health(Entity* self);
+void player_output_current_head(Entity* self);
 
 #endif

@@ -5,43 +5,42 @@
 #include "camera.h"
 #include "projectile.h"
 
+static Entity* thePlayer = NULL;
+
+Entity* get_the_player() {
+	return thePlayer;
+}
+
 Entity *player_new_entity(GFC_Vector2D position)
 {
 	Entity* self;
 	PlayerData* data;
-	SJson* file;
+
+	if (thePlayer) {
+		return thePlayer;
+	}
+
 	self = entity_new();
 	if (!self)
 	{
 		slog("failed to spawn player entity");
 		return NULL;
 	}
+	
 	//entity general attributes
 	self->think = player_think;
 	self->update = player_update;
 
-	//player specific attributes
+	//player specific attributes/data
 	data = gfc_allocate_array(sizeof(PlayerData), 1);
 	if (data) {
-		data->shootCooldown = 0;
-		data->cooldownValue = 60;  //current implementation is hard to create an actual time metric for
-		file = sj_load("defs/heads.json");
-		data->heads = sj_object_get_value(file, "heads");
-		data->currentHead = player_set_head(sj_array_get_nth(data->heads, 0));	
-
-		file = sj_load("defs/arms.json");
-		data->arms = sj_object_get_value(file, "arms");
-
-		file = sj_load("defs/torsos.json");
-		data->torsos = sj_object_get_value(file, "torsos");
-
-		file = sj_load("defs/legs.json");
-		data->legs = sj_object_get_value(file, "legs");
+		player_data_new(data);
 	}
 	self->data = data;
+	player_output_current_head(self);
 
-	slog("Current head name: %s", data->currentHead->name);
-	slog("Current head health: %i", data->currentHead->health);
+	//slog("Current head name: %s", data->currentHead->name);
+	//slog("Current head health: %i", data->currentHead->health);
 
 	gfc_vector2d_copy(self->position, position);
 	self->sprite = gf2d_sprite_load_all(
@@ -52,7 +51,31 @@ Entity *player_new_entity(GFC_Vector2D position)
 		0
 	);
 	gfc_input_init("gfc/sample_config/input.cfg");
+
+	thePlayer = self;
 	return self;
+}
+
+void player_data_new(PlayerData* data) {
+	SJson* file;
+
+	file = sj_load("defs/heads.json");
+	data->heads = sj_object_get_value(file, "heads");
+	data->currentHead = gfc_allocate_array(sizeof(Head), 1);
+	player_set_head(data->currentHead, sj_array_get_nth(data->heads, 0));
+
+	file = sj_load("defs/arms.json");
+	data->arms = sj_object_get_value(file, "arms");
+	data->currentArm = gfc_allocate_array(sizeof(Arm), 1);
+	player_set_arm(data->currentArm, sj_array_get_nth(data->arms, 0));
+
+	file = sj_load("defs/torsos.json");
+	data->torsos = sj_object_get_value(file, "torsos");
+
+	file = sj_load("defs/legs.json");
+
+	data->shootCooldown = 0;
+	data->cooldownValue = 60;  //current implementation is hard to create an actual time metric for
 }
 
 void player_think(Entity* self) {
@@ -118,26 +141,62 @@ void player_shoot(GFC_Vector2D position, GFC_Vector2D velocity) { //TODO update 
 	projectile_new_entity(position, pv);
 }
 
-Head* player_set_head(SJson* selectedHead) {
-	Head* rHead = gfc_allocate_array(sizeof(Head), 1);
-	rHead->name = sj_object_get_value_as_string(selectedHead, "name");
-	sj_object_get_value_as_int(selectedHead, "health", &rHead->health);
-	slog("Setting current head part");
-	return rHead;
+void player_set_head(Head* currentHead, SJson* selectedHead) {
+	if (!currentHead) {
+		slog("PlayerData->CurrentHead doesn't exist");
+		return;
+	}
+	currentHead->name = sj_object_get_value_as_string(selectedHead, "name");
+	sj_object_get_value_as_int(selectedHead, "health", &currentHead->health);
 }
 
-Arm* player_set_arm(SJson* selectedArm) {
-	
+void player_set_arm(Arm* currentArm, SJson* selectedArm) {
+	if (!currentArm) {
+		slog("PlayerData->CurrentHead doesn't exist");
+		return;
+	}
+	currentArm->name = sj_object_get_value_as_string(selectedArm, "name");
+	sj_object_get_value_as_int(selectedArm, "projectileType", &currentArm->projectileType);
 }
 
-Torso* player_set_torso(SJson* selectedTorso) {
-
+void player_set_torso(Torso* currentTorso, SJson* selectedTorso) {
+	if (!currentTorso) {
+		slog("PlayerData->CurrentHead doesn't exist");
+		return;
+	}
+	currentTorso->name = sj_object_get_value_as_string(selectedTorso, "name");
+	sj_object_get_value_as_int(selectedTorso, "health", &currentTorso->health);
 }
 
-Leg* player_set_leg(SJson* selectedLeg) {
-
+void player_set_leg(Leg* currentLeg, SJson* selectedLeg) {
+	if (!currentLeg) {
+		slog("PlayerData->CurrentHead doesn't exist");
+		return;
+	}
+	currentLeg->name = sj_object_get_value_as_string(selectedLeg, "name");
+	sj_object_get_value_as_int(selectedLeg, "health", &currentLeg->health);
 }
 
-void player_update_max_health(Entity* self) {
-
+void player_output_current_head(Entity* self) {
+	PlayerData* data;
+	Head* currentHead;
+	if (!self) {
+		slog("Self doesn't exist");
+		return;
+	}
+	data = self->data;
+	if (data) {
+		currentHead = data->currentHead;
+		if (currentHead) {
+			slog("Current Head Name: %s", currentHead->name);
+			slog("Current Head Health: %i", currentHead->health);
+		}
+		else {
+			slog("Self->Data->CurrentHead doesn't exist");
+		}
+		
+	}
+	else {
+		slog("Self->Data doesn't exist");
+	}
 }
