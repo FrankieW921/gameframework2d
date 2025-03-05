@@ -71,8 +71,13 @@ void player_data_new(PlayerData* data) {
 
 	file = sj_load("defs/torsos.json");
 	data->torsos = sj_object_get_value(file, "torsos");
+	data->currentTorso = gfc_allocate_array(sizeof(Torso), 1);
+	player_set_torso(data->currentTorso, sj_array_get_nth(data->torsos, 0));
 
 	file = sj_load("defs/legs.json");
+	data->legs = sj_object_get_value(file, "legs");
+	data->currentLeg = gfc_allocate_array(sizeof(Leg), 1);
+	player_set_leg(data->currentLeg, sj_array_get_nth(data->legs, 0));
 
 	data->shootCooldown = 0;
 	data->cooldownValue = 60;  //current implementation is hard to create an actual time metric for
@@ -114,7 +119,7 @@ void player_think(Entity* self) {
 
 	mouseState = SDL_GetRelativeMouseState(NULL, NULL);
 	if ((mouseState & 1) && data->shootCooldown == 0) {
-		player_shoot(self->position, self->velocity); //TODO update to pass in projectile type to spawn
+		player_shoot(self->position, self->velocity, self); //TODO update to pass in projectile type to spawn
 		data->shootCooldown = data->cooldownValue;
 	}
 }
@@ -126,9 +131,11 @@ void player_update(Entity* self) {
 	camera_bounds_check();
 }
 
-void player_shoot(GFC_Vector2D position, GFC_Vector2D velocity) { //TODO update to pass in projectile type to spawn
+void player_shoot(GFC_Vector2D position, GFC_Vector2D velocity, Entity* self) { //TODO update to pass in projectile type to spawn
 	int mx, my;
 	GFC_Vector2D pv, offset, playerOffset;
+	PlayerData* data = self->data;
+	Arm* arm = data->currentArm;
 
 	SDL_GetMouseState(&mx, &my);
 	offset = camera_get_offset();
@@ -138,12 +145,11 @@ void player_shoot(GFC_Vector2D position, GFC_Vector2D velocity) { //TODO update 
 	pv = gfc_vector2d(mx-playerOffset.x, my-playerOffset.y); //projectile velocity
 	gfc_vector2d_normalize(&pv);
 
-	projectile_new_entity(position, pv);
+	projectile_new_entity(position, pv, arm->projectileType);
 }
 
 void player_set_head(Head* currentHead, SJson* selectedHead) {
 	if (!currentHead) {
-		slog("PlayerData->CurrentHead doesn't exist");
 		return;
 	}
 	currentHead->name = sj_object_get_value_as_string(selectedHead, "name");
@@ -152,7 +158,6 @@ void player_set_head(Head* currentHead, SJson* selectedHead) {
 
 void player_set_arm(Arm* currentArm, SJson* selectedArm) {
 	if (!currentArm) {
-		slog("PlayerData->CurrentHead doesn't exist");
 		return;
 	}
 	currentArm->name = sj_object_get_value_as_string(selectedArm, "name");
@@ -161,7 +166,6 @@ void player_set_arm(Arm* currentArm, SJson* selectedArm) {
 
 void player_set_torso(Torso* currentTorso, SJson* selectedTorso) {
 	if (!currentTorso) {
-		slog("PlayerData->CurrentHead doesn't exist");
 		return;
 	}
 	currentTorso->name = sj_object_get_value_as_string(selectedTorso, "name");
@@ -170,7 +174,6 @@ void player_set_torso(Torso* currentTorso, SJson* selectedTorso) {
 
 void player_set_leg(Leg* currentLeg, SJson* selectedLeg) {
 	if (!currentLeg) {
-		slog("PlayerData->CurrentHead doesn't exist");
 		return;
 	}
 	currentLeg->name = sj_object_get_value_as_string(selectedLeg, "name");

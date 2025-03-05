@@ -2,10 +2,20 @@
 
 #include "projectile.h"
 
+static SJson* projectileDefFile = NULL;
+static SJson* projectilesDefs = NULL;
+
 //TODO take in desired projectile type and assign sprite, velocity, and timetolive
-Entity* projectile_new_entity(GFC_Vector2D position, GFC_Vector2D velocity) {
+Entity* projectile_new_entity(GFC_Vector2D position, GFC_Vector2D velocity, Uint8 projectileType) {
 	Entity* self;
 	ProjectileData* data;
+
+	if (!projectileDefFile) {
+		projectileDefFile = sj_load("defs/projectiles.json");
+		if (!projectilesDefs) {
+			projectilesDefs = sj_object_get_value(projectileDefFile, "projectiles");
+		}
+	}
 	self = entity_new();
 	if (!self)
 	{

@@ -2,15 +2,15 @@
   "arms": [
     {
       "name": "Handgun Arm",
-      "projectileType": 1
+      "projectileType": 0
     },
     {
       "name": "Energy Blaster",
-      "projectileType": 2
+      "projectileType": 1
     },
     {
       "name": "Wrist Rockets",
-      "projectileType": 3
+      "projectileType": 2
     }
   ]
 }

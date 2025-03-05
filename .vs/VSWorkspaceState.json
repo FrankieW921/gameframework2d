@@ -1,7 +1,10 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\defs",
+    "\\include",
+    "\\src"
   ],
-  "SelectedNode": "\\IT366-2D Game.sln",
+  "SelectedNode": "\\src\\projectile.c",
   "PreviewInSolutionExplorer": false
 }

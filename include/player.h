@@ -70,7 +70,7 @@ void player_update(Entity* self);
 /*
 * @brief incomplete shoot function, shoots a projectile from the player in the direction of the player's mouse
 */
-void player_shoot(GFC_Vector2D position, GFC_Vector2D velocity);
+void player_shoot(GFC_Vector2D position, GFC_Vector2D velocity, Entity* self);
 
 /*
 * @brief set player attributes based on head parts in the def files
