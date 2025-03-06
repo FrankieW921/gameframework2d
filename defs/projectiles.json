@@ -4,19 +4,22 @@
       "name": "Small Bullet",
       "imageFileName": "images/testprojectile.png",
       "speed": 6,
-      "damage": 1
+      "damage": 1,
+      "timeToLive": 120
     },
     {
       "name": "Energy Ball",
       "imageFileName": "images/testprojectile.png",
       "speed": 2,
-      "damage": 4
+      "damage": 4,
+      "timeToLive": 300
     },
     {
       "name": "Small Rocket",
       "imageFileName": "images/testprojectile.png",
       "speed": 3,
-      "damage": 6
+      "damage": 6,
+      "timeToLive": 200
     }
   ]
 }

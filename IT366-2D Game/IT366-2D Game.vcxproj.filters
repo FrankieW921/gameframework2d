@@ -252,4 +252,21 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\defs\arms.json">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\defs\heads.json">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\defs\legs.json">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\defs\projectiles.json">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\defs\torsos.json">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
 </Project>

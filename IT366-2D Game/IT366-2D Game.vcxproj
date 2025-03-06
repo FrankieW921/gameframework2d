@@ -220,6 +220,13 @@
     <ClInclude Include="tileset.h" />
     <ClInclude Include="world.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\defs\arms.json" />
+    <None Include="..\defs\heads.json" />
+    <None Include="..\defs\legs.json" />
+    <None Include="..\defs\projectiles.json" />
+    <None Include="..\defs\torsos.json" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -7,6 +7,7 @@
 typedef struct {
 	const char*			name;
 	Uint8			health;
+	Uint8			cooldownValue; //shootCooldown gets set to this value, this value changes with the selected head
 }Head;
 
 typedef struct {
@@ -22,13 +23,24 @@ typedef struct {
 typedef struct {
 	const char*			name;
 	Uint8			health;
+	float			speed;
 }Leg;
 
-typedef struct {
+typedef struct { //mfw i want to make a mecha game
 	Uint8			maxHealth;
 	Uint8			currentHealth;
 	Uint8			shootCooldown; //millisecond countdown/cooldown for player firing
-	Uint8			cooldownValue; //shootCooldown gets set to this value, this value changes with the selected weapon
+	Uint8			partSwitchCooldown;
+
+	Uint8			headIndex;
+	Uint8			armIndex;
+	Uint8			torsoIndex;
+	Uint8			legIndex;
+	Uint8			headIndexMax;
+	Uint8			armIndexMax;
+	Uint8			torsoIndexMax;
+	Uint8			legIndexMax;
+
 	SJson*			heads;
 	SJson*			arms;
 	SJson*			torsos;
@@ -73,32 +85,62 @@ void player_update(Entity* self);
 void player_shoot(GFC_Vector2D position, GFC_Vector2D velocity, Entity* self);
 
 /*
-* @brief set player attributes based on head parts in the def files
-* @param selectedHead json head to build the head data struct out of
-* @returns head struct to set to the player's current head
+* @brief set the player's head to a head contained with the heads def file
+* @param currentHead the player's current head
+* @param selectedHead SJson array object of the desired head, usually through get_nth
 */
 void player_set_head(Head* currentHead, SJson* selectedHead);
 
 /*
-* @brief set player attributes based on arm parts in the def files
-* @param selectedArm json arm to build the arm data struct out of
-* @returns arm struct to set to the player's current arm
+* @brief set the player's arm to a arm contained with the arms def file
+* @param currentArm the player's current arm
+* @param selectedArm SJson array object of the desired arm, usually through get_nth
 */
 void player_set_arm(Arm* currentArm, SJson* selectedArm);
 
 /*
-* @brief set player attributes based on torso parts in the def files
-* @param selectedTorso json torso to build the torso data struct out of
-* @returns torso struct to set to the player's current head
+* @brief set the player's torso to a torso contained with the torsos def file
+* @param currentTorso the player's current torso
+* @param selectedTorso SJson array object of the desired torso, usually through get_nth
 */
 void player_set_torso(Torso* currentTorso, SJson* selectedTorso);
 
 /*
-* @brief set player attributes based on leg parts in the def files
-* @param selectedLeg json leg to build the leg data struct out of
-* @returns leg struct to set to the player's current leg
+* @brief set the player's leg to a leg contained with the legs def file
+* @param currentLeg the player's current leg
+* @param selectedLeg SJson array object of the desired leg, usually through get_nth
 */
 void player_set_leg(Leg* currentLeg, SJson* selectedLeg);
+
+
+/*
+* @brief set the player entity's head to the next available head in its def file
+* @param self the player entity
+*/
+void player_next_head(Entity* self);
+
+/*
+* @brief set the player entity's arm to the next available arm in its def file
+* @param self the player entity
+*/
+void player_next_arm(Entity* self);
+
+/*
+* @brief set the player entity's torso to the next available torso in its def file
+* @param self the player entity
+*/
+void player_next_torso(Entity* self);
+
+/*
+* @brief set the player entity's leg to the next available leg in its def file
+* @param self the player entity
+*/
+void player_next_leg(Entity* self);
+
+/*
+* @brief update the player's max health based on newly equipped/swapped parts
+*/
+void player_do_max_health(Entity* self);
 
 /*
 * @brief updates the players max health based on equipped parts

@@ -18,7 +18,7 @@ typedef enum {
 	Small_Bullet,
 	Energy_Ball,
 	Small_Rocket
-}ProjectileType;
+}ProjectileType; //enums line up with their index in defs
 
 typedef struct Entity_S
 {

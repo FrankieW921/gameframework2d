@@ -9,6 +9,7 @@ static SJson* projectilesDefs = NULL;
 Entity* projectile_new_entity(GFC_Vector2D position, GFC_Vector2D velocity, Uint8 projectileType) {
 	Entity* self;
 	ProjectileData* data;
+	SJson* projectileObject;
 
 	if (!projectileDefFile) {
 		projectileDefFile = sj_load("defs/projectiles.json");
@@ -26,10 +27,18 @@ Entity* projectile_new_entity(GFC_Vector2D position, GFC_Vector2D velocity, Uint
 	self->think = projectile_think;
 	self->update = projectile_update;
 	gfc_vector2d_copy(self->position, position);
-	gfc_vector2d_copy(self->velocity, velocity); //ADJUST VELOCITY BASED ON PROJECTILE TYPE
+	gfc_vector2d_copy(self->velocity, velocity);
 	data = gfc_allocate_array(sizeof(ProjectileData), 1);
 	if (data) {
-		data->timeToLive = 120 * 16; //ADJUST TIME TO LIVE BASED ON PROJECTILE TYPE, i.e. replacing 120 with however many frames you want the proj to live
+		projectileObject = sj_array_get_nth(projectilesDefs, projectileType);
+		data->projectileType = projectileType;
+		slog("Projectile Type: %i", data->projectileType);
+		sj_object_get_int(projectileObject, "speed", &data->speed);
+		slog("Projectile Speed: %i", data->speed);
+		sj_object_get_int(projectileObject, "damage", &data->damage);
+		slog("Projectile Damage: %i", data->damage);
+		sj_object_get_int(projectileObject, "timeToLive", &data->timeToLive);
+		data->timeToLive *= 16;//*16 for frame delay
 	}
 	self->data = data;
 	self->sprite = gf2d_sprite_load_all(
@@ -39,7 +48,6 @@ Entity* projectile_new_entity(GFC_Vector2D position, GFC_Vector2D velocity, Uint
 		1,
 		1
 	);
-
 	return self;
 }
 
@@ -52,10 +60,11 @@ void projectile_think(Entity* self) {
 void projectile_update(Entity* self) {
 	ProjectileData* data;
 	data = self->data;
-	//ADJUST VELOCITY BASED ON PROJECTILE TYPE (entity struct attribute?, entity enum?, switch case?)
-	self->position.x += self->velocity.x * 3;
-	self->position.y += self->velocity.y * 3;
-
-	if (data->timeToLive <= 0) entity_free(self);
+	if (!data) {
+		slog("Data for projectile update does not exist");
+	}
+	self->position.x += self->velocity.x * data->speed;
+	self->position.y += self->velocity.y * data->speed;
+	if (data->timeToLive <= 0) entity_free(self); //free projectile itself first
 }
 

@@ -2,15 +2,18 @@
   "heads": [
     {
       "name": "Model-D",
-      "health": 25
+      "health": 25,
+      "cooldownValue": 60
     },
     {
       "name": "F-eye-nder",
-      "health": 20
+      "health": 20,
+      "cooldownValue": 30
     },
     {
       "name": "GoPro",
-      "health": 30
+      "health": 30,
+      "cooldownValue": 80
     }
   ]
 }
