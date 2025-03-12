@@ -28,6 +28,7 @@ Entity *player_new_entity(GFC_Vector2D position)
 	}
 	
 	//entity general attributes
+	self->type = ET_Player;
 	self->think = player_think;
 	self->update = player_update;
 
@@ -48,8 +49,9 @@ Entity *player_new_entity(GFC_Vector2D position)
 		0,
 		0
 	);
-	gfc_input_init("gfc/sample_config/input.cfg");
+	self->bounds = gfc_rect(self->position.x, self->position.y, 128, 128);
 
+	gfc_input_init("gfc/sample_config/input.cfg");
 	thePlayer = self;
 	return self;
 }
@@ -143,17 +145,39 @@ void player_think(Entity* self) {
 		player_shoot(self->position, self->velocity, self); 
 		data->shootCooldown = data->currentHead->cooldownValue;
 	}
+
+	self->collideEntities = entity_collide_all(self);
 }
 
 void player_update(Entity* self) {
 	PlayerData* data;
+	Entity* collider;
+	ProjectileData* projectileData;
+	int i;
 	data = self->data;
 	if (!data)return;
 
+	
+	if (self->collideEntities) {
+		for (i = 0; i < self->collideEntities->size; i++) {
+			collider = gfc_list_get_nth(self->collideEntities, i);
+			if (collider) {
+				if (collider->type == ET_Enemy) {
+
+				}
+			}
+		}
+	}
+	
 	self->position.x += self->velocity.x * data->currentLeg->speed;
 	self->position.y += self->velocity.y * data->currentLeg->speed;
+	self->bounds.x = self->position.x;
+	self->bounds.y = self->position.y;
+
 	camera_center_on(self->position);
 	camera_bounds_check();
+
+	gfc_list_clear(self->collideEntities);
 }
 
 void player_shoot(GFC_Vector2D position, GFC_Vector2D velocity, Entity* self) {

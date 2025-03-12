@@ -20,6 +20,13 @@
       "speed": 3,
       "damage": 6,
       "timeToLive": 200
+    },
+    {
+      "name": "EnemyBullet1",
+      "imageFileName": "images/testprojectile.png",
+      "speed": 6,
+      "damage": 5,
+      "timeToLive": 500
     }
   ]
 }

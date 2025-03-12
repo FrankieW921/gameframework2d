@@ -1,10 +1,10 @@
 {
   "ExpandedNodes": [
     "",
-    "\\defs",
     "\\include",
+    "\\maps",
     "\\src"
   ],
-  "SelectedNode": "\\src\\projectile.c",
+  "SelectedNode": "\\src\\entity.c",
   "PreviewInSolutionExplorer": false
 }

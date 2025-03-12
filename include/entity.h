@@ -17,7 +17,7 @@ typedef enum {
 typedef enum {
 	Small_Bullet,
 	Energy_Ball,
-	Small_Rocket
+	Small_Rocket,
 }ProjectileType; //enums line up with their index in defs
 
 typedef struct Entity_S
@@ -25,6 +25,7 @@ typedef struct Entity_S
 	Uint8			_inuse; /**mem management flag*/
 	GFC_TextLine	name; //name of entity for debugging
 	EntityType		type; //type of entity (player, pickup, enemy, projectile)
+	Uint8			health;
 	Sprite			*sprite; //sprite for entity
 	float			frame; //aid in drawing
 	GFC_Vector2D	position; //where to draw
@@ -33,6 +34,9 @@ typedef struct Entity_S
 	void			(*think)(struct Entity_S* self); /*pointer to think function*/
 	void			(*update)(struct Entity_S* self); /*pointer to update function*/
 	GFC_Rect		bounds; //collision bounds of the entity, calculate via image or something
+	GFC_Rect		sight;
+	GFC_List*		collideEntities; //list of the entities collided with during the think function
+	GFC_List*		sightCollideEntities;
 	void			*data;
 }Entity;
 
@@ -103,6 +107,10 @@ Uint8 entity_collision_check(Entity* self, Entity* other);
 * @note must free list afterwards
 */
 GFC_List* entity_collide_all(Entity* self);
+
+Uint8 entity_sight_check(Entity* self, Entity* other);
+
+GFC_List* entity_sight_all(Entity* self);
 
 
 #endif
