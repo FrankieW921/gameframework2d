@@ -32,13 +32,12 @@ Entity* projectile_new_entity(GFC_Vector2D position, GFC_Vector2D velocity, Uint
 	if (data) {
 		projectileObject = sj_array_get_nth(projectilesDefs, projectileType);
 		data->projectileType = projectileType;
-		slog("Projectile Type: %i", data->projectileType);
+		//slog("Projectile Type: %i", data->projectileType);
 		sj_object_get_int(projectileObject, "speed", &data->speed);
-		slog("Projectile Speed: %i", data->speed);
+		//slog("Projectile Speed: %i", data->speed);
 		sj_object_get_int(projectileObject, "damage", &data->damage);
-		slog("Projectile Damage: %i", data->damage);
+		//slog("Projectile Damage: %i", data->damage);
 		sj_object_get_int(projectileObject, "timeToLive", &data->timeToLive);
-		data->timeToLive *= 16;//*16 for tick delay
 
 		if (data->projectileType == 0 || data->projectileType == 1 || data->projectileType == 2) {
 			self->type = ET_PlayerProjectile;
@@ -75,6 +74,6 @@ void projectile_update(Entity* self) {
 	self->position.y += self->velocity.y * data->speed;
 	self->bounds.x = self->position.x;
 	self->bounds.y = self->position.y;
-	if (data->timeToLive <= 0) entity_free(self); //free projectile itself first
+	if (data->timeToLive <= 0) entity_free(self);//free projectile itself first
 }
 

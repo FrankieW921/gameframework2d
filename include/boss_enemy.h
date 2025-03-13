@@ -2,10 +2,11 @@
 #define __BOSS_ENEMY_H__
 
 #include "enemy.h"
+#include "enemy2.h"
 
 typedef struct {
-	Uint8 subEnemyCount;
-	GFC_List* enemies;
+	Entity* arm1;
+	Entity* arm2;
 }BossData;
 
 

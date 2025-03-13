@@ -49,7 +49,7 @@ Entity *player_new_entity(GFC_Vector2D position)
 		0,
 		0
 	);
-	self->bounds = gfc_rect(self->position.x, self->position.y, 128, 128);
+	self->bounds = gfc_rect(self->position.x + 14, self->position.y + 14, 100, 100);
 
 	gfc_input_init("gfc/sample_config/input.cfg");
 	thePlayer = self;

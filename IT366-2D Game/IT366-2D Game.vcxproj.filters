@@ -144,6 +144,9 @@
     <ClCompile Include="..\src\enemy4.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\enemy5.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\gf2d_draw.h">
@@ -279,6 +282,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\include\enemy4.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\enemy5.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

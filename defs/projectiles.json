@@ -26,7 +26,7 @@
       "imageFileName": "images/testprojectile.png",
       "speed": 6,
       "damage": 5,
-      "timeToLive": 1200
+      "timeToLive": 1000
     }
   ]
 }

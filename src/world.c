@@ -9,6 +9,8 @@
 #include "enemy2.h"
 #include "enemy3.h"
 #include "enemy4.h"
+#include "enemy5.h"
+#include "boss_enemy.h"
 
 static World* world = NULL;
 //void world_tile_layer_build(world);
@@ -204,17 +206,17 @@ World* world_load(const char* filename) {
 		//spawn enemy based on types
 		switch (enemyType) {
 			case 1:
-				gfc_list_append(&world->entityList, enemy_new_entity(gfc_vector2d(enemyPosX, enemyPosY)));
-				break;
+				gfc_list_append(&world->entityList, enemy_new_entity(gfc_vector2d(enemyPosX, enemyPosY))); break;
 			case 2:
-				gfc_list_append(&world->entityList, enemy2_new_entity(gfc_vector2d(enemyPosX, enemyPosY)));
-				break;
+				gfc_list_append(&world->entityList, enemy2_new_entity(gfc_vector2d(enemyPosX, enemyPosY))); break;
 			case 3:
-				gfc_list_append(&world->entityList, enemy3_new_entity(gfc_vector2d(enemyPosX, enemyPosY)));
-				break;
+				gfc_list_append(&world->entityList, enemy3_new_entity(gfc_vector2d(enemyPosX, enemyPosY))); break;
 			case 4: 
-				gfc_list_append(&world->entityList, enemy4_new_entity(gfc_vector2d(enemyPosX, enemyPosY)));
-				break;
+				gfc_list_append(&world->entityList, enemy4_new_entity(gfc_vector2d(enemyPosX, enemyPosY))); break;
+			case 5:
+				gfc_list_append(&world->entityList, enemy5_new_entity(gfc_vector2d(enemyPosX, enemyPosY))); break;
+			case 6:
+				gfc_list_append(&world->entityList, boss_new_entity(gfc_vector2d(enemyPosX, enemyPosY))); break;
 		}
 	}
 

@@ -173,6 +173,7 @@
     <ClCompile Include="..\src\enemy2.c" />
     <ClCompile Include="..\src\enemy3.c" />
     <ClCompile Include="..\src\enemy4.c" />
+    <ClCompile Include="..\src\enemy5.c" />
     <ClCompile Include="..\src\entity.c" />
     <ClCompile Include="..\src\game.c" />
     <ClCompile Include="..\src\gf2d_draw.c" />
@@ -220,6 +221,7 @@
     <ClInclude Include="..\include\enemy2.h" />
     <ClInclude Include="..\include\enemy3.h" />
     <ClInclude Include="..\include\enemy4.h" />
+    <ClInclude Include="..\include\enemy5.h" />
     <ClInclude Include="..\include\entity.h" />
     <ClInclude Include="..\include\gf2d_draw.h" />
     <ClInclude Include="..\include\gf2d_graphics.h" />
