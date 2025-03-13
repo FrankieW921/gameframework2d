@@ -12,6 +12,7 @@
 #include "enemy.h"
 #include "world.h"
 #include "camera.h"
+#include "hud.h"
 
 
 int main(int argc, char * argv[])
@@ -21,6 +22,7 @@ int main(int argc, char * argv[])
     const Uint8 * keys;
     Sprite* sprite;
     Entity *player;
+    Hud* theHud;
     //Entity* enemy;
 
     //World *testWorld;
@@ -59,6 +61,7 @@ int main(int argc, char * argv[])
     world_setup_camera();
     
     player = player_new_entity(gfc_vector2d(80, 80)); 
+    theHud = new_hud(player);
     //enemy = enemy_new_entity(gfc_vector2d(200, 200));
 
     /*main game loop*/
@@ -95,6 +98,7 @@ int main(int argc, char * argv[])
                 NULL,
                 &mouseGFC_Color,
                 (int)mousef);
+            draw_hud(theHud);
 
         gf2d_graphics_next_frame();// render current draw frame and skip to the next frame
 

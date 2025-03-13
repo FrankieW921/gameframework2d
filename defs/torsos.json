@@ -3,17 +3,17 @@
     {
       "name": "Moderate",
       "health": 50,
-      "boundsAdjustment": 1.0
+      "iTime": 90
     },
     {
       "name": "Hulking",
-      "health": 80,
-      "boundsAdjustment": 1.3
+      "health": 70,
+      "iTime": 60
     },
     {
       "name": "Scrawny",
       "health": 30,
-      "boundAdjustment": 0.7
+      "iTime":  120
     }
   ]
 }

@@ -62,6 +62,7 @@ void player_data_new(PlayerData* data) {
 	data->currentHealth = 100; //this is what the default parts add up to
 	data->shootCooldown = 0;
 	data->partSwitchCooldown = 0;
+	data->iTime = 0;
 	data->headIndex = 0;
 	data->armIndex = 0;
 	data->torsoIndex = 0;
@@ -102,6 +103,7 @@ void player_think(Entity* self) {
 	//cooldowns
 	if (data->shootCooldown > 0)data->shootCooldown -= 1;
 	if (data->partSwitchCooldown > 0)data->partSwitchCooldown -= 1;
+	if (data->iTime > 0)data->iTime -= 1;
 	//input
 	GFC_Vector2D movement = { 0 };
 	self->velocity.x = 0;
@@ -157,13 +159,14 @@ void player_update(Entity* self) {
 	data = self->data;
 	if (!data)return;
 
-	
 	if (self->collideEntities) {
 		for (i = 0; i < self->collideEntities->size; i++) {
 			collider = gfc_list_get_nth(self->collideEntities, i);
 			if (collider) {
-				if (collider->type == ET_Enemy) {
-
+				if (collider->type == ET_Enemy && data->iTime <=0) {
+					data->currentHealth -= 10;
+					data->iTime = data->currentTorso->iTime;
+					slog("Player iTime Activated: %i", data->iTime);
 				}
 			}
 		}
@@ -227,9 +230,11 @@ void player_set_torso(Torso* currentTorso, SJson* selectedTorso) {
 	}
 	currentTorso->name = sj_object_get_value_as_string(selectedTorso, "name");
 	sj_object_get_value_as_int(selectedTorso, "health", &currentTorso->health);
+	sj_object_get_value_as_int(selectedTorso, "iTime", &currentTorso->iTime);
 	slog("Torso switched");
 	slog("Torso: %s", currentTorso->name);
 	slog("Torso Health: %i", currentTorso->health);
+	slog("Torso Invincibility Time: %i", currentTorso->iTime);
 }
 
 void player_set_leg(Leg* currentLeg, SJson* selectedLeg) {

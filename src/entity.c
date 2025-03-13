@@ -1,8 +1,4 @@
 #include "simple_logger.h"
-#include "gfc_types.h"
-#include "gfc_shape.h"
-#include "gfc_vector.h""
-#include "gf2d_draw.h"
 
 #include "entity.h"
 #include "camera.h"

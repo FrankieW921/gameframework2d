@@ -15,9 +15,9 @@ Entity* enemy_new_entity(GFC_Vector2D position)
 	self->think = enemy_think;
 	self->update = enemy_update;
 	gfc_vector2d_copy(self->position, position);
-	self->sprite = gf2d_sprite_load_image("images/smtDemonIcon.png");
-	self->bounds = gfc_rect(position.x, position.y, 139, 136);
-	self->sight = gfc_rect(position.x - 139 / 2, position.y - 136 / 2, 139*2, 136*2);
+	self->sprite = gf2d_sprite_load_image("images/enemies/enemy1.png");
+	self->bounds = gfc_rect(position.x, position.y, 100, 100);
+	self->sight = gfc_rect(position.x - 50, position.y - 50, 100*2, 100*2);
 	self->type = ET_Enemy;
 	self->health = 3;
 	return self;
@@ -26,8 +26,8 @@ Entity* enemy_new_entity(GFC_Vector2D position)
 void enemy_think(Entity* self) {
 	if (!self)return;
 
-	//self->collideEntities = entity_collide_all(self);
-	//self->sightCollideEntities = entity_sight_all(self);
+	self->collideEntities = entity_collide_all(self);
+	self->sightCollideEntities = entity_sight_all(self);
 }
 
 void enemy_update(Entity* self) {
@@ -35,16 +35,16 @@ void enemy_update(Entity* self) {
 	Entity *collider;
 	ProjectileData *projData;
 	GFC_Vector2D movementVelocity;
-	self->position.x += self->velocity.x * .05;
-	self->position.y += self->velocity.y * .05;
+	self->position.x += self->velocity.x * .50;
+	self->position.y += self->velocity.y * .50;
 	self->bounds.x = self->position.x;
 	self->bounds.y = self->position.y;
-	self->sight.x = self->bounds.x - 139 / 2;
-	self->sight.y = self->bounds.y - 136 / 2;
+	self->sight.x = self->bounds.x - 100 / 2;
+	self->sight.y = self->bounds.y - 100 / 2;
 
 	self->velocity.x = 0;
 	self->velocity.y = 0;
-	/*
+	
 	if (self->collideEntities) {
 		for (i = 0; i < self->collideEntities->size; i++) {
 			collider = gfc_list_get_nth(self->collideEntities, i);
@@ -72,7 +72,7 @@ void enemy_update(Entity* self) {
 			}
 		}
 	}
-	*/
+
 
 	gfc_list_clear(self->collideEntities);
 	gfc_list_clear(self->sightCollideEntities);

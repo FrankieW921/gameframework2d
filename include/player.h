@@ -18,6 +18,7 @@ typedef struct {
 typedef struct {
 	const char*			name;
 	Uint8			health;
+	Uint8			iTime;
 }Torso;
 
 typedef struct {
@@ -31,6 +32,7 @@ typedef struct { //mfw i want to make a mecha game
 	Uint8			currentHealth;
 	Uint8			shootCooldown; //millisecond countdown/cooldown for player firing
 	Uint8			partSwitchCooldown;
+	Uint8			iTime;
 
 	Uint8			headIndex;
 	Uint8			armIndex;
