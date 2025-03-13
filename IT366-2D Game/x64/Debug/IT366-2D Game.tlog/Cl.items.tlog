@@ -29,6 +29,9 @@ C:\Users\chief\Github\gameframework2d\gfc\src\miniz.c;C:\Users\chief\Github\game
 C:\Users\chief\Github\gameframework2d\src\boss_enemy.c;C:\Users\chief\Github\gameframework2d\IT366-2D Game\x64\Debug\boss_enemy.obj
 C:\Users\chief\Github\gameframework2d\src\camera.c;C:\Users\chief\Github\gameframework2d\IT366-2D Game\x64\Debug\camera.obj
 C:\Users\chief\Github\gameframework2d\src\enemy.c;C:\Users\chief\Github\gameframework2d\IT366-2D Game\x64\Debug\enemy.obj
+C:\Users\chief\Github\gameframework2d\src\enemy2.c;C:\Users\chief\Github\gameframework2d\IT366-2D Game\x64\Debug\enemy2.obj
+C:\Users\chief\Github\gameframework2d\src\enemy3.c;C:\Users\chief\Github\gameframework2d\IT366-2D Game\x64\Debug\enemy3.obj
+C:\Users\chief\Github\gameframework2d\src\enemy4.c;C:\Users\chief\Github\gameframework2d\IT366-2D Game\x64\Debug\enemy4.obj
 C:\Users\chief\Github\gameframework2d\src\entity.c;C:\Users\chief\Github\gameframework2d\IT366-2D Game\x64\Debug\entity.obj
 C:\Users\chief\Github\gameframework2d\src\game.c;C:\Users\chief\Github\gameframework2d\IT366-2D Game\x64\Debug\game.obj
 C:\Users\chief\Github\gameframework2d\src\gf2d_draw.c;C:\Users\chief\Github\gameframework2d\IT366-2D Game\x64\Debug\gf2d_draw.obj

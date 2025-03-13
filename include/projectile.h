@@ -8,7 +8,7 @@ typedef struct {
 	Uint8			projectileType;
 	Uint8			speed;
 	Uint8			damage;
-	Uint8			timeToLive; //time to live for projectiles specifically
+	Uint16			timeToLive; //time to live for projectiles specifically
 }ProjectileData;
 
 /**

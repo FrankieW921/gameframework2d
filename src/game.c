@@ -52,7 +52,7 @@ int main(int argc, char * argv[])
     
     /*demo setup*/
     sprite = gf2d_sprite_load_image("images/backgrounds/SMTtokyo.png");
-    mouse = gf2d_sprite_load_all("images/smtDemonIcon.png",-1,-1,1,0);
+    mouse = gf2d_sprite_load_all("images/enemies/smtDemonIcon.png",-1,-1,1,0);
     //mouse = gf2d_sprite_load_image("images/smtDemonIcon.png");
     slog("press [escape] to quit");
     //testWorld = world_test_new();

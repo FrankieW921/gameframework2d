@@ -25,12 +25,13 @@ typedef struct Entity_S
 	Uint8			_inuse; /**mem management flag*/
 	GFC_TextLine	name; //name of entity for debugging
 	EntityType		type; //type of entity (player, pickup, enemy, projectile)
-	Uint8			health;
+	Sint8			health;
 	Sprite			*sprite; //sprite for entity
 	float			frame; //aid in drawing
 	GFC_Vector2D	position; //where to draw
 	GFC_Vector2D	velocity; //how to move
 	GFC_Vector2D	acceleration;
+	Uint8			attackCooldown;
 	void			(*think)(struct Entity_S* self); /*pointer to think function*/
 	void			(*update)(struct Entity_S* self); /*pointer to update function*/
 	GFC_Rect		bounds; //collision bounds of the entity, calculate via image or something

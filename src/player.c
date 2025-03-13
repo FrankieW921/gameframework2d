@@ -168,6 +168,13 @@ void player_update(Entity* self) {
 					data->iTime = data->currentTorso->iTime;
 					slog("Player iTime Activated: %i", data->iTime);
 				}
+				if (collider->type == ET_EnemyProjectile && data->iTime <= 0) {
+					projectileData = collider->data;
+					data->iTime = data->currentTorso->iTime;
+					data->currentHealth -= projectileData->damage;
+					slog("Player iTime Activated: %i", data->iTime);
+					entity_free(collider);
+				}
 			}
 		}
 	}

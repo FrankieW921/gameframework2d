@@ -29,7 +29,7 @@ typedef struct {
 
 typedef struct { //mfw i want to make a mecha game
 	Uint8			maxHealth;
-	Uint8			currentHealth;
+	Sint8			currentHealth;
 	Uint8			shootCooldown; //millisecond countdown/cooldown for player firing
 	Uint8			partSwitchCooldown;
 	Uint8			iTime;

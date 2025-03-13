@@ -170,6 +170,9 @@
     <ClCompile Include="..\src\boss_enemy.c" />
     <ClCompile Include="..\src\camera.c" />
     <ClCompile Include="..\src\enemy.c" />
+    <ClCompile Include="..\src\enemy2.c" />
+    <ClCompile Include="..\src\enemy3.c" />
+    <ClCompile Include="..\src\enemy4.c" />
     <ClCompile Include="..\src\entity.c" />
     <ClCompile Include="..\src\game.c" />
     <ClCompile Include="..\src\gf2d_draw.c" />
@@ -214,6 +217,9 @@
     <ClInclude Include="..\include\boss_enemy.h" />
     <ClInclude Include="..\include\camera.h" />
     <ClInclude Include="..\include\enemy.h" />
+    <ClInclude Include="..\include\enemy2.h" />
+    <ClInclude Include="..\include\enemy3.h" />
+    <ClInclude Include="..\include\enemy4.h" />
     <ClInclude Include="..\include\entity.h" />
     <ClInclude Include="..\include\gf2d_draw.h" />
     <ClInclude Include="..\include\gf2d_graphics.h" />

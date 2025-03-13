@@ -39,17 +39,23 @@ Entity* projectile_new_entity(GFC_Vector2D position, GFC_Vector2D velocity, Uint
 		slog("Projectile Damage: %i", data->damage);
 		sj_object_get_int(projectileObject, "timeToLive", &data->timeToLive);
 		data->timeToLive *= 16;//*16 for tick delay
+
+		if (data->projectileType == 0 || data->projectileType == 1 || data->projectileType == 2) {
+			self->type = ET_PlayerProjectile;
+		}
+		else {
+			self->type = ET_EnemyProjectile;
+		}
 	}
 	self->data = data;
 	self->sprite = gf2d_sprite_load_all(
-		"images/testprojectile.png",
+		"images/projectiles/testprojectile.png",
 		16,
 		16,
 		1,
 		1
 	);
 	self->bounds = gfc_rect(position.x, position.y, 16, 16);
-	self->type = ET_PlayerProjectile;
 	return self;
 }
 

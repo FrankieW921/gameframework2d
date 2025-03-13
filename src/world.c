@@ -6,6 +6,9 @@
 #include "world.h"
 #include "camera.h"
 #include "enemy.h"
+#include "enemy2.h"
+#include "enemy3.h"
+#include "enemy4.h"
 
 static World* world = NULL;
 //void world_tile_layer_build(world);
@@ -185,6 +188,7 @@ World* world_load(const char* filename) {
 	);
 	world_tile_layer_build(world);
 
+	//spawn enemies
 	enemies = sj_object_get_value(wjson, "enemies");
 	numEnemies = sj_array_get_count(enemies);
 
@@ -197,7 +201,21 @@ World* world_load(const char* filename) {
 		sj_get_float_value(item, &enemyPosX);
 		item = sj_array_get_nth(enemy, 2); //getting y position
 		sj_get_float_value(item, &enemyPosY);
-		gfc_list_append(&world->entityList, enemy_new_entity(gfc_vector2d(enemyPosX, enemyPosY)));
+		//spawn enemy based on types
+		switch (enemyType) {
+			case 1:
+				gfc_list_append(&world->entityList, enemy_new_entity(gfc_vector2d(enemyPosX, enemyPosY)));
+				break;
+			case 2:
+				gfc_list_append(&world->entityList, enemy2_new_entity(gfc_vector2d(enemyPosX, enemyPosY)));
+				break;
+			case 3:
+				gfc_list_append(&world->entityList, enemy3_new_entity(gfc_vector2d(enemyPosX, enemyPosY)));
+				break;
+			case 4: 
+				gfc_list_append(&world->entityList, enemy4_new_entity(gfc_vector2d(enemyPosX, enemyPosY)));
+				break;
+		}
 	}
 
 	sj_free(json);
