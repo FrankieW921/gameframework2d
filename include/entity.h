@@ -12,6 +12,11 @@ typedef enum {
 	ET_Enemy,
 	ET_PlayerProjectile,
 	ET_EnemyProjectile,
+	Healing_Field,
+	Speed_Gel,
+	Part_Changer,
+	Star_Power,
+	Teleporter,
 }EntityType;
 
 typedef enum {

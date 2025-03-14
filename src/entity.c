@@ -87,7 +87,7 @@ Entity* entity_new()
 		if (entity_system.entity_list[i]._inuse)continue;
 		memset(&entity_system.entity_list[i], 0, sizeof(Entity));
 		entity_system.entity_list[i]._inuse = 1;
-		slog("entity initialized");
+		//slog("entity initialized");
 		return &entity_system.entity_list[i];
 	}
 	return NULL;
@@ -104,7 +104,7 @@ void entity_free(Entity* self)
 
 	self->_inuse = 0;
 	memset(self, 0, sizeof(self));
-	slog("Entity freed");
+	//slog("Entity freed");
 }
 
 void entity_system_free_all()

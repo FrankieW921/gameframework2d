@@ -4,6 +4,7 @@
 #include "player.h"
 #include "camera.h"
 #include "projectile.h"
+#include "interactables.h"
 
 static Entity* thePlayer = NULL;
 
@@ -63,6 +64,7 @@ void player_data_new(PlayerData* data) {
 	data->shootCooldown = 0;
 	data->partSwitchCooldown = 0;
 	data->iTime = 0;
+	data->canChangeParts = 0;
 	data->headIndex = 0;
 	data->armIndex = 0;
 	data->torsoIndex = 0;
@@ -121,25 +123,48 @@ void player_think(Entity* self) {
 	if (gfc_input_command_down("moveLeft")) {
 		self->velocity.x -= 1;
 	}
-	if (gfc_input_command_down("nextHead") && data->partSwitchCooldown == 0) {
+	if (gfc_input_command_down("nextHead") && data->partSwitchCooldown == 0 && data->canChangeParts) {
 		data->partSwitchCooldown = 70;
 		player_next_head(self);
 		player_do_max_health(self);
 	}
-	if (gfc_input_command_down("nextArm") && data->partSwitchCooldown == 0) {
+	if (gfc_input_command_down("nextArm") && data->partSwitchCooldown == 0 && data->canChangeParts) {
 		data->partSwitchCooldown = 70;
 		player_next_arm(self);
 	}
-	if (gfc_input_command_down("nextTorso") && data->partSwitchCooldown == 0) {
+	if (gfc_input_command_down("nextTorso") && data->partSwitchCooldown == 0 && data->canChangeParts) {
 		data->partSwitchCooldown = 70;
 		player_next_torso(self);
 		player_do_max_health(self);
 	}
-	if (gfc_input_command_down("nextLeg") && data->partSwitchCooldown == 0) {
+	if (gfc_input_command_down("nextLeg") && data->partSwitchCooldown == 0 && data->canChangeParts) {
 		data->partSwitchCooldown = 70;
 		player_next_leg(self);
 		player_do_max_health(self);
 	}
+	/*
+	if (gfc_input_command_down("spawnHeal") && data->partSwitchCooldown == 0) {
+		slog("PRESSING HEAL");
+		data->partSwitchCooldown = 70;
+		spawn_interactable_command(self, Healing_Field);
+	}
+	if (gfc_input_command_down("spawnSpeed") && data->partSwitchCooldown == 0) {
+		data->partSwitchCooldown = 70;
+		spawn_interactable_command(self, Speed_Gel);
+	}
+	if (gfc_input_command_down("spawnChanger") && data->partSwitchCooldown == 0) {
+		data->partSwitchCooldown = 70;
+		spawn_interactable_command(self, Part_Changer);
+	}
+	if (gfc_input_command_down("spawnStar") && data->partSwitchCooldown == 0) {
+		data->partSwitchCooldown = 70;
+		spawn_interactable_command(self, Star_Power);
+	}
+	if (gfc_input_command_down("spawnTeleport") && data->partSwitchCooldown == 0) {
+		data->partSwitchCooldown = 70;
+		spawn_interactable_command(self, Teleporter);
+	}
+	*/
 
 	gfc_vector2d_normalize(&self->velocity);
 	mouseState = SDL_GetRelativeMouseState(NULL, NULL);
@@ -164,19 +189,42 @@ void player_update(Entity* self) {
 			collider = gfc_list_get_nth(self->collideEntities, i);
 			if (collider) {
 				if (collider->type == ET_Enemy && data->iTime <=0) {
-					data->currentHealth -= 10;
+					data->currentHealth -= 10; //implement contact damage?
 					data->iTime = data->currentTorso->iTime;
 					slog("Player iTime Activated: %i", data->iTime);
 				}
-				if (collider->type == ET_EnemyProjectile && data->iTime <= 0) {
+				else if (collider->type == ET_EnemyProjectile && data->iTime <= 0) {
 					projectileData = collider->data;
 					data->iTime = data->currentTorso->iTime;
 					data->currentHealth -= projectileData->damage;
 					slog("Player iTime Activated: %i", data->iTime);
 					entity_free(collider);
 				}
+				else if (collider->type == Healing_Field) {
+					if (data->currentHealth < data->maxHealth) {
+						data->currentHealth += 1;
+					}
+				}
+				else if (collider->type == Speed_Gel) {
+					self->velocity.x *= 3;
+					self->velocity.y *= 3;
+				}
+				else if (collider->type == Part_Changer) {
+					data->canChangeParts = true;
+				}
+				else if (collider->type == Star_Power) {
+					entity_free(collider);
+					data->iTime = 1000;
+				}
+				else if (collider->type == Teleporter) {
+					self->position.x -= 240;
+					self->position.y -= 400;
+				}
 			}
 		}
+	}
+	else {
+		data->canChangeParts = false; //probably a better way to do this, but since when you are changing parts there shouldnt be enemies around, its okay (gulp)
 	}
 	
 	self->position.x += self->velocity.x * data->currentLeg->speed;
@@ -343,4 +391,9 @@ void player_output_current_head(Entity* self) {
 	else {
 		slog("Self->Data doesn't exist");
 	}
+}
+
+void spawn_interactable_command(Entity* self, Uint8 type) {
+	slog("SPAWN COMMAND STARTED");
+	interactable_new(self->position, type);
 }

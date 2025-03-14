@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\entities">
+      <UniqueIdentifier>{12a96072-2908-44e0-ab57-de81cd88d50f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entities">
+      <UniqueIdentifier>{8dca967d-c541-4d77-a8e4-f3670090c712}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\game.c">
@@ -117,9 +123,6 @@
     <ClCompile Include="..\src\player.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\enemy.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\world.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -129,23 +132,29 @@
     <ClCompile Include="..\src\camera.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\boss_enemy.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\hud.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\boss_enemy.c">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\enemy.c">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
     <ClCompile Include="..\src\enemy2.c">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\entities</Filter>
     </ClCompile>
     <ClCompile Include="..\src\enemy3.c">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\entities</Filter>
     </ClCompile>
     <ClCompile Include="..\src\enemy4.c">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\entities</Filter>
     </ClCompile>
     <ClCompile Include="..\src\enemy5.c">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\interactables.c">
+      <Filter>Source Files\entities</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -254,13 +263,7 @@
     <ClInclude Include="..\include\player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="world.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="tileset.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\enemy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\include\projectile.h">
@@ -269,22 +272,31 @@
     <ClInclude Include="..\include\camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\boss_enemy.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\hud.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\boss_enemy.h">
+      <Filter>Header Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\enemy.h">
+      <Filter>Header Files\entities</Filter>
+    </ClInclude>
     <ClInclude Include="..\include\enemy2.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\entities</Filter>
     </ClInclude>
     <ClInclude Include="..\include\enemy3.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\entities</Filter>
     </ClInclude>
     <ClInclude Include="..\include\enemy4.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\entities</Filter>
     </ClInclude>
     <ClInclude Include="..\include\enemy5.h">
+      <Filter>Header Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\interactables.h">
+      <Filter>Header Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\world.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

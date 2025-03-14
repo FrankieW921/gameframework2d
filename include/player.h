@@ -28,11 +28,12 @@ typedef struct {
 }Leg;
 
 typedef struct { //mfw i want to make a mecha game
-	Uint8			maxHealth;
-	Sint8			currentHealth;
+	Sint32			maxHealth;
+	Sint32			currentHealth;
 	Uint8			shootCooldown; //millisecond countdown/cooldown for player firing
 	Uint8			partSwitchCooldown;
-	Uint8			iTime;
+	Uint32			iTime;
+	Bool			canChangeParts;
 
 	Uint8			headIndex;
 	Uint8			armIndex;

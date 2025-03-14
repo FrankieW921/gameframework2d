@@ -11,6 +11,7 @@
 #include "enemy4.h"
 #include "enemy5.h"
 #include "boss_enemy.h"
+#include "interactables.h"
 
 static World* world = NULL;
 //void world_tile_layer_build(world);
@@ -123,8 +124,10 @@ World* world_load(const char* filename) {
 	int frames_per_line;
 	SJson* enemies;
 	SJson* enemy;
-	int numEnemies, enemyType;
-	float enemyPosX, enemyPosY;
+	SJson* interactables;
+	SJson* interactable;
+	int numEnemies, enemyType, numInteractables, interactableType;
+	float enemyPosX, enemyPosY, interactablePosX, interactablePosY;
 
 	if (!filename) {
 		slog("No file name given for world");
@@ -218,6 +221,21 @@ World* world_load(const char* filename) {
 			case 6:
 				gfc_list_append(&world->entityList, boss_new_entity(gfc_vector2d(enemyPosX, enemyPosY))); break;
 		}
+	}
+
+	//spawn interactables
+	interactables = sj_object_get_value(wjson, "interactables");
+	numInteractables = sj_array_get_count(interactables);
+	for (i = 0; i < numInteractables; i++) {
+		interactable = sj_array_get_nth(interactables, i);
+		if (!interactable)continue;
+		item = sj_array_get_nth(interactable, 0); //getting enemy type
+		sj_get_integer_value(item, &interactableType);
+		item = sj_array_get_nth(interactable, 1); //getting x position
+		sj_get_float_value(item, &interactablePosX);
+		item = sj_array_get_nth(interactable, 2); //getting y position
+		sj_get_float_value(item, &interactablePosY);
+		interactable_new(gfc_vector2d(interactablePosX, interactablePosY), interactableType);
 	}
 
 	sj_free(json);
