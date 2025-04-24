@@ -47,6 +47,7 @@ int main(int argc, char * argv[])
         0);
     gf2d_graphics_set_frame_delay(16);
     gf2d_sprite_init(1024);
+    gfc_input_init("gfc/sample_config/input.cfg");
     SDL_ShowCursor(SDL_DISABLE);
     camera_set_size(gfc_vector2d(1280, 720));
     
@@ -67,7 +68,7 @@ int main(int argc, char * argv[])
     /*main game loop*/
     while(!done)
     {
-        SDL_PumpEvents();   // update SDL's internal event structures
+        gfc_input_update();
         keys = SDL_GetKeyboardState(NULL); // get the keyboard state for this frame
         /*update things here*/
         SDL_GetMouseState(&mx,&my);

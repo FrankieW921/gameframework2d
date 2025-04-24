@@ -77,6 +77,12 @@ void entity_think(Entity *self);
 */
 void entity_update(Entity* self);
 
+/*
+* @brief move the entity including doing movement collision
+* @param self the entity to move
+*/
+void entity_move(Entity* self);
+
 /**
 * @brief call the update function on all entities that have a pointer to one
 */
@@ -114,8 +120,20 @@ Uint8 entity_collision_check(Entity* self, Entity* other);
 */
 GFC_List* entity_collide_all(Entity* self);
 
+/*
+* @brief check if entities are colliding with the vision bounds
+* @param self the entity colliding
+* @param other the entity get acted upon
+* @return 0 if no collision, 1 if collision
+*/
 Uint8 entity_sight_check(Entity* self, Entity* other);
 
+/*
+* @brief makes a list of all the vision collisions currently acting on an entity
+* @param self the entity to check collisions for
+* @return NULL if no collisions, list of collisions otherwise
+* @note must free list afterwards
+*/
 GFC_List* entity_sight_all(Entity* self);
 
 

@@ -108,6 +108,11 @@ void world_tile_layer_build(World* world) {
 	slog("Tile layer built and set");
 }
 
+int get_world_tile_at(World* world, GFC_Vector2I position) {
+	int tile = world->tileMap[position.x + (position.y * (int)world->tileMapSize.x)];
+	return tile;
+}
+
 World* world_load(const char* filename) {
 	//World* world = NULL;
 	SJson* json = NULL;
@@ -303,6 +308,32 @@ void world_setup_camera()
 	camera_bounds_check();
 }
 
-int world_test_shape(World* world, GFC_Shape shape) { //test if the shape is colliding with tiles and sto stop movement depending on how
+int world_collide(World* world, GFC_Shape entity_bounds) { //test if the shape is colliding with tiles
+	GFC_Rect tileRect = { 0,0,64,64 };
+	GFC_Shape testShape;
+	int tileIndex;
+	int i, j;
 
+	if ((!world) || (!world->tileSet))return 0;
+	tileRect.w = world->tileSet->frame_w;
+	tileRect.h = world->tileSet->frame_h;
+
+	for(j = 0; j < world->tileMapSize.y; j++){
+		for (i = 0; i < world->tileMapSize.x; i++) {
+			tileRect.x = i * tileRect.w;
+			tileRect.y = j * tileRect.h;
+
+			tileIndex = get_world_tile_at(world, gfc_vector2i(i, j));
+			if (!tileIndex)continue;
+			if (tileIndex == 0) return 0; //air
+			
+			//gf2d_draw_rect(tileRect, GFC_COLOR_BLUE);
+			testShape = gfc_shape_from_rect(tileRect);
+			if (gfc_shape_overlap(testShape, entity_bounds)) {
+				slog("Colliding with world, tile %i, %i", i, j);
+				return 1;
+			}	
+		}
+	}
+	return 0;
 }

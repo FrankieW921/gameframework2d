@@ -6,6 +6,7 @@
 #include "gfc_text.h"
 #include "gfc_vector.h"
 #include "gfc_list.h"
+#include "gfc_shape.h"
 
 #include "gf2d_sprite.h"
 
@@ -78,5 +79,13 @@ void world_draw(World* world);
 * @brief set bounds for global camera based on the world and its size
 */
 void world_setup_camera();
+
+/**
+* @brief collision for the world with an entity's bounds
+* @param world the world to bound check
+* @param entity_bounds the rect bounds of an entity
+* @return an int 1 for collision, 
+*/
+int world_collide(World* world, GFC_Shape entity_bounds);
 #endif
 

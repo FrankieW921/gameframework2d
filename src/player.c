@@ -52,7 +52,7 @@ Entity *player_new_entity(GFC_Vector2D position)
 	);
 	self->bounds = gfc_rect(self->position.x + 14, self->position.y + 14, 100, 100);
 
-	gfc_input_init("gfc/sample_config/input.cfg");
+	//gfc_input_init("gfc/sample_config/input.cfg");
 	thePlayer = self;
 	return self;
 }
@@ -110,7 +110,7 @@ void player_think(Entity* self) {
 	GFC_Vector2D movement = { 0 };
 	self->velocity.x = 0;
 	self->velocity.y = 0;
-	gfc_input_update();
+	//gfc_input_update();
 	if (gfc_input_command_down("moveUp")) {
 		self->velocity.y -= 1;
 	}
@@ -184,6 +184,9 @@ void player_update(Entity* self) {
 	data = self->data;
 	if (!data)return;
 
+	self->velocity.x *= data->currentLeg->speed;
+	self->velocity.y *= data->currentLeg->speed;
+
 	if (self->collideEntities) {
 		for (i = 0; i < self->collideEntities->size; i++) {
 			collider = gfc_list_get_nth(self->collideEntities, i);
@@ -227,8 +230,8 @@ void player_update(Entity* self) {
 		data->canChangeParts = false; //probably a better way to do this, but since when you are changing parts there shouldnt be enemies around, its okay (gulp)
 	}
 	
-	self->position.x += self->velocity.x * data->currentLeg->speed;
-	self->position.y += self->velocity.y * data->currentLeg->speed;
+	entity_move(self);
+
 	self->bounds.x = self->position.x;
 	self->bounds.y = self->position.y;
 

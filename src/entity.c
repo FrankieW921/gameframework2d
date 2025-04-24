@@ -3,7 +3,7 @@
 #include "entity.h"
 #include "camera.h"
 #include "player.h"
-
+#include "world.h"
 
 typedef struct
 {
@@ -68,6 +68,27 @@ void entity_update(Entity* self)
 	if (!self)return;
 	if (self->update)self->update(self);
 	
+}
+
+void entity_move(Entity* self) {
+	GFC_Shape bounds; //just use the player rect bounds if you can
+	GFC_Vector2D position;
+	if (!self)return;
+
+	gfc_vector2d_add(position, self->position, self->velocity);
+	gfc_vector2d_add(self->velocity, self->velocity, self->acceleration);
+
+	bounds = gfc_shape_from_rect(self->bounds);
+	gfc_shape_move(&bounds, self->velocity);
+	if (self->type == ET_Player || self->type == ET_Enemy) { //enemy and player collide with world rn
+		if (!world_collide(get_current_world(), bounds)) {
+			gfc_vector2d_copy(self->position, position);
+		}
+		else {
+			//gfc_vector2d_copy(self->position, position);
+		}
+	}
+	else gfc_vector2d_copy(self->position, position);
 }
 
 void entity_system_update_all()
