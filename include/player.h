@@ -8,23 +8,27 @@ typedef struct {
 	const char*			name;
 	Uint8			health;
 	Uint8			cooldownValue; //shootCooldown gets set to this value, this value changes with the selected head
+	Sprite*			headSprite;
 }Head;
 
 typedef struct {
 	const char*			name;
 	ProjectileType	projectileType;
+	Sprite*		armSprite;
 }Arm;
 
 typedef struct {
 	const char*			name;
 	Uint8			health;
 	Uint8			iTime;
+	Sprite*		torsoSprite;
 }Torso;
 
 typedef struct {
 	const char*			name;
 	Uint8			health;
 	float			speed;
+	Sprite*		legSprite;
 }Leg;
 
 typedef struct { //mfw i want to make a mecha game

@@ -17,6 +17,7 @@ typedef enum {
 	Part_Changer,
 	Star_Power,
 	Teleporter,
+	Door,
 }EntityType;
 
 typedef enum {

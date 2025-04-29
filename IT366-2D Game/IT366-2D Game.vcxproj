@@ -169,6 +169,7 @@
     <ClCompile Include="..\gfc\src\miniz.c" />
     <ClCompile Include="..\src\boss_enemy.c" />
     <ClCompile Include="..\src\camera.c" />
+    <ClCompile Include="..\src\door.c" />
     <ClCompile Include="..\src\enemy.c" />
     <ClCompile Include="..\src\enemy2.c" />
     <ClCompile Include="..\src\enemy3.c" />
@@ -218,6 +219,7 @@
     <ClInclude Include="..\gfc\simple_logger\include\simple_logger.h" />
     <ClInclude Include="..\include\boss_enemy.h" />
     <ClInclude Include="..\include\camera.h" />
+    <ClInclude Include="..\include\door.h" />
     <ClInclude Include="..\include\enemy.h" />
     <ClInclude Include="..\include\enemy2.h" />
     <ClInclude Include="..\include\enemy3.h" />

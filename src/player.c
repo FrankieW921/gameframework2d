@@ -43,6 +43,7 @@ Entity *player_new_entity(GFC_Vector2D position)
 	//player_output_current_head(self);
 
 	gfc_vector2d_copy(self->position, position);
+	/*
 	self->sprite = gf2d_sprite_load_all(
 		"images/space_bug.png",
 		128,
@@ -50,6 +51,7 @@ Entity *player_new_entity(GFC_Vector2D position)
 		0,
 		0
 	);
+	*/
 	self->bounds = gfc_rect(self->position.x + 14, self->position.y + 14, 100, 100);
 
 	//gfc_input_init("gfc/sample_config/input.cfg");

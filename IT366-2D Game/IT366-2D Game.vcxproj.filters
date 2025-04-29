@@ -156,6 +156,9 @@
     <ClCompile Include="..\src\interactables.c">
       <Filter>Source Files\entities</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\door.c">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\gf2d_draw.h">
@@ -298,6 +301,9 @@
     </ClInclude>
     <ClInclude Include="..\include\world.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\door.h">
+      <Filter>Header Files\entities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

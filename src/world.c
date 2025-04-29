@@ -14,6 +14,7 @@
 #include "interactables.h"
 
 static World* world = NULL;
+static int spawnIndex = 0;
 //void world_tile_layer_build(world);
 
 World* get_current_world() {
@@ -22,6 +23,14 @@ World* get_current_world() {
 
 void set_current_world(World* newWorld) {
 	world = newWorld;
+}
+
+int get_spawn_index() {
+	return world;
+}
+
+void set_spawn_index(int i) {
+	spawnIndex = i;
 }
 
 World* world_test_new() {
@@ -131,6 +140,7 @@ World* world_load(const char* filename) {
 	SJson* enemy;
 	SJson* interactables;
 	SJson* interactable;
+	SJson* doors;
 	int numEnemies, enemyType, numInteractables, interactableType;
 	float enemyPosX, enemyPosY, interactablePosX, interactablePosY;
 
@@ -243,6 +253,8 @@ World* world_load(const char* filename) {
 		interactable_new(gfc_vector2d(interactablePosX, interactablePosY), interactableType);
 	}
 
+	doors = sj_object_get_value(wjson, "doors");
+
 	sj_free(json);
 	return world;
 }
@@ -330,7 +342,7 @@ int world_collide(World* world, GFC_Shape entity_bounds) { //test if the shape i
 			//gf2d_draw_rect(tileRect, GFC_COLOR_BLUE);
 			testShape = gfc_shape_from_rect(tileRect);
 			if (gfc_shape_overlap(testShape, entity_bounds)) {
-				slog("Colliding with world, tile %i, %i", i, j);
+				//slog("Colliding with world, tile %i, %i", i, j);
 				return 1;
 			}	
 		}

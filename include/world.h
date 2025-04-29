@@ -21,6 +21,8 @@ typedef struct World_S
 	Sprite			*tileLayer;	//prerendered tile image
 
 	GFC_List		entityList; //list of entity's within the world
+	GFC_List		spawnLocations;
+
 
 	
 }World;
@@ -35,6 +37,17 @@ World* get_current_world();
 * @param newWorld the world to set as the new world, use the world_load() function
 */
 void set_current_world(World* newWorld);
+
+/*
+* @brief return the current static/global spawn index
+*/
+int get_spawn_index();
+
+/*
+* @brief set the static/global spawn index to a spawn index specified by a door object
+* @param i the new int to set spawn index to
+*/
+void set_spawn_index(int i);
 
 /*
 * @brief test function, builds a hardcoded world
