@@ -3,17 +3,20 @@
     {
       "name": "Model-D",
       "health": 25,
-      "cooldownValue": 60
+      "cooldownValue": 60,
+      "sprite": "images/playerparts/head1.png"
     },
     {
       "name": "F-eye-nder",
       "health": 20,
-      "cooldownValue": 30
+      "cooldownValue": 30,
+      "sprite": "images/playerparts/head2.png"
     },
     {
       "name": "GoPro",
       "health": 30,
-      "cooldownValue": 80
+      "cooldownValue": 80,
+      "sprite": "images/playerparts/head3.png"
     }
   ]
 }

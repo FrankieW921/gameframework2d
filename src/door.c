@@ -1,3 +1,4 @@
+#include "simple_logger.h"
 #include "door.h"
 
 Entity* door_new(const char* mapName, GFC_Vector2D position, int playerSpawnIndex) {

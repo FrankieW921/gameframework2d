@@ -88,6 +88,7 @@ int main(int argc, char * argv[])
             entity_system_think_all();
             entity_system_update_all();
             entity_system_draw_all();
+            player_draw(get_the_player());
             
             //UI elements last
             gf2d_sprite_draw(

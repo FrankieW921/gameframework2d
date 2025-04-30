@@ -3,17 +3,20 @@
     {
       "name": "Moderate",
       "health": 50,
-      "iTime": 90
+      "iTime": 90,
+      "sprite": "images/playerparts/torso1.png"
     },
     {
       "name": "Hulking",
       "health": 70,
-      "iTime": 60
+      "iTime": 60,
+      "sprite": "images/playerparts/torso2.png"
     },
     {
       "name": "Scrawny",
       "health": 30,
-      "iTime":  120
+      "iTime": 120,
+      "sprite": "images/playerparts/torso3.png"
     }
   ]
 }

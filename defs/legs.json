@@ -3,17 +3,20 @@
     {
       "name": "Training Legs",
       "health": 25,
-      "speed": 3.0
+      "speed": 3.0,
+      "sprite": "images/playerparts/legs1.png"
     },
     {
       "name": "Ingrains",
       "health": 40,
-      "speed": 1.5
+      "speed": 1.5,
+      "sprite": "images/playerparts/legs2.png"
     },
     {
       "name": "Flyers",
       "health": 15,
-      "speed": 4.5
+      "speed": 4.5,
+      "sprite": "images/playerparts/legs3.png"
     }
   ]
 }

@@ -2,15 +2,18 @@
   "arms": [
     {
       "name": "Handgun Arm",
-      "projectileType": 0
+      "projectileType": 0,
+      "sprite": "images/playerparts/arm1.png"
     },
     {
       "name": "Energy Blaster",
-      "projectileType": 1
+      "projectileType": 1,
+      "sprite": "images/playerparts/arm2.png"
     },
     {
       "name": "Wrist Rockets",
-      "projectileType": 2
+      "projectileType": 2,
+      "sprite": "images/playerparts/arm3.png"
     }
   ]
 }

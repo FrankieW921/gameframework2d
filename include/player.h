@@ -92,6 +92,11 @@ void player_update(Entity* self);
 void player_shoot(GFC_Vector2D position, GFC_Vector2D velocity, Entity* self);
 
 /*
+* @brief draw specific to the player since they have 4 sprites to draw
+*/
+void player_draw(Entity* self);
+
+/*
 * @brief set the player's head to a head contained with the heads def file
 * @param currentHead the player's current head
 * @param selectedHead SJson array object of the desired head, usually through get_nth

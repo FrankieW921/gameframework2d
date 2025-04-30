@@ -260,13 +260,52 @@ void player_shoot(GFC_Vector2D position, GFC_Vector2D velocity, Entity* self) {
 	projectile_new_entity(position, pv, arm->projectileType);
 }
 
+void player_draw(Entity* self){
+	GFC_Vector2D position, offset;
+	PlayerData* data;
+	GFC_Rect drawRect;
+	if (!self) return;
+	data = self->data;
+	if (!data) return;
+
+	offset = camera_get_offset();
+	gfc_vector2d_add(position, self->position, offset); //head position
+	gf2d_sprite_draw(
+		data->currentHead->headSprite,
+		position,
+		NULL,
+		NULL,
+		NULL,
+		NULL,
+		NULL,
+		(Uint32)self->frame);
+
+
+	drawRect = self->bounds;
+	drawRect.x += offset.x;
+	drawRect.y += offset.y;
+	gf2d_draw_rect(drawRect, GFC_COLOR_RED);
+}
+
 void player_set_head(Head* currentHead, SJson* selectedHead) {
+	const char* imageString;
 	if (!currentHead) {
 		return;
 	}
 	currentHead->name = sj_object_get_value_as_string(selectedHead, "name");
 	sj_object_get_value_as_int(selectedHead, "health", &currentHead->health);
 	sj_object_get_value_as_int(selectedHead, "cooldownValue", &currentHead->cooldownValue);
+	imageString = sj_object_get_value_as_string(selectedHead, "sprite");
+	if (currentHead->headSprite) {
+		gf2d_sprite_free(currentHead->headSprite);
+	}
+	currentHead->headSprite = gf2d_sprite_load_all(
+		imageString,
+		32,
+		32,
+		0,
+		0
+	);
 	slog("Head switched");
 	slog("Head: %s", currentHead->name);
 	slog("Head Health: %i", currentHead->health);
@@ -274,23 +313,47 @@ void player_set_head(Head* currentHead, SJson* selectedHead) {
 }
 
 void player_set_arm(Arm* currentArm, SJson* selectedArm) {
+	const char* imageString;
 	if (!currentArm) {
 		return;
 	}
 	currentArm->name = sj_object_get_value_as_string(selectedArm, "name");
 	sj_object_get_value_as_int(selectedArm, "projectileType", &currentArm->projectileType);
+	imageString = sj_object_get_value_as_string(selectedArm, "sprite");
+	if (currentArm->armSprite) {
+		gf2d_sprite_free(currentArm->armSprite);
+	}
+	currentArm->armSprite = gf2d_sprite_load_all(
+		imageString,
+		32,
+		32,
+		0,
+		0
+	);
 	slog("Arm switched");
 	slog("Arm: %s", currentArm->name);
 	slog("Projectile Type/Index: %i", currentArm->projectileType);
 }
 
 void player_set_torso(Torso* currentTorso, SJson* selectedTorso) {
+	const char* imageString;
 	if (!currentTorso) {
 		return;
 	}
 	currentTorso->name = sj_object_get_value_as_string(selectedTorso, "name");
 	sj_object_get_value_as_int(selectedTorso, "health", &currentTorso->health);
 	sj_object_get_value_as_int(selectedTorso, "iTime", &currentTorso->iTime);
+	imageString = sj_object_get_value_as_string(selectedTorso, "sprite");
+	if (currentTorso->torsoSprite) {
+		gf2d_sprite_free(currentTorso->torsoSprite);
+	}
+	currentTorso->torsoSprite = gf2d_sprite_load_all(
+		imageString,
+		32,
+		32,
+		0,
+		0
+	);
 	slog("Torso switched");
 	slog("Torso: %s", currentTorso->name);
 	slog("Torso Health: %i", currentTorso->health);
@@ -298,12 +361,24 @@ void player_set_torso(Torso* currentTorso, SJson* selectedTorso) {
 }
 
 void player_set_leg(Leg* currentLeg, SJson* selectedLeg) {
+	const char* imageString;
 	if (!currentLeg) {
 		return;
 	}
 	currentLeg->name = sj_object_get_value_as_string(selectedLeg, "name");
 	sj_object_get_value_as_int(selectedLeg, "health", &currentLeg->health);
 	sj_object_get_value_as_float(selectedLeg, "speed", &currentLeg->speed);
+	imageString = sj_object_get_value_as_string(selectedLeg, "sprite");
+	if (currentLeg->legSprite) {
+		gf2d_sprite_free(currentLeg->legSprite);
+	}
+	currentLeg->legSprite = gf2d_sprite_load_all(
+		imageString,
+		32,
+		32,
+		0,
+		0
+	);
 	slog("Leg switched");
 	slog("Leg: %s", currentLeg->name);
 	slog("Leg Health: %i", currentLeg->health);
