@@ -52,7 +52,7 @@ Entity *player_new_entity(GFC_Vector2D position)
 		0
 	);
 	*/
-	self->bounds = gfc_rect(self->position.x + 14, self->position.y + 14, 100, 100);
+	self->bounds = gfc_rect(self->position.x, self->position.y, 32, 96);
 
 	//gfc_input_init("gfc/sample_config/input.cfg");
 	thePlayer = self;
@@ -261,7 +261,10 @@ void player_shoot(GFC_Vector2D position, GFC_Vector2D velocity, Entity* self) {
 }
 
 void player_draw(Entity* self){
-	GFC_Vector2D position, offset;
+	GFC_Vector2D headPosition, torsoPosition, armPosition, legPosition, offset;
+	int mx, my;
+	GFC_Vector2D armRotationVector, playerOffset;
+	float armRotation;
 	PlayerData* data;
 	GFC_Rect drawRect;
 	if (!self) return;
@@ -269,10 +272,50 @@ void player_draw(Entity* self){
 	if (!data) return;
 
 	offset = camera_get_offset();
-	gfc_vector2d_add(position, self->position, offset); //head position
+	gfc_vector2d_add(headPosition, self->position, offset); //head position
+	gfc_vector2d_add(torsoPosition, self->position, offset);
+	gfc_vector2d_add(torsoPosition, torsoPosition, gfc_vector2d(0, 32)); //torso position
+	gfc_vector2d_add(armPosition, self->position, offset);
+	gfc_vector2d_add(armPosition, armPosition, gfc_vector2d(32, 32)); //arm position
+	gfc_vector2d_add(legPosition, self->position, offset);
+	gfc_vector2d_add(legPosition, legPosition, gfc_vector2d(0, 64)); //leg position
+
+	/*
+	SDL_GetMouseState(&mx, &my);
+	armRotationVector = gfc_vector2d(mx-armPosition.x, my-armPosition.y);
+	gfc_vector2d_normalize(&armRotationVector);
+	*/
+
 	gf2d_sprite_draw(
 		data->currentHead->headSprite,
-		position,
+		headPosition,
+		NULL,
+		NULL,
+		NULL,
+		NULL,
+		NULL,
+		(Uint32)self->frame);
+	gf2d_sprite_draw(
+		data->currentTorso->torsoSprite,
+		torsoPosition,
+		NULL,
+		NULL,
+		NULL,
+		NULL,
+		NULL,
+		(Uint32)self->frame);
+	gf2d_sprite_draw(
+		data->currentArm->armSprite,
+		armPosition,
+		NULL,
+		NULL,
+		NULL,
+		NULL,
+		NULL,
+		(Uint32)self->frame);
+	gf2d_sprite_draw(
+		data->currentLeg->legSprite,
+		legPosition,
 		NULL,
 		NULL,
 		NULL,
