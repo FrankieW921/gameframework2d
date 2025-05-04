@@ -1,0 +1,28 @@
+{
+  "particles": [
+    {
+      "name": "metal_spark",
+      "ttl": 30,
+      "angleVariance": 360,
+      "speed": 5.0,
+      "r": 225,
+      "g": 140,
+      "b": 15,
+      "a": 225,
+      "colorVariance": 15,
+      "alphaVariance": 30
+    }
+    {
+      "name": "plasma_spark",
+      "ttl": 60,
+      "angleVariance": 360,
+      "speed": 3.0,
+      "r": 225,
+      "g": 140,
+      "b": 15,
+      "a": 225,
+      "colorVariance": 15,
+      "alphaVariance": 30
+    }
+  ]
+}

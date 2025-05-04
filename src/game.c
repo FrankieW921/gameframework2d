@@ -13,6 +13,7 @@
 #include "world.h"
 #include "camera.h"
 #include "hud.h"
+#include "particles.h"
 
 
 int main(int argc, char * argv[])
@@ -32,6 +33,7 @@ int main(int argc, char * argv[])
     Sprite *mouse;
     GFC_Color mouseGFC_Color = gfc_color8(255,255,255,255);
     entity_system_init(1024);
+    particle_system_init(1024);
     
     
     /*program initializtion*/
@@ -89,6 +91,7 @@ int main(int argc, char * argv[])
             entity_system_update_all();
             entity_system_draw_all();
             player_draw(get_the_player());
+            particle_draw_all();
             
             //UI elements last
             gf2d_sprite_draw(

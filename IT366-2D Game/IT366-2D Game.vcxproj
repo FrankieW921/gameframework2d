@@ -182,6 +182,7 @@
     <ClCompile Include="..\src\gf2d_sprite.c" />
     <ClCompile Include="..\src\hud.c" />
     <ClCompile Include="..\src\interactables.c" />
+    <ClCompile Include="..\src\particles.c" />
     <ClCompile Include="..\src\player.c" />
     <ClCompile Include="..\src\projectile.c" />
     <ClCompile Include="..\src\world.c" />
@@ -231,6 +232,7 @@
     <ClInclude Include="..\include\gf2d_sprite.h" />
     <ClInclude Include="..\include\hud.h" />
     <ClInclude Include="..\include\interactables.h" />
+    <ClInclude Include="..\include\particles.h" />
     <ClInclude Include="..\include\player.h" />
     <ClInclude Include="..\include\projectile.h" />
     <ClInclude Include="..\include\world.h" />
