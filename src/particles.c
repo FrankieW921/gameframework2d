@@ -3,6 +3,7 @@
 
 #include "gfc_types.h"
 #include "gf2d_draw.h"
+#include "gfc_config.h"
 
 #include "particles.h"
 #include "camera.h"
@@ -87,7 +88,8 @@ void particle_spark(GFC_Vector2D position, int defIndex, int count) {
 	int ttl;
 	int angleVariance;
 	float speed;
-	int size, r, g, b, a, colorVariance, alphaVariance;
+	GFC_Color color;
+	int size, colorVariance, alphaVariance;
 
 	cameraOffset = camera_get_offset();
 	gfc_vector2d_add(position, position, cameraOffset);
@@ -97,12 +99,10 @@ void particle_spark(GFC_Vector2D position, int defIndex, int count) {
 	sj_object_get_value_as_int(particleDef, "angleVariance", &angleVariance);
 	sj_object_get_value_as_float(particleDef, "speed", &speed);
 	sj_object_get_value_as_int(particleDef, "size", &size);
-	sj_object_get_value_as_int(particleDef, "r", &r);
-	sj_object_get_value_as_int(particleDef, "g", &g);
-	sj_object_get_value_as_int(particleDef, "b", &b);
-	sj_object_get_value_as_int(particleDef, "a", &a);
+	sj_object_get_color_value(particleDef, "color", &color);
 	sj_object_get_value_as_int(particleDef, "colorVariance", &colorVariance);
 	sj_object_get_value_as_int(particleDef, "alphaVariance", &alphaVariance);
+	slog("color: %f, %f, %f", color.r, color.g, color.b);
 
 	for (i = 0; i < count; i++) {
 		p = particle_new(ttl);
@@ -114,14 +114,12 @@ void particle_spark(GFC_Vector2D position, int defIndex, int count) {
 
 		gfc_vector2d_copy(p->position, position);
 		p->rect = gfc_rect(p->position.x, p->position.y, size, size);
-		p->color = gfc_color8(r, g, b, a);
-		/* figure this out
-		p->color.r += gfc_random() * (colorVariance / 256);
-		p->color.g += gfc_random() * (colorVariance / 256);
-		p->color.b += gfc_random() * (colorVariance / 256);
+		p->color = color;
+		p->color.r += gfc_random() * ((float)colorVariance);
+		p->color.g += gfc_random() * ((float)colorVariance);
+		p->color.b += gfc_random() * ((float)colorVariance);
 		p->color.a += gfc_random() * (alphaVariance / 256);
-		*/ 
-
+		slog("Random Color: %f, %f, %f", p->color.r, p->color.g, p->color.b);
 		//could feed in the mouse direction velocity but might need overload
 		p->velocity = gfc_vector2d_rotate(gfc_vector2d(1, 0), (gfc_crandom() * angleVariance) / 90);
 		gfc_vector2d_scale(p->velocity, p->velocity, speed);

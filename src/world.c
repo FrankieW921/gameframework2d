@@ -12,6 +12,7 @@
 #include "enemy5.h"
 #include "boss_enemy.h"
 #include "interactables.h"
+#include "door.h"
 
 static World* world = NULL;
 static int spawnIndex = 0;
@@ -122,7 +123,7 @@ int get_world_tile_at(World* world, GFC_Vector2I position) {
 	return tile;
 }
 
-World* world_load(const char* filename) {
+World* world_load(const char* filename, int spawnIndex) {
 	//World* world = NULL;
 	SJson* json = NULL;
 	SJson* wjson = NULL;
@@ -130,7 +131,7 @@ World* world_load(const char* filename) {
 	int w = 0, h = 0;
 	GFC_Vector2I dimensions;
 	int i, j;
-	SJson* item;
+	SJson* item; //this is constantly flipping out with different info (usually an array im needing to get into)
 	int tile = 0;
 	const char* tileSet;
 	const char* background;
@@ -140,8 +141,10 @@ World* world_load(const char* filename) {
 	SJson* enemy;
 	SJson* interactables;
 	SJson* interactable;
+	SJson* spawn;
 	SJson* doors;
 	int numEnemies, enemyType, numInteractables, interactableType;
+	int numSpawns, numDoors;
 	float enemyPosX, enemyPosY, interactablePosX, interactablePosY;
 
 	if (!filename) {
@@ -254,6 +257,8 @@ World* world_load(const char* filename) {
 	}
 
 	doors = sj_object_get_value(wjson, "doors");
+	numDoors = sj_array_get_count(doors);
+	
 
 	sj_free(json);
 	return world;

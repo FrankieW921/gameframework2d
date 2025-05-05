@@ -60,10 +60,10 @@ int main(int argc, char * argv[])
     slog("press [escape] to quit");
     //testWorld = world_test_new();
     //testWorld = world_load("maps/testWorld.json");
-    set_current_world(world_load("maps/testWorld.json"));
+    player = player_new_entity(gfc_vector2d(80, 80));
+    set_current_world(world_load("maps/testWorld.json", 0));
     world_setup_camera();
     
-    player = player_new_entity(gfc_vector2d(80, 80)); 
     theHud = new_hud(player);
     //enemy = enemy_new_entity(gfc_vector2d(200, 200));
 

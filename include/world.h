@@ -67,7 +67,7 @@ void world_tile_layer_build(World* world);
 * @param filename the JSON file's name to load from
 * @returns NULL on error, or a usable world
 */
-World* world_load(const char* filename);
+World* world_load(const char* filename, int spawnIndex);
 
 /*
 * @brief allocate a new empty world
