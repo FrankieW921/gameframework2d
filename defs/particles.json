@@ -38,6 +38,19 @@
       "a": 254,
       "colorVariance": 1,
       "alphaVariance": 1
+    },
+    {
+      "name": "player_hit",
+      "ttl": 60,
+      "angleVariance": 360,
+      "speed": 1.5,
+      "size": 3,
+      "r": 200,
+      "g": 200,
+      "b": 200,
+      "a": 225,
+      "colorVariance": 155,
+      "alphaVariance": 15
     }
   ]
 }

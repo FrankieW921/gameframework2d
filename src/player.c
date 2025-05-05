@@ -5,6 +5,7 @@
 #include "camera.h"
 #include "projectile.h"
 #include "interactables.h"
+#include "particles.h"
 
 static Entity* thePlayer = NULL;
 
@@ -196,6 +197,7 @@ void player_update(Entity* self) {
 				if (collider->type == ET_Enemy && data->iTime <=0) {
 					data->currentHealth -= 10; //implement contact damage?
 					data->iTime = data->currentTorso->iTime;
+					particle_spark(self->position, 3, 20);
 					slog("Player iTime Activated: %i", data->iTime);
 				}
 				else if (collider->type == ET_EnemyProjectile && data->iTime <= 0) {
@@ -203,6 +205,7 @@ void player_update(Entity* self) {
 					data->iTime = data->currentTorso->iTime;
 					data->currentHealth -= projectileData->damage;
 					slog("Player iTime Activated: %i", data->iTime);
+					particle_spark(self->position, 3, 20);
 					entity_free(collider);
 				}
 				else if (collider->type == Healing_Field) {
