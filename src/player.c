@@ -2,7 +2,6 @@
 #include "gfc_input.h"
 
 #include "player.h"
-#include "particles.h"
 #include "camera.h"
 #include "projectile.h"
 #include "interactables.h"
@@ -259,7 +258,17 @@ void player_shoot(GFC_Vector2D position, GFC_Vector2D velocity, Entity* self) {
 	gfc_vector2d_normalize(&pv);
 
 	projectile_new_entity(position, pv, arm->projectileType);
-	particle_spark(position, 20);
+	switch (arm->projectileType) {
+		case 0:
+			particle_spark(position, 0, 10);
+			break;
+		case 1:
+			particle_spark(position, 1, 20);
+			break;
+		case 2:
+			particle_spark(position, 0, 20);
+			break;
+	}
 }
 
 void player_draw(Entity* self){

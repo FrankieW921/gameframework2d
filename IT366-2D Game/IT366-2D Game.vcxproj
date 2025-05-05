@@ -242,6 +242,7 @@
     <None Include="..\defs\arms.json" />
     <None Include="..\defs\heads.json" />
     <None Include="..\defs\legs.json" />
+    <None Include="..\defs\particles.json" />
     <None Include="..\defs\projectiles.json" />
     <None Include="..\defs\torsos.json" />
   </ItemGroup>

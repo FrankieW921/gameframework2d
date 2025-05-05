@@ -4,25 +4,40 @@
       "name": "metal_spark",
       "ttl": 30,
       "angleVariance": 360,
-      "speed": 5.0,
+      "speed": 2.0,
+      "size": 3,
       "r": 225,
       "g": 140,
       "b": 15,
       "a": 225,
       "colorVariance": 15,
       "alphaVariance": 30
-    }
+    },
     {
       "name": "plasma_spark",
-      "ttl": 60,
+      "ttl": 75,
       "angleVariance": 360,
-      "speed": 3.0,
-      "r": 225,
-      "g": 140,
-      "b": 15,
+      "speed": 0.75,
+      "size": 4,
+      "r": 50,
+      "g": 235,
+      "b": 220,
       "a": 225,
       "colorVariance": 15,
       "alphaVariance": 30
+    },
+    {
+      "name": "enemy_hit",
+      "ttl": 60,
+      "angleVariance": 360,
+      "speed": 1.5,
+      "size": 3,
+      "r": 254,
+      "g": 0,
+      "b": 0,
+      "a": 254,
+      "colorVariance": 1,
+      "alphaVariance": 1
     }
   ]
 }

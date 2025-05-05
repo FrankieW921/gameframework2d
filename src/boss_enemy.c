@@ -3,6 +3,7 @@
 
 #include "boss_enemy.h"
 #include "projectile.h"
+#include "particles.h"
 
 Entity* boss_new_entity(GFC_Vector2D position) {
 	Entity* self;
@@ -57,7 +58,8 @@ void boss_update(Entity* self) {
 					if (collider->type == ET_PlayerProjectile) {
 						pData = collider->data;
 						self->health -= pData->damage;
-						entity_free(collider);
+						collider->_inuse = 0;
+						particle_spark(self->position, 2, 30);
 					}
 				}
 			}

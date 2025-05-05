@@ -1,6 +1,7 @@
 #include "simple_logger.h"
 
 #include "enemy4.h"
+#include "particles.h"
 #include "projectile.h"
 
 Entity* enemy4_new_entity(GFC_Vector2D position)
@@ -53,7 +54,8 @@ void enemy4_update(Entity* self) {
 				if (collider->type == ET_PlayerProjectile) {
 					projData = collider->data;
 					self->health -= projData->damage;
-					entity_free(collider);
+					collider->_inuse = 0;
+					particle_spark(self->position, 2, 20);
 					slog("Enemy hit");
 				}
 			}

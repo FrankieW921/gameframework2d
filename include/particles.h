@@ -19,7 +19,7 @@ void particle_system_init(int maxParticles);
 
 void particle_draw_all();
 
-void particle_spark(GFC_Vector2D position, int count);
+void particle_spark(GFC_Vector2D position, int defIndex, int count);
 
 void particle_system_close();
 

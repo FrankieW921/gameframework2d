@@ -1,6 +1,7 @@
 #include "simple_logger.h"
 
 #include "enemy3.h"
+#include "particles.h"
 #include "projectile.h"
 
 Entity* enemy3_new_entity(GFC_Vector2D position)
@@ -56,7 +57,8 @@ void enemy3_update(Entity* self) {
 						slog("Projectile Damage: %i", projData->damage);
 						self->health -= projData->damage;
 						slog("Enemy 3 Health: %i", self->health);
-						entity_free(collider);
+						collider->_inuse = 0;
+						particle_spark(self->position, 2, 20);
 						slog("Enemy hit");
 					}
 				}
