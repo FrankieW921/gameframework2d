@@ -119,7 +119,7 @@ void particle_spark(GFC_Vector2D position, int defIndex, int count) {
 		p->color.g += gfc_random() * ((float)colorVariance);
 		p->color.b += gfc_random() * ((float)colorVariance);
 		p->color.a += gfc_random() * (alphaVariance / 256);
-		slog("Random Color: %f, %f, %f", p->color.r, p->color.g, p->color.b);
+		//slog("Random Color: %f, %f, %f", p->color.r, p->color.g, p->color.b);
 		//could feed in the mouse direction velocity but might need overload
 		p->velocity = gfc_vector2d_rotate(gfc_vector2d(1, 0), (gfc_crandom() * angleVariance) / 90);
 		gfc_vector2d_scale(p->velocity, p->velocity, speed);

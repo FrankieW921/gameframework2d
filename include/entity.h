@@ -18,6 +18,7 @@ typedef enum {
 	Star_Power,
 	Teleporter,
 	Door,
+	ET_Boss,
 }EntityType;
 
 typedef enum {

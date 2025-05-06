@@ -45,7 +45,7 @@
 			[ 64.0, 384.0 ]
 		],
 		"doors": [
-			["testWorld2.json", 0.0, 320.0, 0]
+			["maps/testWorld2.json", 0.0, 320.0, 0]
 		]
 	}
 }

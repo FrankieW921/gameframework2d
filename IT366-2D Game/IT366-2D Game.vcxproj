@@ -246,6 +246,7 @@
     <None Include="..\defs\projectiles.json" />
     <None Include="..\defs\torsos.json" />
     <None Include="..\maps\testWorld.json" />
+    <None Include="..\maps\testWorld2.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

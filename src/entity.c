@@ -82,7 +82,7 @@ void entity_move(Entity* self) {
 
 	bounds = gfc_shape_from_rect(self->bounds);
 	gfc_shape_move(&bounds, self->velocity);
-	if (self->type == ET_Player || self->type == ET_Enemy) { //enemy and player collide with world rn
+	if (self->type == ET_Player || self->type == ET_Enemy || self->type == ET_Boss) { //enemy and player collide with world rn
 		if (!world_collide(get_current_world(), bounds)) {
 			gfc_vector2d_copy(self->position, position);
 		}
@@ -124,7 +124,8 @@ void entity_free(Entity* self)
 		gf2d_sprite_free(self->sprite);
 	}
 	//more things to free here
-
+	gfc_list_clear(self->collideEntities);
+	gfc_list_clear(self->sightCollideEntities);
 	self->_inuse = 0;
 	memset(self, 0, sizeof(self));
 	//slog("Entity freed");

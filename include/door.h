@@ -10,4 +10,6 @@ typedef struct Door_S {
 
 Entity* door_new(const char* mapName, GFC_Vector2D doorPosition, int playerSpawnIndex);
 
+void door_free(Entity* door);
+
 #endif

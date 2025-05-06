@@ -84,6 +84,12 @@ World* world_new(GFC_Vector2I worldSize);
 */
 void world_free(World* world);
 
+void world_free_entity_list(World* world);
+
+void world_free_interactable_list(World* world);
+
+void world_free_door_list(World* world);
+
 /**
 * @brief draw a world
 * @param world the world to draw

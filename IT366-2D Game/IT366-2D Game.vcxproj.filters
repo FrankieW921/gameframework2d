@@ -334,5 +334,8 @@
     <None Include="..\maps\testWorld.json">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="..\maps\testWorld2.json">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -30,7 +30,7 @@ Entity* boss_new_entity(GFC_Vector2D position) {
 		bData->arm2->sprite = gf2d_sprite_load_image("images/enemies/boss1arm.png");
 	}
 	self->data = bData;
-	self->type = ET_Enemy;
+	self->type = ET_Boss;
 	self->health = 30;
 
 }

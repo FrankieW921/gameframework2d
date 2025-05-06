@@ -251,7 +251,7 @@ World* world_load(const char* filename, int spawnIndex) {
 	for (i = 0; i < numInteractables; i++) {
 		interactable = sj_array_get_nth(interactables, i);
 		if (!interactable)continue;
-		item = sj_array_get_nth(interactable, 0); //getting enemy type
+		item = sj_array_get_nth(interactable, 0); //getting interactable type
 		sj_get_integer_value(item, &interactableType);
 		item = sj_array_get_nth(interactable, 1); //getting x position
 		sj_get_float_value(item, &interactablePosX);
@@ -275,7 +275,7 @@ World* world_load(const char* filename, int spawnIndex) {
 		slog("%f, %f, %i", doorPosX, doorPosY, doorSpawnIndex);
 		gfc_list_append(&world->doorList, door_new(sj_get_string_value(item), gfc_vector2d(doorPosX, doorPosY), doorSpawnIndex));
 	}
-	
+	//move the player according to what spawn index was given
 	spawns = sj_object_get_value(wjson, "spawns");
 	spawn = sj_array_get_nth(spawns, spawnIndex);
 	item = sj_array_get_nth(spawn, 0); //get spawn x position
@@ -283,7 +283,6 @@ World* world_load(const char* filename, int spawnIndex) {
 	item = sj_array_get_nth(spawn, 1); //get spawn Y position
 	sj_get_float_value(item, &spawnPosY);
 	move_the_player(gfc_vector2d(spawnPosX, spawnPosY));
-
 
 	sj_free(json);
 	return world;
@@ -314,12 +313,67 @@ World* world_new(GFC_Vector2I worldSize) {
 
 void world_free(World* world) {
 	if (!world)return;
-
+	slog("ATTEMPTING TO FREE WORLD");
+	world_free_entity_list(world);
+	slog("ENTITY LIST FREED");
+	world_free_interactable_list(world);
+	slog("INTERACTABLE LIST FREED");
+	world_free_door_list(world);
+	slog("DOOR LIST FREED");
 	gf2d_sprite_free(world->background);
 	gf2d_sprite_free(world->tileSet);
 	gf2d_sprite_free(world->tileLayer);
 	free(world->tileMap);
 	free(world);
+}
+
+void world_free_entity_list(World* world) {
+	Entity* ent;
+	BossData* bossData;
+	int i;
+
+	for ( i = 0; i < gfc_list_get_count(&world->entityList); i++) {
+		ent = gfc_list_get_nth((&world->entityList), i);
+		if (ent) {
+			if (ent->type == ET_Boss) { //because of the arms, very slapdash and bad solution for a one time problem, unless I specify other boss types
+				bossData = ent->data;
+				if (bossData->arm1) {
+					entity_free(bossData->arm1);
+				}
+				if (bossData->arm2) {
+					entity_free(bossData->arm2);
+				}
+			}
+			entity_free(ent);
+		}
+	}
+	gfc_list_clear(&world->entityList);
+}
+
+void world_free_interactable_list(World* world) {
+	Entity* interactable;
+	int i;
+
+	for (i = 0; i < gfc_list_get_count(&world->interactableList); i++) {
+		interactable = gfc_list_get_nth(&world->interactableList, i);
+		if (interactable) {
+			entity_free(interactable);
+		}
+	}
+	gfc_list_clear(&world->interactableList);
+}
+
+void world_free_door_list(World* world) {
+	Entity* door;
+	int i;
+
+	for ( i = 0; i < gfc_list_get_count(&world->doorList); i++) {
+		door = gfc_list_get_nth(&world->doorList, i);
+		if (door) {
+			door_free(door);
+		}
+	}
+	gfc_list_clear(&world->doorList);
 }
 
 void world_draw(World* world) {

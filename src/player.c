@@ -2,6 +2,8 @@
 #include "gfc_input.h"
 
 #include "player.h"
+#include "world.h"
+#include "door.h"
 #include "camera.h"
 #include "projectile.h"
 #include "interactables.h"
@@ -191,7 +193,10 @@ void player_update(Entity* self) {
 	PlayerData* data;
 	Entity* collider;
 	ProjectileData* projectileData;
+	DoorData* doorData;
 	int i;
+	const char* doorMapName;
+	int doorSpawnIndex;
 	data = self->data;
 	if (!data)return;
 
@@ -202,7 +207,7 @@ void player_update(Entity* self) {
 		for (i = 0; i < self->collideEntities->size; i++) {
 			collider = gfc_list_get_nth(self->collideEntities, i);
 			if (collider) {
-				if (collider->type == ET_Enemy && data->iTime <=0) {
+				if ((collider->type == ET_Enemy || collider->type == ET_Boss) && data->iTime <=0) {
 					data->currentHealth -= 10; //implement contact damage?
 					data->iTime = data->currentTorso->iTime;
 					particle_spark(self->position, 3, 20);
@@ -215,6 +220,16 @@ void player_update(Entity* self) {
 					slog("Player iTime Activated: %i", data->iTime);
 					particle_spark(self->position, 3, 20);
 					entity_free(collider);
+				}
+				else if (collider->type == Door) {
+					doorData = collider->data; //need the data before we free the world
+					doorMapName = doorData->mapName;
+					doorSpawnIndex = doorData->playerSpawnIndex;
+					slog("THIS TEST SHOULD SAY SOMETHING RIGHT: %s", doorData->mapName);
+					
+					world_free(get_current_world());
+					world_load("maps/testWorld2.json", 0);
+					
 				}
 				else if (collider->type == Healing_Field) {
 					if (data->currentHealth < data->maxHealth) {
