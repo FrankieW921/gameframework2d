@@ -4,6 +4,7 @@
 #include "gf2d_graphics.h"
 
 #include "world.h"
+#include "player.h"
 #include "camera.h"
 #include "enemy.h"
 #include "enemy2.h"
@@ -141,11 +142,15 @@ World* world_load(const char* filename, int spawnIndex) {
 	SJson* enemy;
 	SJson* interactables;
 	SJson* interactable;
-	SJson* spawn;
 	SJson* doors;
+	SJson* door;
+	SJson* spawns;
+	SJson* spawn;
 	int numEnemies, enemyType, numInteractables, interactableType;
-	int numSpawns, numDoors;
 	float enemyPosX, enemyPosY, interactablePosX, interactablePosY;
+	int numDoors, doorSpawnIndex;
+	float doorPosX, doorPosY;
+	float spawnPosX, spawnPosY;
 
 	if (!filename) {
 		slog("No file name given for world");
@@ -162,6 +167,7 @@ World* world_load(const char* filename, int spawnIndex) {
 		sj_free(json);
 		return NULL;
 	}
+	//beginning of tilemap////////////////////////
 	vertical = sj_object_get_value(wjson, "tileMap");
 	if (!vertical) {
 		slog("Missing tileMap in %s", filename);
@@ -180,7 +186,6 @@ World* world_load(const char* filename, int spawnIndex) {
 		sj_free(json);
 		return NULL;
 	}
-
 	//set the tileMap values
 	for (j = 0; j < h; j++) {
 		horizontal = sj_array_get_nth(vertical, j);
@@ -210,8 +215,8 @@ World* world_load(const char* filename, int spawnIndex) {
 		1
 	);
 	world_tile_layer_build(world);
-
-	//spawn enemies
+	//end of tilemap////////////////////////////////
+	//spawn enemies/////////////
 	enemies = sj_object_get_value(wjson, "enemies");
 	numEnemies = sj_array_get_count(enemies);
 
@@ -240,8 +245,7 @@ World* world_load(const char* filename, int spawnIndex) {
 				gfc_list_append(&world->entityList, boss_new_entity(gfc_vector2d(enemyPosX, enemyPosY))); break;
 		}
 	}
-
-	//spawn interactables
+	//spawn interactables//////////////
 	interactables = sj_object_get_value(wjson, "interactables");
 	numInteractables = sj_array_get_count(interactables);
 	for (i = 0; i < numInteractables; i++) {
@@ -253,12 +257,33 @@ World* world_load(const char* filename, int spawnIndex) {
 		sj_get_float_value(item, &interactablePosX);
 		item = sj_array_get_nth(interactable, 2); //getting y position
 		sj_get_float_value(item, &interactablePosY);
-		interactable_new(gfc_vector2d(interactablePosX, interactablePosY), interactableType);
+		gfc_list_append(&world->interactableList, interactable_new(gfc_vector2d(interactablePosX, interactablePosY), interactableType));
 	}
-
+	//spawn doors//////////////////////
 	doors = sj_object_get_value(wjson, "doors");
 	numDoors = sj_array_get_count(doors);
+	for (i = 0; i < numDoors; i++) {
+		door = sj_array_get_nth(doors, i);
+		if (!door)continue;
+		item = sj_array_get_nth(door, 1); //getting door x
+		sj_get_float_value(item, &doorPosX);
+		item = sj_array_get_nth(door, 2); //getting door y
+		sj_get_float_value(item, &doorPosY);
+		item = sj_array_get_nth(door, 3); //getting door spawn index in next world
+		sj_get_integer_value(item, &doorSpawnIndex);
+		item = sj_array_get_nth(door, 0); //will feed into new door function as the string for the world filename
+		slog("%f, %f, %i", doorPosX, doorPosY, doorSpawnIndex);
+		gfc_list_append(&world->doorList, door_new(sj_get_string_value(item), gfc_vector2d(doorPosX, doorPosY), doorSpawnIndex));
+	}
 	
+	spawns = sj_object_get_value(wjson, "spawns");
+	spawn = sj_array_get_nth(spawns, spawnIndex);
+	item = sj_array_get_nth(spawn, 0); //get spawn x position
+	sj_get_float_value(item, &spawnPosX);
+	item = sj_array_get_nth(spawn, 1); //get spawn Y position
+	sj_get_float_value(item, &spawnPosY);
+	move_the_player(gfc_vector2d(spawnPosX, spawnPosY));
+
 
 	sj_free(json);
 	return world;

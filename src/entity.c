@@ -1,5 +1,7 @@
 #include "simple_logger.h"
 
+#include "gf2d_draw.h"
+
 #include "entity.h"
 #include "camera.h"
 #include "player.h"
@@ -167,7 +169,6 @@ void entity_draw(Entity* self)
 
 	gf2d_draw_rect(drawRect, GFC_COLOR_RED);
 	gf2d_draw_rect(sightRect, GFC_COLOR_YELLOW);
-	
 }
 
 Uint8 entity_collision_check(Entity* self, Entity* other) {

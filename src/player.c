@@ -10,7 +10,15 @@
 static Entity* thePlayer = NULL;
 
 Entity* get_the_player() {
-	return thePlayer;
+	if (thePlayer) {
+		return thePlayer;
+	}
+}
+
+void move_the_player(GFC_Vector2D newPosition) {
+	if (thePlayer) {
+		gfc_vector2d_copy(thePlayer->position, newPosition);
+	}
 }
 
 Entity *player_new_entity(GFC_Vector2D position)

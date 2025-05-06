@@ -2,6 +2,7 @@
 #include "door.h"
 
 Entity* door_new(const char* mapName, GFC_Vector2D position, int playerSpawnIndex) {
+	slog("Creating door");
 	Entity* self;
 	DoorData* data;
 	self = entity_new();
@@ -21,6 +22,7 @@ Entity* door_new(const char* mapName, GFC_Vector2D position, int playerSpawnInde
 	gfc_vector2d_copy(self->position, position);
 	self->bounds = gfc_rect(position.x, position.y, 8, 256);
 	self->type = Door;
-	
+	self->sprite = gf2d_sprite_load_image("images/door.png");
+	slog("Door: %s, %f, %f, $i", data->mapName, self->position.x, self->position.y, data->playerSpawnIndex);
 	return self;
 }

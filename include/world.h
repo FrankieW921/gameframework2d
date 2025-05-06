@@ -21,6 +21,8 @@ typedef struct World_S
 	Sprite			*tileLayer;	//prerendered tile image
 
 	GFC_List		entityList; //list of entity's within the world
+	GFC_List		interactableList;
+	GFC_List		doorList;
 	GFC_List		spawnLocations;
 
 

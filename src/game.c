@@ -61,7 +61,7 @@ int main(int argc, char * argv[])
     //testWorld = world_test_new();
     //testWorld = world_load("maps/testWorld.json");
     player = player_new_entity(gfc_vector2d(80, 80));
-    set_current_world(world_load("maps/testWorld.json", 0));
+    set_current_world(world_load("maps/testWorld.json", 1));
     world_setup_camera();
     
     theHud = new_hud(player);

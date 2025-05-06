@@ -64,6 +64,12 @@ typedef struct { //mfw i want to make a mecha game
 */
 Entity* get_the_player();
 
+/*
+* @brief move the player to a new position
+* @param newPosition the new position to move to
+*/
+void move_the_player(GFC_Vector2D newPostion);
+
 
 /**
 * @brief spawn a new player entity
