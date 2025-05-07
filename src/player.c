@@ -8,6 +8,7 @@
 #include "interactables.h"
 #include "particles.h"
 #include "door.h"
+#include "partpickup.h"
 
 static Entity* thePlayer = NULL;
 
@@ -78,6 +79,7 @@ void player_data_new(PlayerData* data) {
 	data->partSwitchCooldown = 0;
 	data->iTime = 0;
 	data->canChangeParts = 0;
+
 	data->headIndex = 0;
 	data->armIndex = 0;
 	data->torsoIndex = 0;
@@ -86,24 +88,28 @@ void player_data_new(PlayerData* data) {
 	file = sj_load("defs/heads.json");
 	data->heads = sj_object_get_value(file, "heads");
 	data->headIndexMax = sj_array_get_count(data->heads) - 1;
+	data->headInventory = gfc_allocate_array(sizeof(Head), 12);
 	data->currentHead = gfc_allocate_array(sizeof(Head), 1);
 	player_set_head(data->currentHead, sj_array_get_nth(data->heads, data->headIndex));
 
 	file = sj_load("defs/arms.json");
 	data->arms = sj_object_get_value(file, "arms");
 	data->armIndexMax = sj_array_get_count(data->arms) - 1;
+	data->armInventory = gfc_allocate_array(sizeof(Arm), 12);
 	data->currentArm = gfc_allocate_array(sizeof(Arm), 1);
 	player_set_arm(data->currentArm, sj_array_get_nth(data->arms, data->armIndex));
 
 	file = sj_load("defs/torsos.json");
 	data->torsos = sj_object_get_value(file, "torsos");
 	data->torsoIndexMax = sj_array_get_count(data->torsos) - 1;
+	data->torsoInventory = gfc_allocate_array(sizeof(Torso), 12);
 	data->currentTorso = gfc_allocate_array(sizeof(Torso), 1);
 	player_set_torso(data->currentTorso, sj_array_get_nth(data->torsos, data->torsoIndex));
 
 	file = sj_load("defs/legs.json");
 	data->legs = sj_object_get_value(file, "legs");
 	data->legIndexMax = sj_array_get_count(data->legs) - 1;
+	data->legInventory = gfc_allocate_array(sizeof(Leg), 12);
 	data->currentLeg = gfc_allocate_array(sizeof(Leg), 1);
 	player_set_leg(data->currentLeg, sj_array_get_nth(data->legs, data->legIndex));
 
@@ -194,6 +200,7 @@ void player_update(Entity* self) {
 	Entity* collider;
 	ProjectileData* projectileData;
 	DoorData* doorData;
+	PartPickupData* partpickupData;
 	int i;
 	char doorMapName[128];
 	int doorSpawnIndex;
@@ -235,6 +242,10 @@ void player_update(Entity* self) {
 					
 					world_free(get_current_world());
 					world_load(doorMapName, doorSpawnIndex);
+				}
+				else if (collider->type = ET_PartPickup) {
+					partpickupData = collider->data;
+					//PICKUP PART, PUT INTO INVENTORY
 				}
 				else if (collider->type == Healing_Field) {
 					if (data->currentHealth < data->maxHealth) {
@@ -377,7 +388,7 @@ void player_set_head(Head* currentHead, SJson* selectedHead) {
 	if (!currentHead) {
 		return;
 	}
-	currentHead->name = sj_object_get_value_as_string(selectedHead, "name");
+	strcpy(currentHead->name, sj_object_get_value_as_string(selectedHead, "name"));
 	sj_object_get_value_as_int(selectedHead, "health", &currentHead->health);
 	sj_object_get_value_as_int(selectedHead, "cooldownValue", &currentHead->cooldownValue);
 	imageString = sj_object_get_value_as_string(selectedHead, "sprite");
@@ -402,7 +413,8 @@ void player_set_arm(Arm* currentArm, SJson* selectedArm) {
 	if (!currentArm) {
 		return;
 	}
-	currentArm->name = sj_object_get_value_as_string(selectedArm, "name");
+	//currentArm->name = sj_object_get_value_as_string(selectedArm, "name");
+	strcpy(currentArm->name, sj_object_get_value_as_string(selectedArm, "name"));
 	sj_object_get_value_as_int(selectedArm, "projectileType", &currentArm->projectileType);
 	imageString = sj_object_get_value_as_string(selectedArm, "sprite");
 	if (currentArm->armSprite) {
@@ -425,7 +437,8 @@ void player_set_torso(Torso* currentTorso, SJson* selectedTorso) {
 	if (!currentTorso) {
 		return;
 	}
-	currentTorso->name = sj_object_get_value_as_string(selectedTorso, "name");
+	///currentTorso->name = sj_object_get_value_as_string(selectedTorso, "name");
+	strcpy(currentTorso->name, sj_object_get_value_as_string(selectedTorso, "name"));
 	sj_object_get_value_as_int(selectedTorso, "health", &currentTorso->health);
 	sj_object_get_value_as_int(selectedTorso, "iTime", &currentTorso->iTime);
 	imageString = sj_object_get_value_as_string(selectedTorso, "sprite");
@@ -450,7 +463,8 @@ void player_set_leg(Leg* currentLeg, SJson* selectedLeg) {
 	if (!currentLeg) {
 		return;
 	}
-	currentLeg->name = sj_object_get_value_as_string(selectedLeg, "name");
+	//currentLeg->name = sj_object_get_value_as_string(selectedLeg, "name");
+	strcpy(currentLeg->name, sj_object_get_value_as_string(selectedLeg, "name"));
 	sj_object_get_value_as_int(selectedLeg, "health", &currentLeg->health);
 	sj_object_get_value_as_float(selectedLeg, "speed", &currentLeg->speed);
 	imageString = sj_object_get_value_as_string(selectedLeg, "sprite");

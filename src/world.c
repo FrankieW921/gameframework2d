@@ -14,6 +14,7 @@
 #include "boss_enemy.h"
 #include "interactables.h"
 #include "door.h"
+#include "partpickup.h"
 
 static World* world = NULL;
 static int spawnIndex = 0;
@@ -138,6 +139,7 @@ World* world_load(const char* filename, int spawnIndex) {
 	const char* background;
 	int frame_w, frame_h;
 	int frames_per_line;
+
 	SJson* enemies;
 	SJson* enemy;
 	SJson* interactables;
@@ -146,11 +148,20 @@ World* world_load(const char* filename, int spawnIndex) {
 	SJson* door;
 	SJson* spawns;
 	SJson* spawn;
+	SJson* partpickups;
+	SJson* partpickup;
+
 	int numEnemies, enemyType, numInteractables, interactableType;
 	float enemyPosX, enemyPosY, interactablePosX, interactablePosY;
+
 	int numDoors, doorSpawnIndex;
 	float doorPosX, doorPosY;
+
+	int numPartpickups, partpickupType;
+	float partpickupPosX, partpickupPosY;
+
 	float spawnPosX, spawnPosY;
+
 	Entity* doorEnt;
 	DoorData* doorData;
 
@@ -276,10 +287,28 @@ World* world_load(const char* filename, int spawnIndex) {
 		item = sj_array_get_nth(door, 0); //will feed into new door function as the string for the world filename
 		slog("SPAWNING DOOR WITH FILENAME: %s", sj_get_string_value(item));
 		gfc_list_append(&world->doorList, door_new(sj_get_string_value(item), gfc_vector2d(doorPosX, doorPosY), doorSpawnIndex));
-		doorEnt = gfc_list_get_nth(&world->doorList, i);
-		doorData = doorEnt->data;
-		slog("SOME CHECKING: %s, %i", get_door_name(doorEnt), doorData->playerSpawnIndex);
+		//doorEnt = gfc_list_get_nth(&world->doorList, i);
+		//doorData = doorEnt->data;
+		//slog("SOME CHECKING: %s, %i", get_door_name(doorEnt), doorData->playerSpawnIndex);
 	}
+	//spawn partpickups////////////////////////////
+	partpickups = sj_object_get_value(wjson, "partpickups");
+	numPartpickups = sj_array_get_count(partpickups);
+	for (i = 0; i < numPartpickups; i++) {
+		partpickup = sj_array_get_nth(partpickups, i);
+		if (!partpickup)continue;
+		item = sj_array_get_nth(partpickup, 0); //getting part x
+		sj_get_float_value(item, &partpickupPosX);
+		item = sj_array_get_nth(partpickup, 1); //getting part y
+		sj_get_float_value(item, &partpickupPosY);
+		item = sj_array_get_nth(partpickup, 2); //getting part type (0 = head, 1 = arm, 2 = torso, 3 = leg)
+		sj_get_integer_value(item, &partpickupType);
+		item = sj_array_get_nth(partpickup, 3); //getting name of the part
+		slog("SPAWNING PART PICKUP WITH DATA: %s, %f, %f, %i", sj_get_string_value(item), partpickupPosX, partpickupPosY, partpickupType);
+		gfc_list_append(&world->partpickupList, partpickup_new(gfc_vector2d(partpickupPosX, partpickupPosY), partpickupType, sj_get_string_value(item)));
+	}
+	
+
 	//move the player according to what spawn index was given
 	spawns = sj_object_get_value(wjson, "spawns");
 	spawn = sj_array_get_nth(spawns, spawnIndex);
@@ -324,6 +353,8 @@ void world_free(World* world) {
 	world_free_interactable_list(world);
 
 	world_free_door_list(world);
+
+	world_free_partpickup_list(world);
 
 	gf2d_sprite_free(world->background);
 	gf2d_sprite_free(world->tileSet);
@@ -380,6 +411,19 @@ void world_free_door_list(World* world) {
 		}
 	}
 	gfc_list_clear(&world->doorList);
+}
+
+void world_free_partpickup_list(World* world) {
+	Entity* partpickup;
+	int i;
+
+	for (i = 0; i < gfc_list_get_count(&world->partpickupList); i++) {
+		partpickup = gfc_list_get_nth(&world->partpickupList, i);
+		if (partpickup) {
+			partpickup_free(partpickup);
+		}
+	}
+	gfc_list_clear(&world->partpickupList);
 }
 
 void world_draw(World* world) {

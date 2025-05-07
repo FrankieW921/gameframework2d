@@ -19,6 +19,7 @@ typedef enum {
 	Teleporter,
 	Door,
 	ET_Boss,
+	ET_PartPickup,
 }EntityType;
 
 typedef enum {
@@ -26,6 +27,13 @@ typedef enum {
 	Energy_Ball,
 	Small_Rocket,
 }ProjectileType; //enums line up with their index in defs
+
+typedef enum {
+	PPT_Head,
+	PPT_Arm,
+	PPT_Torso,
+	PPT_Leg,
+}PartPickupType;
 
 typedef struct Entity_S
 {

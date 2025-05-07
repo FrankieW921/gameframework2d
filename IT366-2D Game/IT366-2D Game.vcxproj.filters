@@ -162,6 +162,9 @@
     <ClCompile Include="..\src\particles.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\partpickup.c">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\gf2d_draw.h">
@@ -310,6 +313,9 @@
     </ClInclude>
     <ClInclude Include="..\include\particles.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\partpickup.h">
+      <Filter>Header Files\entities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

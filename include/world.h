@@ -24,6 +24,7 @@ typedef struct World_S
 	GFC_List		interactableList;
 	GFC_List		doorList;
 	GFC_List		spawnLocations;
+	GFC_List		partpickupList;
 
 
 	
@@ -89,6 +90,8 @@ void world_free_entity_list(World* world);
 void world_free_interactable_list(World* world);
 
 void world_free_door_list(World* world);
+
+void world_free_partpickup_list(World* world);
 
 /**
 * @brief draw a world

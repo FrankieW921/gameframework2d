@@ -5,27 +5,27 @@
 #include "projectile.h"
 
 typedef struct {
-	const char*			name;
+	const char*			name[128];
 	Uint8			health;
 	Uint8			cooldownValue; //shootCooldown gets set to this value, this value changes with the selected head
 	Sprite*			headSprite;
 }Head;
 
 typedef struct {
-	const char*			name;
+	const char*			name[128];
 	ProjectileType	projectileType;
 	Sprite*		armSprite;
 }Arm;
 
 typedef struct {
-	const char*			name;
+	const char*			name[128];
 	Uint8			health;
 	Uint8			iTime;
 	Sprite*		torsoSprite;
 }Torso;
 
 typedef struct {
-	const char*			name;
+	const char*			name[128];
 	Uint8			health;
 	float			speed;
 	Sprite*		legSprite;
@@ -52,6 +52,10 @@ typedef struct { //mfw i want to make a mecha game
 	SJson*			arms;
 	SJson*			torsos;
 	SJson*			legs;
+	GFC_List*		headInventory;
+	GFC_List*		armInventory;
+	GFC_List*		torsoInventory;
+	GFC_List*		legInventory;
 	Head			*currentHead;
 	Arm				*currentArm;
 	Torso			*currentTorso;

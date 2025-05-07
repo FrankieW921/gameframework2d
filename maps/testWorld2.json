@@ -29,13 +29,19 @@
 
     ],
     "interactables": [
-
+      [ 7, 200.0, 200.0 ]
     ],
     "spawns": [
       [ 1600.0, 384.0 ]
     ],
     "doors": [
       [ "maps/testWorld.json", 1656.0, 320.0, 1 ]
+    ],
+    "partpickups": [
+      [ 400.0, 400.0, 0, "F-eye-nder" ],
+      [ 600.0, 400.0, 1, "Energy Blaster" ],
+      [ 400.0, 600.0, 2, "Hulking" ],
+      [ 600.0, 600.0, 3, "Ingrains" ]
     ]
   }
 }
