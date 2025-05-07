@@ -3,11 +3,11 @@
 
 #include "player.h"
 #include "world.h"
-#include "door.h"
 #include "camera.h"
 #include "projectile.h"
 #include "interactables.h"
 #include "particles.h"
+#include "door.h"
 
 static Entity* thePlayer = NULL;
 
@@ -195,7 +195,7 @@ void player_update(Entity* self) {
 	ProjectileData* projectileData;
 	DoorData* doorData;
 	int i;
-	const char* doorMapName;
+	char doorMapName[128];
 	int doorSpawnIndex;
 	data = self->data;
 	if (!data)return;
@@ -223,13 +223,18 @@ void player_update(Entity* self) {
 				}
 				else if (collider->type == Door) {
 					doorData = collider->data; //need the data before we free the world
-					doorMapName = doorData->mapName;
+					if (!doorData->mapName) {
+						slog("NO MAP NAME");
+					}
+					else {
+						slog("PLAYER TOUCHED DOOR: %s, %i", doorData->mapName, doorData->playerSpawnIndex);
+					}
+					strcpy(&doorMapName, doorData->mapName);
 					doorSpawnIndex = doorData->playerSpawnIndex;
-					slog("THIS TEST SHOULD SAY SOMETHING RIGHT: %s", doorData->mapName);
+					slog("Stored door data: %s, %i", doorMapName, doorSpawnIndex);
 					
 					world_free(get_current_world());
-					world_load("maps/testWorld2.json", 0);
-					
+					world_load(doorMapName, doorSpawnIndex);
 				}
 				else if (collider->type == Healing_Field) {
 					if (data->currentHealth < data->maxHealth) {

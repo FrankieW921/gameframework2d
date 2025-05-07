@@ -35,7 +35,7 @@
       [ 1600.0, 384.0 ]
     ],
     "doors": [
-      [ "maps/testWorlds.json", 1656.0, 320.0, 1 ]
+      [ "maps/testWorld.json", 1656.0, 320.0, 1 ]
     ]
   }
 }

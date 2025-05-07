@@ -151,6 +151,8 @@ World* world_load(const char* filename, int spawnIndex) {
 	int numDoors, doorSpawnIndex;
 	float doorPosX, doorPosY;
 	float spawnPosX, spawnPosY;
+	Entity* doorEnt;
+	DoorData* doorData;
 
 	if (!filename) {
 		slog("No file name given for world");
@@ -272,8 +274,11 @@ World* world_load(const char* filename, int spawnIndex) {
 		item = sj_array_get_nth(door, 3); //getting door spawn index in next world
 		sj_get_integer_value(item, &doorSpawnIndex);
 		item = sj_array_get_nth(door, 0); //will feed into new door function as the string for the world filename
-		slog("%f, %f, %i", doorPosX, doorPosY, doorSpawnIndex);
+		slog("SPAWNING DOOR WITH FILENAME: %s", sj_get_string_value(item));
 		gfc_list_append(&world->doorList, door_new(sj_get_string_value(item), gfc_vector2d(doorPosX, doorPosY), doorSpawnIndex));
+		doorEnt = gfc_list_get_nth(&world->doorList, i);
+		doorData = doorEnt->data;
+		slog("SOME CHECKING: %s, %i", get_door_name(doorEnt), doorData->playerSpawnIndex);
 	}
 	//move the player according to what spawn index was given
 	spawns = sj_object_get_value(wjson, "spawns");
@@ -313,18 +318,19 @@ World* world_new(GFC_Vector2I worldSize) {
 
 void world_free(World* world) {
 	if (!world)return;
-	slog("ATTEMPTING TO FREE WORLD");
+
 	world_free_entity_list(world);
-	slog("ENTITY LIST FREED");
+
 	world_free_interactable_list(world);
-	slog("INTERACTABLE LIST FREED");
+
 	world_free_door_list(world);
-	slog("DOOR LIST FREED");
+
 	gf2d_sprite_free(world->background);
 	gf2d_sprite_free(world->tileSet);
 	gf2d_sprite_free(world->tileLayer);
 	free(world->tileMap);
 	free(world);
+	slog("World freed");
 }
 
 void world_free_entity_list(World* world) {

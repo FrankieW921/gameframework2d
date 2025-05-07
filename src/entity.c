@@ -146,6 +146,7 @@ void entity_draw(Entity* self)
 {
 	GFC_Vector2D position, offset;
 	GFC_Rect drawRect, sightRect;
+	
 	if (!self) return;
 	if (!self->sprite) return;
 	offset = camera_get_offset();
