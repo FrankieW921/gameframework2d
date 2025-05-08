@@ -1,7 +1,7 @@
 #include "simple_logger.h"
 #include "partpickup.h"
 
-Entity* partpickup_new(GFC_Vector2D position, Uint8 partPickupType, const char* partName) {
+Entity* partpickup_new(GFC_Vector2D position, PartPickupType partPickupType, const char* partName, int partDefIndex) {
 	Entity* self;
 	PartPickupData* data;
 	self = entity_new();
@@ -17,8 +17,8 @@ Entity* partpickup_new(GFC_Vector2D position, Uint8 partPickupType, const char* 
 	data = gfc_allocate_array(sizeof(PartPickupData), 1);
 	if (data) {
 		data->partPickupType = partPickupType;
+		data->partDefIndex = partDefIndex;
 		strcpy(data->partName, partName);
-
 		switch (data->partPickupType) {
 			case PPT_Head:
 				self->sprite = gf2d_sprite_load_image("images/partpickups/newhead.png");
@@ -40,10 +40,13 @@ Entity* partpickup_new(GFC_Vector2D position, Uint8 partPickupType, const char* 
 }
 
 void partpickup_free(Entity* self) {
+	
 	PartPickupData* data;
 	if (!self) return;
 	data = self->data;
-	_strset(data->partName, 0);
-	memset(data, 0, sizeof(PartPickupData));
+	
+	//_strset(data->partName, 0);
+	//smemset(data, 0, sizeof(PartPickupData));
+
 	entity_free(self);
 }

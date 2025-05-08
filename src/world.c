@@ -157,7 +157,7 @@ World* world_load(const char* filename, int spawnIndex) {
 	int numDoors, doorSpawnIndex;
 	float doorPosX, doorPosY;
 
-	int numPartpickups, partpickupType;
+	int numPartpickups, partpickupType, partDefIndex;
 	float partpickupPosX, partpickupPosY;
 
 	float spawnPosX, spawnPosY;
@@ -303,9 +303,11 @@ World* world_load(const char* filename, int spawnIndex) {
 		sj_get_float_value(item, &partpickupPosY);
 		item = sj_array_get_nth(partpickup, 2); //getting part type (0 = head, 1 = arm, 2 = torso, 3 = leg)
 		sj_get_integer_value(item, &partpickupType);
+		item = sj_array_get_nth(partpickup, 4); //getting door spawn index in next world
+		sj_get_integer_value(item, &partDefIndex);
 		item = sj_array_get_nth(partpickup, 3); //getting name of the part
-		slog("SPAWNING PART PICKUP WITH DATA: %s, %f, %f, %i", sj_get_string_value(item), partpickupPosX, partpickupPosY, partpickupType);
-		gfc_list_append(&world->partpickupList, partpickup_new(gfc_vector2d(partpickupPosX, partpickupPosY), partpickupType, sj_get_string_value(item)));
+		slog("SPAWNING PART PICKUP WITH DATA: %s, %f, %f, %i, %i", sj_get_string_value(item), partpickupPosX, partpickupPosY, partpickupType, partDefIndex);
+		gfc_list_append(&world->partpickupList, partpickup_new(gfc_vector2d(partpickupPosX, partpickupPosY), partpickupType, sj_get_string_value(item), partDefIndex));
 	}
 	
 

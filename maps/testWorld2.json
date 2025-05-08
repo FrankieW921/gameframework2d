@@ -38,10 +38,10 @@
       [ "maps/testWorld.json", 1656.0, 320.0, 1 ]
     ],
     "partpickups": [
-      [ 400.0, 400.0, 0, "F-eye-nder" ],
-      [ 600.0, 400.0, 1, "Energy Blaster" ],
-      [ 400.0, 600.0, 2, "Hulking" ],
-      [ 600.0, 600.0, 3, "Ingrains" ]
+      [ 400.0, 400.0, 0, "F-eye-nder", 1 ],
+      [ 600.0, 400.0, 1, "Energy Blaster", 1 ],
+      [ 400.0, 600.0, 2, "Hulking", 1 ],
+      [ 600.0, 600.0, 3, "Ingrains", 1 ]
     ]
   }
 }

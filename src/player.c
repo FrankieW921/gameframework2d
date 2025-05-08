@@ -8,7 +8,6 @@
 #include "interactables.h"
 #include "particles.h"
 #include "door.h"
-#include "partpickup.h"
 
 static Entity* thePlayer = NULL;
 
@@ -85,33 +84,44 @@ void player_data_new(PlayerData* data) {
 	data->torsoIndex = 0;
 	data->legIndex = 0;
 
+
 	file = sj_load("defs/heads.json");
 	data->heads = sj_object_get_value(file, "heads");
-	data->headIndexMax = sj_array_get_count(data->heads) - 1;
-	data->headInventory = gfc_allocate_array(sizeof(Head), 12);
+	//data->headIndexMax = sj_array_get_count(data->heads) - 1;
 	data->currentHead = gfc_allocate_array(sizeof(Head), 1);
+	data->headInventory = gfc_list_new();
 	player_set_head(data->currentHead, sj_array_get_nth(data->heads, data->headIndex));
+	gfc_list_append(data->headInventory, data->currentHead);
+	data->headIndexMax = gfc_list_get_count(data->headInventory);
+	slog("headIndexMax: %i", data->headIndexMax);
+
 
 	file = sj_load("defs/arms.json");
 	data->arms = sj_object_get_value(file, "arms");
-	data->armIndexMax = sj_array_get_count(data->arms) - 1;
-	data->armInventory = gfc_allocate_array(sizeof(Arm), 12);
+	//data->armIndexMax = sj_array_get_count(data->arms) - 1;
 	data->currentArm = gfc_allocate_array(sizeof(Arm), 1);
+	data->armInventory = gfc_list_new();
 	player_set_arm(data->currentArm, sj_array_get_nth(data->arms, data->armIndex));
+	gfc_list_append(data->armInventory, data->currentArm);
+	data->armIndexMax = gfc_list_get_count(data->armInventory);
 
 	file = sj_load("defs/torsos.json");
 	data->torsos = sj_object_get_value(file, "torsos");
-	data->torsoIndexMax = sj_array_get_count(data->torsos) - 1;
-	data->torsoInventory = gfc_allocate_array(sizeof(Torso), 12);
+	//data->torsoIndexMax = sj_array_get_count(data->torsos) - 1;
 	data->currentTorso = gfc_allocate_array(sizeof(Torso), 1);
+	data->torsoInventory = gfc_list_new();
 	player_set_torso(data->currentTorso, sj_array_get_nth(data->torsos, data->torsoIndex));
+	gfc_list_append(data->torsoInventory, data->currentTorso);
+	data->torsoIndexMax = gfc_list_get_count(data->torsoInventory);
 
 	file = sj_load("defs/legs.json");
 	data->legs = sj_object_get_value(file, "legs");
-	data->legIndexMax = sj_array_get_count(data->legs) - 1;
-	data->legInventory = gfc_allocate_array(sizeof(Leg), 12);
+	//data->legIndexMax = sj_array_get_count(data->legs) - 1;
 	data->currentLeg = gfc_allocate_array(sizeof(Leg), 1);
+	data->legInventory = gfc_list_new();
 	player_set_leg(data->currentLeg, sj_array_get_nth(data->legs, data->legIndex));
+	gfc_list_append(data->legInventory, data->currentLeg);
+	data->legIndexMax = gfc_list_get_count(data->legInventory);
 
 }
 
@@ -243,9 +253,13 @@ void player_update(Entity* self) {
 					world_free(get_current_world());
 					world_load(doorMapName, doorSpawnIndex);
 				}
-				else if (collider->type = ET_PartPickup) {
+				else if (collider->type == ET_PartPickup) {
 					partpickupData = collider->data;
-					//PICKUP PART, PUT INTO INVENTORY
+					if (partpickupData)
+					{
+						player_add_part_to_inventory(self, partpickupData);
+					}
+					partpickup_free(collider);
 				}
 				else if (collider->type == Healing_Field) {
 					if (data->currentHealth < data->maxHealth) {
@@ -402,7 +416,7 @@ void player_set_head(Head* currentHead, SJson* selectedHead) {
 		0,
 		0
 	);
-	slog("Head switched");
+	slog("Head switched or added to inventory");
 	slog("Head: %s", currentHead->name);
 	slog("Head Health: %i", currentHead->health);
 	slog("Shoot Cooldown: %i", currentHead->cooldownValue);
@@ -427,7 +441,7 @@ void player_set_arm(Arm* currentArm, SJson* selectedArm) {
 		0,
 		0
 	);
-	slog("Arm switched");
+	slog("Arm switched or added to inventory");
 	slog("Arm: %s", currentArm->name);
 	slog("Projectile Type/Index: %i", currentArm->projectileType);
 }
@@ -452,7 +466,7 @@ void player_set_torso(Torso* currentTorso, SJson* selectedTorso) {
 		0,
 		0
 	);
-	slog("Torso switched");
+	slog("Torso switched or added to inventory");
 	slog("Torso: %s", currentTorso->name);
 	slog("Torso Health: %i", currentTorso->health);
 	slog("Torso Invincibility Time: %i", currentTorso->iTime);
@@ -478,7 +492,7 @@ void player_set_leg(Leg* currentLeg, SJson* selectedLeg) {
 		0,
 		0
 	);
-	slog("Leg switched");
+	slog("Leg switched or added to inventory");
 	slog("Leg: %s", currentLeg->name);
 	slog("Leg Health: %i", currentLeg->health);
 	slog("Leg Speed: %f", currentLeg->speed);
@@ -490,10 +504,15 @@ void player_next_head(Entity* self) {
 	if (!data)return;
 
 	data->headIndex += 1;
-	if (data->headIndex > data->headIndexMax) {
+	if (data->headIndex >= data->headIndexMax) {
 		data->headIndex = 0;
 	}
-	player_set_head(data->currentHead, sj_array_get_nth(data->heads, data->headIndex));
+	//player_set_head(data->currentHead, sj_array_get_nth(data->heads, data->headIndex));
+	data->currentHead = gfc_list_get_nth(data->headInventory, data->headIndex);
+	slog("Player switch head from inventory");
+	slog("Head: %s", data->currentHead->name);
+	slog("Head Health: %i", data->currentHead->health);
+	slog("Shoot Cooldown: %i", data->currentHead->cooldownValue);
 }
 
 void player_next_arm(Entity* self) {
@@ -502,10 +521,14 @@ void player_next_arm(Entity* self) {
 	if (!data)return;
 
 	data->armIndex += 1;
-	if (data->armIndex > data->armIndexMax) {
+	if (data->armIndex >= data->armIndexMax) {
 		data->armIndex = 0;
 	}
-	player_set_arm(data->currentArm, sj_array_get_nth(data->arms, data->armIndex));
+	//player_set_arm(data->currentArm, sj_array_get_nth(data->arms, data->armIndex));
+	data->currentArm = gfc_list_get_nth(data->armInventory, data->armIndex);
+	slog("Player switched arm from inventory");
+	slog("Arm: %s", data->currentArm->name);
+	slog("Projectile Type/Index: %i", data->currentArm->projectileType);
 }
 
 void player_next_torso(Entity* self) {
@@ -514,10 +537,15 @@ void player_next_torso(Entity* self) {
 	if (!data)return;
 
 	data->torsoIndex += 1;
-	if (data->torsoIndex > data->torsoIndexMax) {
+	if (data->torsoIndex >= data->torsoIndexMax) {
 		data->torsoIndex = 0;
 	}
-	player_set_torso(data->currentTorso, sj_array_get_nth(data->torsos, data->torsoIndex));
+	//player_set_torso(data->currentTorso, sj_array_get_nth(data->torsos, data->torsoIndex));
+	data->currentTorso = gfc_list_get_nth(data->torsoInventory, data->torsoIndex);
+	slog("Player switched torso from inventory");
+	slog("Torso: %s", data->currentTorso->name);
+	slog("Torso Health: %i", data->currentTorso->health);
+	slog("Torso Invincibility Time: %i", data->currentTorso->iTime);
 }
 
 void player_next_leg(Entity* self) {
@@ -526,10 +554,60 @@ void player_next_leg(Entity* self) {
 	if (!data)return;
 
 	data->legIndex += 1;
-	if (data->legIndex > data->legIndexMax) {
+	if (data->legIndex >= data->legIndexMax) {
 		data->legIndex = 0;
 	}
-	player_set_leg(data->currentLeg, sj_array_get_nth(data->legs, data->legIndex));
+	//player_set_leg(data->currentLeg, sj_array_get_nth(data->legs, data->legIndex));
+	data->currentLeg = gfc_list_get_nth(data->legInventory, data->legIndex);
+	slog("Player switched leg from inventory");
+	slog("Leg: %s", data->currentLeg->name);
+	slog("Leg Health: %i", data->currentLeg->health);
+	slog("Leg Speed: %f", data->currentLeg->speed);
+}
+
+void player_add_part_to_inventory(Entity* self, PartPickupData* partpickupData) {
+	PlayerData* data;
+	SJson* partJson;
+	Head* headToAdd;
+	Arm* armToAdd;
+	Torso* torsoToAdd;
+	Leg* legToAdd;
+
+	if (!self || !partpickupData) return;
+	data = self->data;
+	if (!data) return;
+
+	switch (partpickupData->partPickupType) {
+		case PPT_Head:
+			headToAdd = gfc_allocate_array(sizeof(Head), 1);
+			partJson = sj_array_get_nth(data->heads, partpickupData->partDefIndex);
+			player_set_head(headToAdd, partJson);
+			gfc_list_append(data->headInventory, headToAdd);
+			data->headIndexMax = (Uint8)gfc_list_get_count(data->headInventory);
+			break;
+		case PPT_Arm:
+			armToAdd = gfc_allocate_array(sizeof(Arm), 1);
+			partJson = sj_array_get_nth(data->arms, partpickupData->partDefIndex);
+			player_set_arm(armToAdd, partJson);
+			gfc_list_append(data->armInventory, armToAdd);
+			data->armIndexMax = (Uint8)gfc_list_get_count(data->armInventory);
+			break;
+		case PPT_Torso:
+			slog("Adding torso to inv");
+			torsoToAdd = gfc_allocate_array(sizeof(Torso), 1);
+			partJson = sj_array_get_nth(data->torsos, partpickupData->partDefIndex);
+			player_set_torso(torsoToAdd, partJson);
+			gfc_list_append(data->torsoInventory, torsoToAdd);
+			data->torsoIndexMax = (Uint8)gfc_list_get_count(data->torsoInventory);
+			break;
+		case PPT_Leg:
+			legToAdd = gfc_allocate_array(sizeof(Leg), 1);
+			partJson = sj_array_get_nth(data->legs, partpickupData->partDefIndex);
+			player_set_leg(legToAdd, partJson);
+			gfc_list_append(data->legInventory, legToAdd);
+			data->legIndexMax = (Uint8)gfc_list_get_count(data->legInventory);
+			break;
+	}
 }
 
 void player_do_max_health(Entity* self) {

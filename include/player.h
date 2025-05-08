@@ -3,6 +3,7 @@
 
 #include "entity.h"
 #include "projectile.h"
+#include "partpickup.h"
 
 typedef struct {
 	const char*			name[128];
@@ -158,6 +159,14 @@ void player_next_torso(Entity* self);
 * @param self the player entity
 */
 void player_next_leg(Entity* self);
+
+
+/*
+* @brief add a part to the player's inventory based on the pickup they touch and what is described in the parts defs
+* @param self the player 
+* @param partpickupData the PartPickupData void data pointer of the pickup
+*/
+void player_add_part_to_inventory(Entity* self, PartPickupData* partpickupData);
 
 /*
 * @brief update the player's max health based on newly equipped/swapped parts
