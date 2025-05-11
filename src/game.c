@@ -7,6 +7,7 @@
 #include "gfc_input.h""
 #include "gfc_vector.h"
 #include "gfc_shape.h"
+#include "gfc_audio.h"
 
 #include "entity.h"
 #include "player.h"
@@ -19,8 +20,6 @@
 
 int main(int argc, char * argv[])
 {
-    
-    
     /*variable declarations*/
     int done = 0;
     const Uint8 * keys;
@@ -58,11 +57,14 @@ int main(int argc, char * argv[])
     SDL_Init(SDL_INIT_AUDIO);
     camera_set_size(gfc_vector2d(1280, 720));
     
-    Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 8, 2048);
+    //Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 8, 2048);
+
+    gfc_audio_init(32, 8, 1, 1, true, false);
     Mix_VolumeMusic(32);
     
     Mix_Music* puzzle_boy = Mix_LoadMUS("music/Puzzle_Boy.mp3");
     Mix_PlayMusic(puzzle_boy, -1);
+
     /*demo setup*/
     sprite = gf2d_sprite_load_image("images/backgrounds/SMTtokyo.png");
     //mouse = gf2d_sprite_load_all("images/enemies/smtDemonIcon.png",-1,-1,1,0);

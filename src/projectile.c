@@ -1,4 +1,5 @@
 #include <SDL_mixer.h>
+#include <gfc_audio.h>
 #include "simple_logger.h"
 
 #include "projectile.h"
@@ -12,6 +13,7 @@ Entity* projectile_new_entity(GFC_Vector2D position, GFC_Vector2D velocity, Uint
 	Entity* self;
 	ProjectileData* data;
 	SJson* projectileObject;
+	GFC_Sound* projectileSound;
 
 	if (!projectileDefFile) {
 		projectileDefFile = sj_load("defs/projectiles.json");
@@ -57,6 +59,24 @@ Entity* projectile_new_entity(GFC_Vector2D position, GFC_Vector2D velocity, Uint
 		1
 	);
 	self->bounds = gfc_rect(position.x, position.y, 16, 16);
+
+	//play the projectile's sound
+	if (data) { //shouts at the cases for null pointers this is just a slapdash solution
+		switch (data->projectileType) {
+		case 0:
+			projectileSound = gfc_sound_load("sounds/PISTOL3.wav", .25, 4);
+			gfc_sound_play(projectileSound, 0, .25, -1, -1);
+			break;
+		case 1:
+			projectileSound = gfc_sound_load("sounds/PLASMA1.wav", .25, 4);
+			gfc_sound_play(projectileSound, 0, .25, -1, -1);
+			break;
+		case 2:
+			projectileSound = gfc_sound_load("sounds/ROCKET0.wav", .25, 4);
+			gfc_sound_play(projectileSound, 0, .25, -1, -1);
+			break;
+		}
+	}
 	return self;
 }
 
@@ -76,6 +96,14 @@ void projectile_update(Entity* self) {
 	self->position.y += self->velocity.y * data->speed;
 	self->bounds.x = self->position.x;
 	self->bounds.y = self->position.y;
-	if (data->timeToLive <= 0) entity_free(self);//free projectile itself first
+	if (data->timeToLive <= 0) projectile_free(self);//free projectile itself first
 }
 
+void projectile_free(Entity* self) {
+	ProjectileData* data;
+	if (!self) return;
+	data = self->data;
+
+	memset(data, 0, sizeof(ProjectileData)); //all ints no pointers, this is okay
+	entity_free(self);
+}

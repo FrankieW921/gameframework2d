@@ -1,4 +1,5 @@
 #include "simple_logger.h"
+#include "gfc_audio.h"
 
 #include "enemy4.h"
 #include "particles.h"
@@ -39,6 +40,7 @@ void enemy4_update(Entity* self) {
 	Entity *collider;
 	ProjectileData *projData;
 	GFC_Vector2D movementVelocity;
+	GFC_Sound* hitSound;
 	self->bounds.x = self->position.x;
 	self->bounds.y = self->position.y;
 	
@@ -57,6 +59,8 @@ void enemy4_update(Entity* self) {
 					collider->_inuse = 0;
 					particle_spark(self->position, 2, 20);
 					slog("Enemy hit");
+					hitSound = gfc_sound_load("sounds/PISTOL5.wav", .25, 4);
+					gfc_sound_play(hitSound, 0, .25, -1, -1);
 				}
 			}
 		}

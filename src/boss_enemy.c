@@ -1,5 +1,6 @@
 #include "simple_logger.h"
 #include "gfc_vector.h"
+#include "gfc_audio.h"
 
 #include "boss_enemy.h"
 #include "projectile.h"
@@ -46,7 +47,7 @@ void boss_update(Entity* self) {
 	Entity* collider;
 	BossData* bData;
 	ProjectileData* pData;
-
+	GFC_Sound* hitSound;
 	bData = self->data;
 	if (!bData)return NULL;
 
@@ -60,6 +61,8 @@ void boss_update(Entity* self) {
 						self->health -= pData->damage;
 						collider->_inuse = 0;
 						particle_spark(self->position, 2, 30);
+						hitSound = gfc_sound_load("sounds/PISTOL5.wav", .25, 4);
+						gfc_sound_play(hitSound, 0, .25, -1, -1);
 					}
 				}
 			}

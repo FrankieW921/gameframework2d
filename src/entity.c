@@ -1,6 +1,7 @@
 #include "simple_logger.h"
 
 #include "gf2d_draw.h"
+#include "gfc_audio.h"
 
 #include "entity.h"
 #include "camera.h"

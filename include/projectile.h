@@ -32,5 +32,11 @@ void projectile_think(Entity* self);
 */
 void projectile_update(Entity* self);
 
+/*
+* @brief projectile entity free
+* @param self projectile entity
+*/
+void projectile_free(Entity* self);
+
 
 #endif

@@ -37,7 +37,7 @@ void particle_system_init(int maxParticles) {
 	file = sj_load("defs/particles.json");
 	particle_defs = sj_object_get_value(file, "particles");
 
-	slog("entity system initialized");
+	slog("particle system initialized");
 }
 
 Particle* particle_new(int ttl) {
@@ -102,7 +102,7 @@ void particle_spark(GFC_Vector2D position, int defIndex, int count) {
 	sj_object_get_color_value(particleDef, "color", &color);
 	sj_object_get_value_as_int(particleDef, "colorVariance", &colorVariance);
 	sj_object_get_value_as_int(particleDef, "alphaVariance", &alphaVariance);
-	slog("color: %f, %f, %f", color.r, color.g, color.b);
+	//slog("color: %f, %f, %f", color.r, color.g, color.b);
 
 	for (i = 0; i < count; i++) {
 		p = particle_new(ttl);

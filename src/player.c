@@ -70,6 +70,7 @@ Entity *player_new_entity(GFC_Vector2D position)
 
 	//gfc_input_init("gfc/sample_config/input.cfg");
 	thePlayer = self;
+
 	Mix_HaltMusic();
 	battle_a2 = Mix_LoadMUS("music/Battle-a2.mp3");
 	Mix_PlayMusic(battle_a2, -1);
