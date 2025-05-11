@@ -1,3 +1,4 @@
+#include <SDL_mixer.h>
 #include "simple_logger.h"
 #include "gfc_input.h"
 
@@ -18,15 +19,17 @@ Entity* get_the_player() {
 }
 
 void move_the_player(GFC_Vector2D newPosition) {
-	if (thePlayer) {
-		gfc_vector2d_copy(thePlayer->position, newPosition);
+	if (!thePlayer) {
+		return NULL;
 	}
+	gfc_vector2d_copy(thePlayer->position, newPosition);
 }
 
 Entity *player_new_entity(GFC_Vector2D position)
 {
 	Entity* self;
 	PlayerData* data;
+	Mix_Music* battle_a2;
 
 	if (thePlayer) {
 		return thePlayer;
@@ -67,6 +70,10 @@ Entity *player_new_entity(GFC_Vector2D position)
 
 	//gfc_input_init("gfc/sample_config/input.cfg");
 	thePlayer = self;
+	Mix_HaltMusic();
+	battle_a2 = Mix_LoadMUS("music/Battle-a2.mp3");
+	Mix_PlayMusic(battle_a2, -1);
+
 	return self;
 }
 

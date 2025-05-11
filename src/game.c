@@ -1,4 +1,5 @@
 #include <SDL.h>
+#include <SDL_mixer.h>
 #include "simple_logger.h"
 
 #include "gf2d_graphics.h"
@@ -18,6 +19,8 @@
 
 int main(int argc, char * argv[])
 {
+    
+    
     /*variable declarations*/
     int done = 0;
     const Uint8 * keys;
@@ -32,6 +35,7 @@ int main(int argc, char * argv[])
     float mousef = 0;
     Sprite *mouse;
     GFC_Color mouseGFC_Color = gfc_color8(255,255,255,255);
+
     entity_system_init(1024);
     particle_system_init(1024);
     
@@ -51,8 +55,14 @@ int main(int argc, char * argv[])
     gf2d_sprite_init(1024);
     gfc_input_init("gfc/sample_config/input.cfg");
     SDL_ShowCursor(SDL_DISABLE);
+    SDL_Init(SDL_INIT_AUDIO);
     camera_set_size(gfc_vector2d(1280, 720));
     
+    Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 8, 2048);
+    Mix_VolumeMusic(32);
+    
+    Mix_Music* puzzle_boy = Mix_LoadMUS("music/Puzzle_Boy.mp3");
+    Mix_PlayMusic(puzzle_boy, -1);
     /*demo setup*/
     sprite = gf2d_sprite_load_image("images/backgrounds/SMTtokyo.png");
     //mouse = gf2d_sprite_load_all("images/enemies/smtDemonIcon.png",-1,-1,1,0);
@@ -112,11 +122,12 @@ int main(int argc, char * argv[])
         if (keys[SDL_SCANCODE_ESCAPE])done = 1; // exit condition
         //slog("Rendering at %f FPS",gf2d_graphics_get_frames_per_second());
     }
-    //entity_free(player);
-    //entity_free(enemy);
     world_free(get_current_world());
     entity_system_free_all();
     slog("---==== END ====---");
     return 0;
 }
-/*eol@eof*/
+
+void start_game() {
+
+}

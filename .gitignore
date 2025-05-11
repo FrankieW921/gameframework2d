@@ -58,3 +58,8 @@ gf2d
 *.log
 
 makefile.dep
+
+#audio files
+*.mp3
+*.wav
+*.ogg

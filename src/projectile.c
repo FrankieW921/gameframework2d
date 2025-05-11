@@ -1,9 +1,11 @@
+#include <SDL_mixer.h>
 #include "simple_logger.h"
 
 #include "projectile.h"
 
 static SJson* projectileDefFile = NULL;
 static SJson* projectilesDefs = NULL;
+
 
 //TODO take in desired projectile type and assign sprite, velocity, and timetolive
 Entity* projectile_new_entity(GFC_Vector2D position, GFC_Vector2D velocity, Uint8 projectileType) {
