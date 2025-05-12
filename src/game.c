@@ -25,7 +25,6 @@ int main(int argc, char * argv[])
     const Uint8 * keys;
     Sprite* sprite;
     Entity *player;
-    Hud* theHud;
     //Entity* enemy;
 
     //World *testWorld;
@@ -37,6 +36,7 @@ int main(int argc, char * argv[])
 
     entity_system_init(1024);
     particle_system_init(1024);
+
     
     
     /*program initializtion*/
@@ -55,6 +55,7 @@ int main(int argc, char * argv[])
     gfc_input_init("gfc/sample_config/input.cfg");
     SDL_ShowCursor(SDL_DISABLE);
     SDL_Init(SDL_INIT_AUDIO);
+    TTF_Init();
     camera_set_size(gfc_vector2d(1280, 720));
     
     //Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 8, 2048);
@@ -75,8 +76,7 @@ int main(int argc, char * argv[])
     player = player_new_entity(gfc_vector2d(80, 80));
     set_current_world(world_load("maps/testWorld.json", 1));
     world_setup_camera();
-    
-    theHud = new_hud(player);
+    init_huds();
     //enemy = enemy_new_entity(gfc_vector2d(200, 200));
 
     /*main game loop*/
@@ -115,7 +115,8 @@ int main(int argc, char * argv[])
                 NULL,
                 &mouseGFC_Color,
                 (int)mousef);
-            draw_hud(theHud);
+            draw_all_huds();
+
 
         gf2d_graphics_next_frame();// render current draw frame and skip to the next frame
 
@@ -128,8 +129,4 @@ int main(int argc, char * argv[])
     entity_system_free_all();
     slog("---==== END ====---");
     return 0;
-}
-
-void start_game() {
-
 }

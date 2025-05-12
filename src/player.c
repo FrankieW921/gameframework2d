@@ -9,6 +9,7 @@
 #include "interactables.h"
 #include "particles.h"
 #include "door.h"
+#include "hud.h"
 
 static Entity* thePlayer = NULL;
 
@@ -222,6 +223,7 @@ void player_update(Entity* self) {
 	int i;
 	char doorMapName[128];
 	int doorSpawnIndex;
+	int touchingGarage = 0;
 	data = self->data;
 	if (!data)return;
 
@@ -279,7 +281,7 @@ void player_update(Entity* self) {
 					self->velocity.y *= 3;
 				}
 				else if (collider->type == Part_Changer) {
-					data->canChangeParts = true;
+					touchingGarage = 1;
 				}
 				else if (collider->type == Star_Power) {
 					entity_free(collider);
@@ -292,8 +294,14 @@ void player_update(Entity* self) {
 			}
 		}
 	}
+
+	if (touchingGarage == 1) {
+		data->canChangeParts = true;
+		enable_do_draw_parts_huds();
+	}
 	else {
-		data->canChangeParts = false; //probably a better way to do this, but since when you are changing parts there shouldnt be enemies around, its okay (gulp)
+		data->canChangeParts = false;
+		disable_do_draw_parts_huds();
 	}
 	
 	entity_move(self);

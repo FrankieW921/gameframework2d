@@ -3,39 +3,155 @@
 #include "hud.h"
 #include "camera.h"
 
-Hud* new_hud(Entity* player) {
-	TTF_Init();
+
+static Hud* healthHud;
+static Hud* partsHud;
+static Hud* inventoryHud;
+
+static Uint8 doDrawPartsHuds;
+
+void init_huds() {
+	healthHud = new_hud(gfc_vector2d(0,0));
+	partsHud = new_hud(gfc_vector2d(0, 550));
+	inventoryHud = new_hud(gfc_vector2d(400, 200));
+
+	doDrawPartsHuds = 0;
+}
+
+void draw_all_huds() {
+	draw_health_hud(healthHud);
+	draw_current_parts_hud(partsHud);
+	draw_inventory_hud(inventoryHud);
+}
+
+Hud* new_hud(GFC_Vector2D position) {
 	Hud* h;
-	PlayerData* pData;
-	pData = player->data;
-	if (!pData)return;
 
 	h = gfc_allocate_array(sizeof(Hud), 1);
-
-	h->playerHealth = pData->currentHealth;
-	h->hudBox = gfc_rect(0, 0, 200, 100);
+	h->hudBox = gfc_rect(position.x, position.y, 200, 100);
 	h->font = TTF_OpenFont("pixelfont.ttf", 32);
 	if (!h->font)slog("NO FONT");
 
 	return h;
-
 }
 
-void draw_hud(Hud* h) {
-	char healthText[20];
+void draw_health_hud(Hud* h) {
+	SDL_Color color = { 255,255,255,255 };
 	PlayerData* pData;
 	if (!h)return;
 	pData = get_the_player()->data;
 	if (!pData)return;
 
-	h->playerHealth = pData->currentHealth;
+	strcpy(h->text, "");
+	sprintf(h->text, "HP: %i", pData->currentHealth);
 
-	SDL_Color color = { 255,255,255 };
-	healthText[0] = sprintf(healthText, "  HP: %i", h->playerHealth);
-	GFC_Vector2D offset = camera_get_offset();
-	h->surface = TTF_RenderText_Solid(h->font, healthText, color);
+	h->surface = TTF_RenderText_Blended_Wrapped(h->font, h->text, color, 512);
 	h->texture = SDL_CreateTextureFromSurface(gf2d_graphics_get_renderer(), h->surface);
-
-	gf2d_sprite_draw(h->texture, gfc_vector2d(0, 0), NULL, NULL, NULL, NULL, NULL, 0);
+	SDL_Rect rect = { h->hudBox.x, h->hudBox.y, h->surface->w, h->surface->h };
+	SDL_RenderCopy(gf2d_graphics_get_renderer(), h->texture, NULL, &rect);
+	SDL_FreeSurface(h->surface);
+	SDL_DestroyTexture(h->texture);
 }
+
+void draw_current_parts_hud(Hud* h) {
+	SDL_Color color = { 255,255,255,255 };
+	PlayerData* pData;
+
+	if (doDrawPartsHuds == 0) return;
+
+	if (!h)return;
+	strcpy(h->text, "");
+
+	pData = get_the_player()->data;
+	if (!pData)return;
+	
+	strcat(h->text, "Parts Currently Equipped\n  ");
+	strcat(h->text, "Head: ");
+	strcat(h->text, pData->currentHead->name);
+	strcat(h->text, "\n  Arm: ");
+	strcat(h->text, pData->currentArm->name);
+	strcat(h->text, "\n  Torso: ");
+	strcat(h->text, pData->currentTorso->name);
+	strcat(h->text, "\n  Leg: ");
+	strcat(h->text, pData->currentLeg->name);
+
+	h->surface = TTF_RenderText_Blended_Wrapped(h->font, h->text, color, 512);
+	h->texture = SDL_CreateTextureFromSurface(gf2d_graphics_get_renderer(), h->surface);
+	SDL_Rect rect = { h->hudBox.x, h->hudBox.y, h->surface->w, h->surface->h};
+	SDL_RenderCopy(gf2d_graphics_get_renderer(), h->texture, NULL, &rect);
+	SDL_FreeSurface(h->surface);
+	SDL_DestroyTexture(h->texture);
+}
+
+void draw_inventory_hud(Hud* h) {
+	PlayerData* pData;
+	Head* head;
+	Arm* arm; 
+	Torso* torso;
+	Leg* leg;
+	SDL_Color color = { 255,255,255 };
+	int i;
+
+	if (doDrawPartsHuds == 0) return;
+
+	if (!h)return;
+	strcpy(h->text, "");
+
+	pData = get_the_player()->data;
+	if (!pData)return;
+
+	strcat(h->text, "Parts Held");
+	strcat(h->text, "\nHeads: ");
+	for (i = 0; i < pData->headInventory->count; i++) {
+		if (i > 0) {
+			strcat(h->text, ", ");
+		}
+		head = gfc_list_get_nth(pData->headInventory, i);
+		strcat(h->text, head->name);
+	}
+
+	strcat(h->text, "\nArms: ");
+	for (i = 0; i < pData->armInventory->count; i++) {
+		if (i > 0) {
+			strcat(h->text, ", ");
+		}
+		arm = gfc_list_get_nth(pData->armInventory, i);
+		strcat(h->text, arm->name);
+	}
+
+	strcat(h->text, "\nTorsos: ");
+	for (i = 0; i < pData->torsoInventory->count; i++) {
+		if (i > 0) {
+			strcat(h->text, ", ");
+		}
+		torso = gfc_list_get_nth(pData->torsoInventory, i);
+		strcat(h->text, torso->name);
+	}
+
+	strcat(h->text, "\nLegs: ");
+	for (i = 0; i < pData->legInventory->count; i++) {
+		if (i > 0) {
+			strcat(h->text, ", ");
+		}
+		leg = gfc_list_get_nth(pData->legInventory, i);
+		strcat(h->text, leg->name);
+	}
+
+	h->surface = TTF_RenderText_Blended_Wrapped(h->font, h->text, color, 512);
+	h->texture = SDL_CreateTextureFromSurface(gf2d_graphics_get_renderer(), h->surface);
+	SDL_Rect rect = { h->hudBox.x, h->hudBox.y, h->surface->w, h->surface->h };
+	SDL_RenderCopy(gf2d_graphics_get_renderer(), h->texture, NULL, &rect);
+	SDL_FreeSurface(h->surface);
+	SDL_DestroyTexture(h->texture);
+}
+
+void enable_do_draw_parts_huds() {
+	doDrawPartsHuds = 1;
+}
+
+void disable_do_draw_parts_huds() {
+	doDrawPartsHuds = 0;
+}
+
+
 
