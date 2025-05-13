@@ -8,7 +8,6 @@ static SJson* projectileDefFile = NULL;
 static SJson* projectilesDefs = NULL;
 
 
-//TODO take in desired projectile type and assign sprite, velocity, and timetolive
 Entity* projectile_new_entity(GFC_Vector2D position, GFC_Vector2D velocity, Uint8 projectileType) {
 	Entity* self;
 	ProjectileData* data;
@@ -96,7 +95,7 @@ void projectile_update(Entity* self) {
 	self->position.y += self->velocity.y * data->speed;
 	self->bounds.x = self->position.x;
 	self->bounds.y = self->position.y;
-	if (data->timeToLive <= 0) projectile_free(self);//free projectile itself first
+	if (data->timeToLive <= 0) projectile_free(self);
 }
 
 void projectile_free(Entity* self) {

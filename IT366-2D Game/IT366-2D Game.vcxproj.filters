@@ -19,6 +19,9 @@
     <Filter Include="Source Files\entities">
       <UniqueIdentifier>{8dca967d-c541-4d77-a8e4-f3670090c712}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\maps">
+      <UniqueIdentifier>{0f36fc49-54b6-4876-83bf-30e122ddb5fa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\game.c">
@@ -317,6 +320,9 @@
     <ClInclude Include="..\include\partpickup.h">
       <Filter>Header Files\entities</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\game.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\defs\arms.json">
@@ -338,10 +344,13 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="..\maps\testWorld.json">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\maps</Filter>
     </None>
     <None Include="..\maps\testWorld2.json">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\maps</Filter>
+    </None>
+    <None Include="..\maps\mainMenu.json">
+      <Filter>Resource Files\maps</Filter>
     </None>
   </ItemGroup>
 </Project>

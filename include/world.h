@@ -36,7 +36,7 @@ typedef struct World_S
 World* get_current_world();
 
 /*
-* @brief set the static/global world to a new world
+* @brief set the static/global world to a new world, also frees the current world in the process
 * @param newWorld the world to set as the new world, use the world_load() function
 */
 void set_current_world(World* newWorld);

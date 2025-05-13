@@ -9,6 +9,7 @@
 #include "gfc_shape.h"
 #include "gfc_audio.h"
 
+#include "game.h"
 #include "entity.h"
 #include "player.h"
 #include "enemy.h"
@@ -17,6 +18,7 @@
 #include "hud.h"
 #include "particles.h"
 
+static int gameActive = 0;
 
 int main(int argc, char * argv[])
 {
@@ -24,10 +26,6 @@ int main(int argc, char * argv[])
     int done = 0;
     const Uint8 * keys;
     Sprite* sprite;
-    Entity *player;
-    //Entity* enemy;
-
-    //World *testWorld;
     
     int mx,my;
     float mousef = 0;
@@ -63,22 +61,17 @@ int main(int argc, char * argv[])
     gfc_audio_init(32, 8, 1, 1, true, false);
     Mix_VolumeMusic(32);
     
-    Mix_Music* puzzle_boy = Mix_LoadMUS("music/Puzzle_Boy.mp3");
-    Mix_PlayMusic(puzzle_boy, -1);
 
     /*demo setup*/
     sprite = gf2d_sprite_load_image("images/backgrounds/SMTtokyo.png");
     //mouse = gf2d_sprite_load_all("images/enemies/smtDemonIcon.png",-1,-1,1,0);
     mouse = gf2d_sprite_load_image("images/crosshair.png");
     slog("press [escape] to quit");
-    //testWorld = world_test_new();
-    //testWorld = world_load("maps/testWorld.json");
-    player = player_new_entity(gfc_vector2d(80, 80));
-    set_current_world(world_load("maps/testWorld.json", 1));
-    world_setup_camera();
-    init_huds();
-    //enemy = enemy_new_entity(gfc_vector2d(200, 200));
+    //main_menu();
 
+    //set_current_world(world_load("maps/testWorld.json", 1));
+
+    start_game();
     /*main game loop*/
     while(!done)
     {
@@ -129,4 +122,32 @@ int main(int argc, char * argv[])
     entity_system_free_all();
     slog("---==== END ====---");
     return 0;
+}
+
+void start_game() {
+    Entity* player;
+
+    entity_system_free_all;
+    player = player_new_entity(gfc_vector2d(80, 80));
+
+    world_free(get_current_world());
+    set_current_world(world_load("maps/testWorld.json", 1));
+    world_setup_camera();
+    init_huds();
+}
+
+void main_menu() {
+    Entity* startButton;
+    Entity* editButton;
+    
+    world_free(get_current_world());
+    set_current_world(world_load("maps/mainMenu.json", 0));
+    startButton = entity_new();
+    editButton = entity_new();
+
+    startButton->position = gfc_vector2d(540, 400);
+    editButton->position = gfc_vector2d(540, 550);
+
+    startButton->sprite = gf2d_sprite_load_image("images/startButton.png");
+    editButton->sprite = gf2d_sprite_load_image("images/editButton.png");
 }

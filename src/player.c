@@ -11,12 +11,13 @@
 #include "door.h"
 #include "hud.h"
 
-static Entity* thePlayer = NULL;
+static Entity* thePlayer;
 
 Entity* get_the_player() {
-	if (thePlayer) {
-		return thePlayer;
+	if (!thePlayer) {
+		return NULL;
 	}
+	return thePlayer;
 }
 
 void move_the_player(GFC_Vector2D newPosition) {

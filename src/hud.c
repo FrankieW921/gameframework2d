@@ -11,6 +11,7 @@ static Hud* inventoryHud;
 static Uint8 doDrawPartsHuds;
 
 void init_huds() {
+	if (healthHud || partsHud || inventoryHud) return;
 	healthHud = new_hud(gfc_vector2d(0,0));
 	partsHud = new_hud(gfc_vector2d(0, 550));
 	inventoryHud = new_hud(gfc_vector2d(400, 200));
@@ -151,6 +152,29 @@ void enable_do_draw_parts_huds() {
 
 void disable_do_draw_parts_huds() {
 	doDrawPartsHuds = 0;
+}
+
+void free_huds() {
+	if (!healthHud || !partsHud || !inventoryHud)return;
+
+	strcpy(healthHud->text, "");
+	strcpy(partsHud->text, "");
+	strcpy(inventoryHud->text, "");
+
+	TTF_CloseFont(healthHud->font);
+	TTF_CloseFont(partsHud->font);
+	TTF_CloseFont(inventoryHud->font);
+
+	SDL_FreeSurface(healthHud->surface);
+	SDL_DestroyTexture(healthHud->texture);
+	SDL_FreeSurface(partsHud->surface);
+	SDL_DestroyTexture(partsHud->texture);
+	SDL_FreeSurface(inventoryHud->surface);
+	SDL_DestroyTexture(inventoryHud->texture);
+
+	memset(healthHud, 0, sizeof(Hud));
+	memset(partsHud, 0, sizeof(Hud));
+	memset(inventoryHud, 0, sizeof(Hud));
 }
 
 
