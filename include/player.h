@@ -178,4 +178,6 @@ void player_do_max_health(Entity* self);
 */
 void player_output_current_head(Entity* self);
 
+void free_the_player();
+
 #endif

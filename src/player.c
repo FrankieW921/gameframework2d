@@ -22,6 +22,7 @@ Entity* get_the_player() {
 
 void move_the_player(GFC_Vector2D newPosition) {
 	if (!thePlayer) {
+		slog("NO PLAYER TO MOVE");
 		return NULL;
 	}
 	gfc_vector2d_copy(thePlayer->position, newPosition);
@@ -33,7 +34,7 @@ Entity *player_new_entity(GFC_Vector2D position)
 	PlayerData* data;
 	Mix_Music* battle_a2;
 
-	if (thePlayer) {
+	if (thePlayer && thePlayer->_inuse) {
 		return thePlayer;
 	}
 
@@ -75,7 +76,10 @@ Entity *player_new_entity(GFC_Vector2D position)
 
 	Mix_HaltMusic();
 	battle_a2 = Mix_LoadMUS("music/Battle-a2.mp3");
-	Mix_PlayMusic(battle_a2, -1);
+	if (battle_a2) {
+		Mix_PlayMusic(battle_a2, -1);
+	}
+	
 
 	return self;
 }
@@ -670,4 +674,46 @@ void player_output_current_head(Entity* self) {
 void spawn_interactable_command(Entity* self, Uint8 type) {
 	slog("SPAWN COMMAND STARTED");
 	interactable_new(self->position, type);
+}
+
+void free_the_player() {
+	PlayerData* data;
+	Head* tHead;
+	Arm* tArm;
+	Torso* tTorso;
+	Leg* tLeg;
+	int i;
+	if (!thePlayer) return;
+	data = thePlayer->data;
+	if (!data) return;
+
+	for (i = 0; i < gfc_list_get_count(data->headInventory); i++) {
+		tHead = gfc_list_get_nth(data->headInventory, i);
+		gf2d_sprite_free(tHead->headSprite);
+		memset(tHead, 0, sizeof(Head));
+	}
+
+	for (i = 0; i < gfc_list_get_count(data->armInventory); i++) {
+		tArm = gfc_list_get_nth(data->armInventory, i);
+		gf2d_sprite_free(tArm->armSprite);
+		memset(tArm, 0, sizeof(Arm));
+	}
+
+	for (i = 0; i < gfc_list_get_count(data->torsoInventory); i++) {
+		tTorso = gfc_list_get_nth(data->torsoInventory, i);
+		gf2d_sprite_free(tTorso->torsoSprite);
+		memset(tTorso, 0, sizeof(Torso));
+	}
+
+	for (i = 0; i < gfc_list_get_count(data->legInventory); i++) {
+		tLeg = gfc_list_get_nth(data->legInventory, i);
+		gf2d_sprite_free(tLeg->legSprite);
+		memset(tLeg, 0, sizeof(Leg));
+	}
+	gfc_list_clear(data->headInventory);
+	gfc_list_clear(data->armInventory);
+	gfc_list_clear(data->torsoInventory);
+	gfc_list_clear(data->legInventory);
+	//memset(data, 0, sizeof(PlayerData));
+	entity_free(thePlayer);
 }

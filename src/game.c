@@ -34,8 +34,6 @@ int main(int argc, char * argv[])
 
     entity_system_init(1024);
     particle_system_init(1024);
-
-    
     
     /*program initializtion*/
     init_logger("gf2d.log",0);
@@ -67,11 +65,11 @@ int main(int argc, char * argv[])
     //mouse = gf2d_sprite_load_all("images/enemies/smtDemonIcon.png",-1,-1,1,0);
     mouse = gf2d_sprite_load_image("images/crosshair.png");
     slog("press [escape] to quit");
-    //main_menu();
+    main_menu();
 
     //set_current_world(world_load("maps/testWorld.json", 1));
 
-    start_game();
+    //start_game();
     /*main game loop*/
     while(!done)
     {
@@ -97,8 +95,9 @@ int main(int argc, char * argv[])
             entity_system_draw_all();
             player_draw(get_the_player());
             particle_draw_all();
-            
+
             //UI elements last
+            draw_all_huds();
             gf2d_sprite_draw(
                 mouse,
                 gfc_vector2d(mx,my),
@@ -108,7 +107,6 @@ int main(int argc, char * argv[])
                 NULL,
                 &mouseGFC_Color,
                 (int)mousef);
-            draw_all_huds();
 
 
         gf2d_graphics_next_frame();// render current draw frame and skip to the next frame
@@ -116,6 +114,7 @@ int main(int argc, char * argv[])
 
 
         if (keys[SDL_SCANCODE_ESCAPE])done = 1; // exit condition
+        if (keys[SDL_SCANCODE_K]) main_menu(); 
         //slog("Rendering at %f FPS",gf2d_graphics_get_frames_per_second());
     }
     world_free(get_current_world());
@@ -126,28 +125,31 @@ int main(int argc, char * argv[])
 
 void start_game() {
     Entity* player;
-
-    entity_system_free_all;
-    player = player_new_entity(gfc_vector2d(80, 80));
-
+    free_start_buttons();
     world_free(get_current_world());
-    set_current_world(world_load("maps/testWorld.json", 1));
+    disable_start_buttons();
+
+    player = player_new_entity(gfc_vector2d(150, 80));
+    world_load("maps/testWorld.json", 1);
     world_setup_camera();
     init_huds();
 }
 
 void main_menu() {
-    Entity* startButton;
-    Entity* editButton;
-    
+    world_free(get_current_world());
+    entity_system_free_all();
+    //free_huds();
+    free_the_player();
+
+    enable_start_buttons();
+    set_current_world(world_load("maps/mainMenu.json", 0));
+
+    init_start_buttons();
+}
+
+void start_edit() {
+    free_start_buttons();
+    disable_start_buttons();
     world_free(get_current_world());
     set_current_world(world_load("maps/mainMenu.json", 0));
-    startButton = entity_new();
-    editButton = entity_new();
-
-    startButton->position = gfc_vector2d(540, 400);
-    editButton->position = gfc_vector2d(540, 550);
-
-    startButton->sprite = gf2d_sprite_load_image("images/startButton.png");
-    editButton->sprite = gf2d_sprite_load_image("images/editButton.png");
 }

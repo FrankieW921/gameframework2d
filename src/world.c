@@ -180,6 +180,16 @@ World* world_load(const char* filename, int spawnIndex) {
 		sj_free(json);
 		return NULL;
 	}
+
+	//init gfc lists
+	/*
+	world->entityList = gfc_list_new();
+	world->interactableList = gfc_list_new();
+	world->doorList = gfc_list_new();
+	world->spawnLocations = gfc_list_new();
+	world->partpickupList = gfc_list_new();
+	*/
+
 	//beginning of tilemap////////////////////////
 	vertical = sj_object_get_value(wjson, "tileMap");
 	if (!vertical) {
@@ -229,6 +239,16 @@ World* world_load(const char* filename, int spawnIndex) {
 	);
 	world_tile_layer_build(world);
 	//end of tilemap////////////////////////////////
+	
+	//move the player according to what spawn index was given
+	spawns = sj_object_get_value(wjson, "spawns");
+	spawn = sj_array_get_nth(spawns, spawnIndex);
+	item = sj_array_get_nth(spawn, 0); //get spawn x position
+	sj_get_float_value(item, &spawnPosX);
+	item = sj_array_get_nth(spawn, 1); //get spawn Y position
+	sj_get_float_value(item, &spawnPosY);
+	move_the_player(gfc_vector2d(spawnPosX, spawnPosY));
+
 	//spawn enemies/////////////
 	enemies = sj_object_get_value(wjson, "enemies");
 	numEnemies = sj_array_get_count(enemies);
@@ -309,16 +329,6 @@ World* world_load(const char* filename, int spawnIndex) {
 		slog("SPAWNING PART PICKUP WITH DATA: %s, %f, %f, %i, %i", sj_get_string_value(item), partpickupPosX, partpickupPosY, partpickupType, partDefIndex);
 		gfc_list_append(&world->partpickupList, partpickup_new(gfc_vector2d(partpickupPosX, partpickupPosY), partpickupType, sj_get_string_value(item), partDefIndex));
 	}
-	
-
-	//move the player according to what spawn index was given
-	spawns = sj_object_get_value(wjson, "spawns");
-	spawn = sj_array_get_nth(spawns, spawnIndex);
-	item = sj_array_get_nth(spawn, 0); //get spawn x position
-	sj_get_float_value(item, &spawnPosX);
-	item = sj_array_get_nth(spawn, 1); //get spawn Y position
-	sj_get_float_value(item, &spawnPosY);
-	move_the_player(gfc_vector2d(spawnPosX, spawnPosY));
 
 	sj_free(json);
 	return world;

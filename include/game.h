@@ -5,4 +5,6 @@ void start_game();
 
 void main_menu();
 
+void start_edit();
+
 #endif

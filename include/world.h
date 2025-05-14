@@ -25,9 +25,6 @@ typedef struct World_S
 	GFC_List		doorList;
 	GFC_List		spawnLocations;
 	GFC_List		partpickupList;
-
-
-	
 }World;
 
 /*

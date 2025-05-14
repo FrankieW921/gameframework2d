@@ -17,13 +17,19 @@ typedef struct Hud_s {
 	TTF_Font* font;
 	SDL_Surface* surface;
 	SDL_Texture* texture;
+	Sprite* buttonSprite;
+	void (*button_update)(struct Hud_s* self);
 }Hud;
-
 
 /*
 * @brief inits the static huds
 */
 void init_huds();
+
+/*
+* @brief inits start menu buttons
+*/
+void init_start_buttons();
 
 /*
 * @brief calls each static huds proper draw
@@ -36,6 +42,14 @@ void draw_all_huds();
 * @return the hud to be drawing
 */
 Hud* new_hud(GFC_Vector2D position);
+
+Hud* start_button_new();
+
+Hud* edit_button_new();
+
+void enable_start_buttons(); //can't get their functions to stop
+
+void disable_start_buttons();
 
 /*
 * @brief switches the draw parts huds variable to 1
@@ -65,5 +79,12 @@ void draw_current_parts_hud(Hud* ph);
 */
 void draw_inventory_hud(Hud* h);
 
+void start_button_update();
+
+void edit_button_update();
+
+void free_huds();
+
+void free_start_buttons();
 
 #endif
