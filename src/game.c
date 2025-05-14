@@ -136,10 +136,17 @@ void start_game() {
 }
 
 void main_menu() {
+    Mix_Music* puzzle_boy;
     world_free(get_current_world());
     entity_system_free_all();
     //free_huds();
     free_the_player();
+
+    Mix_HaltMusic();
+    puzzle_boy = Mix_LoadMUS("music/Puzzle_Boy.mp3");
+    if (puzzle_boy) {
+        Mix_PlayMusic(puzzle_boy, -1);
+    }
 
     enable_start_buttons();
     set_current_world(world_load("maps/mainMenu.json", 0));
@@ -148,8 +155,12 @@ void main_menu() {
 }
 
 void start_edit() {
+    Entity* player;
     free_start_buttons();
     disable_start_buttons();
     world_free(get_current_world());
+
+    player = player_new_entity(gfc_vector2d(150, 80));
+    enable_editor_mode();
     set_current_world(world_load("maps/mainMenu.json", 0));
 }

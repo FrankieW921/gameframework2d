@@ -39,6 +39,7 @@ typedef struct { //mfw i want to make a mecha game
 	Uint8			partSwitchCooldown;
 	Uint32			iTime;
 	Bool			canChangeParts;
+	Bool			editorMode;
 
 	Uint8			headIndex;
 	Uint8			armIndex;
@@ -179,5 +180,7 @@ void player_do_max_health(Entity* self);
 void player_output_current_head(Entity* self);
 
 void free_the_player();
+
+void enable_editor_mode();
 
 #endif

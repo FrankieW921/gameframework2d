@@ -82,13 +82,60 @@ World* world_new(GFC_Vector2I worldSize);
 */
 void world_free(World* world);
 
+/*
+* @brief free world's ent list
+* @param world the world to free
+*/
 void world_free_entity_list(World* world);
 
+/*
+* @brief free world interactable list
+*/
 void world_free_interactable_list(World* world);
 
+/*
+* @brief free world door list
+* @param world the world to free
+*/
 void world_free_door_list(World* world);
 
+/*
+* @brief free world part pickup list
+* @param world the world to free
+*/
 void world_free_partpickup_list(World* world);
+
+/*
+* @brief returns the world tile int at the designated position in index space
+* @param world the world
+* @param the position of the tile in index
+* @returns the tile as an int
+*/
+int get_world_tile_at(World* world, GFC_Vector2I position);
+
+/*
+* @brief set at tile in the tile map
+* @param world the world
+* @param the position index of the tile
+* @param tile the new tile
+*/
+void set_world_tile_at(World* world, GFC_Vector2I position, int tile);
+
+/*
+* @brief returns the world tile int at the designated position in screen/mouse space
+* @param world the world
+* @param the position of the mouse
+* @returns the tile as an int
+*/
+int get_world_tile_mouse(World* world, GFC_Vector2I position);
+
+/*
+* @brief set at tile in the tile map using mouse position;
+* @param world the world
+* @param the position of the mouse
+* @param tile the new tile
+*/
+void set_world_tile_mouse(World* world, GFC_Vector2I position, int newTile);
 
 /**
 * @brief draw a world
@@ -108,5 +155,7 @@ void world_setup_camera();
 * @return an int 1 for collision, 
 */
 int world_collide(World* world, GFC_Shape entity_bounds);
+
+void save_world_as_json(World* world);
 #endif
 

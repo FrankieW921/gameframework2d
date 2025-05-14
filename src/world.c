@@ -121,8 +121,37 @@ void world_tile_layer_build(World* world) {
 }
 
 int get_world_tile_at(World* world, GFC_Vector2I position) {
-	int tile = world->tileMap[position.x + (position.y * (int)world->tileMapSize.x)];
+	int tile;
+	if (!world) return 9;
+	
+	tile = world->tileMap[position.x + (position.y * (int)world->tileMapSize.x)];
 	return tile;
+}
+
+void set_world_tile_at(World* world, GFC_Vector2I position, int tile) {
+	world->tileMap[position.x + (position.y * (int)world->tileMapSize.x)] = tile;
+}
+
+int get_world_tile_mouse(World* world, GFC_Vector2I position) {
+	int tileX, tileY;
+
+	tileX = position.x / 64;
+	tileY = position.y / 64;
+	slog("Tile X: %i, Tile Y: %i", tileX, tileY);
+	return get_world_tile_at(world, gfc_vector2i(tileX, tileY));
+}
+
+void set_world_tile_mouse(World* world, GFC_Vector2I position, int newTile) {
+	int tileX, tileY, currentTile;
+
+	tileX = position.x / 64;
+	tileY = position.y / 64;
+
+	currentTile = get_world_tile_at(world, gfc_vector2i(tileX, tileY));
+
+	set_world_tile_at(world, gfc_vector2i(tileX, tileY), 1);
+
+	world_tile_layer_build(world);
 }
 
 World* world_load(const char* filename, int spawnIndex) {
@@ -494,4 +523,8 @@ int world_collide(World* world, GFC_Shape entity_bounds) { //test if the shape i
 		}
 	}
 	return 0;
+}
+
+void save_world_as_json(World* world) {
+
 }

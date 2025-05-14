@@ -91,7 +91,8 @@ void player_data_new(PlayerData* data) {
 	data->shootCooldown = 0;
 	data->partSwitchCooldown = 0;
 	data->iTime = 0;
-	data->canChangeParts = 0;
+	data->canChangeParts = false;
+	data->editorMode = false;
 
 	data->headIndex = 0;
 	data->armIndex = 0;
@@ -142,6 +143,8 @@ void player_data_new(PlayerData* data) {
 void player_think(Entity* self) {
 	Uint32 mouseState;
 	PlayerData* data;
+	int mx, my;
+
 	if (!self)return;
 	data = self->data;
 	if (!data)return;
@@ -210,10 +213,15 @@ void player_think(Entity* self) {
 	*/
 
 	gfc_vector2d_normalize(&self->velocity);
-	mouseState = SDL_GetRelativeMouseState(NULL, NULL);
-	if ((mouseState & 1) && data->shootCooldown == 0) {
+	mouseState = SDL_GetMouseState(&mx, &my);
+	if ((mouseState & 1) && data->shootCooldown == 0 && data->editorMode == false) {
 		player_shoot(self->position, self->velocity, self); 
 		data->shootCooldown = data->currentHead->cooldownValue;
+	}
+	else if ((mouseState & 1) && data->editorMode == true) {
+		slog("Mouse pos x: %i, Mouse pos y: %i", mx, my);
+		//slog("TILE CLICKED ON: %i", get_world_tile_mouse(get_current_world(), gfc_vector2i(mx, my)));
+		set_world_tile_mouse(get_current_world(), gfc_vector2i(mx, my), 1);
 	}
 
 	self->collideEntities = entity_collide_all(self);
@@ -716,4 +724,12 @@ void free_the_player() {
 	gfc_list_clear(data->legInventory);
 	//memset(data, 0, sizeof(PlayerData));
 	entity_free(thePlayer);
+}
+
+void enable_editor_mode() {
+	PlayerData* data;
+	if (!thePlayer)return;
+	data = thePlayer->data;
+
+	data->editorMode = true;
 }
