@@ -47,6 +47,10 @@ Hud* start_button_new();
 
 Hud* edit_button_new();
 
+Hud* new_part_buttons();
+
+void draw_part_buttons(Hud* partButtonsHud);
+
 void enable_start_buttons(); //can't get their functions to stop
 
 void disable_start_buttons();

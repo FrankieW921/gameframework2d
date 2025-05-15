@@ -8,6 +8,7 @@
 static Hud* healthHud;
 static Hud* partsHud;
 static Hud* inventoryHud;
+static Hud* partButtonsHud;
 
 static Hud* startButton;
 static Hud* editButton;
@@ -21,6 +22,7 @@ void init_huds() {
 	healthHud = new_hud(gfc_vector2d(0,0));
 	partsHud = new_hud(gfc_vector2d(0, 550));
 	inventoryHud = new_hud(gfc_vector2d(400, 200));
+	partButtonsHud = new_part_buttons();
 
 	doDrawPartsHuds = 0;
 }
@@ -34,6 +36,7 @@ void draw_all_huds() {
 	draw_health_hud(healthHud);
 	draw_current_parts_hud(partsHud);
 	draw_inventory_hud(inventoryHud);
+	draw_part_buttons(partButtonsHud);
 
 	start_button_update();
 	edit_button_update();
@@ -48,6 +51,21 @@ Hud* new_hud(GFC_Vector2D position) {
 	if (!h->font)slog("NO FONT");
 
 	return h;
+}
+
+Hud* new_part_buttons() {
+	Hud* partButtonsHud;
+
+	partButtonsHud = gfc_allocate_array(sizeof(Hud), 1);
+	partButtonsHud->buttonSprite = gf2d_sprite_load_image("images/partButtons.png");
+
+	return partButtonsHud;
+}
+
+void draw_part_buttons(Hud* partButtonsHud) {
+	if (doDrawPartsHuds == 0) return;
+	if (!partButtonsHud) return;
+	gf2d_sprite_draw_image(partButtonsHud->buttonSprite, gfc_vector2d(1180, 200));
 }
 
 void draw_health_hud(Hud* h) {
@@ -97,6 +115,8 @@ void draw_current_parts_hud(Hud* h) {
 	SDL_FreeSurface(h->surface);
 	SDL_DestroyTexture(h->texture);
 }
+
+
 
 void draw_inventory_hud(Hud* h) {
 	PlayerData* pData;
@@ -240,9 +260,12 @@ void free_huds() {
 	SDL_FreeSurface(inventoryHud->surface);
 	SDL_DestroyTexture(inventoryHud->texture);
 
+	gf2d_sprite_free(partButtonsHud->buttonSprite);
+
 	memset(healthHud, 0, sizeof(Hud));
 	memset(partsHud, 0, sizeof(Hud));
 	memset(inventoryHud, 0, sizeof(Hud));
+	memset(partButtonsHud, 0, sizeof(Hud));
 }
 
 void free_start_buttons() {

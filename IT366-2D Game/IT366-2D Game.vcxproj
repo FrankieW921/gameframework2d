@@ -248,6 +248,7 @@
     <None Include="..\defs\particles.json" />
     <None Include="..\defs\projectiles.json" />
     <None Include="..\defs\torsos.json" />
+    <None Include="..\gfc\sample_config\input.cfg" />
     <None Include="..\maps\mainMenu.json" />
     <None Include="..\maps\testWorld.json" />
     <None Include="..\maps\testWorld2.json" />

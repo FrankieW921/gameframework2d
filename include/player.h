@@ -179,6 +179,10 @@ void player_do_max_health(Entity* self);
 */
 void player_output_current_head(Entity* self);
 
+void spawn_interactable_command(GFC_Vector2D position, Uint8 type);
+
+void spawn_enemy_command(GFC_Vector2D position, Uint8 type);
+
 void free_the_player();
 
 void enable_editor_mode();

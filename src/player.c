@@ -10,6 +10,12 @@
 #include "particles.h"
 #include "door.h"
 #include "hud.h"
+#include "enemy.h"
+#include "enemy2.h"
+#include "enemy3.h"
+#include "enemy4.h"
+#include "enemy5.h"
+#include "boss_enemy.h"
 
 static Entity* thePlayer;
 
@@ -217,12 +223,105 @@ void player_think(Entity* self) {
 	if ((mouseState & 1) && data->shootCooldown == 0 && data->editorMode == false) {
 		player_shoot(self->position, self->velocity, self); 
 		data->shootCooldown = data->currentHead->cooldownValue;
+		/*
+		if (data->canChangeParts && data->partSwitchCooldown == 0) {
+			if ((mx >= 1180 && mx <= 1280) && (my >= 200 && my <= 300)) {
+				data->partSwitchCooldown = 70;
+				player_next_head(self);
+				player_do_max_health(self);
+			}
+			else if ((mx >= 1180 && mx <= 1280) && (my >= 300 && my <= 400)) {
+				data->partSwitchCooldown = 70;
+				player_next_arm(self);
+			}
+			else if ((mx >= 1180 && mx <= 1280) && (my >= 400 && my <= 500)) {
+				data->partSwitchCooldown = 70;
+				player_next_torso(self);
+				player_do_max_health(self);
+			}
+			else if ((mx >= 1180 && mx <= 1280) && (my >= 500 && my <= 600)) {
+				data->partSwitchCooldown = 70;
+				player_next_leg(self);
+				player_do_max_health(self);
+			}
+		}
+		*/
 	}
-	else if ((mouseState & 1) && data->editorMode == true) {
-		slog("Mouse pos x: %i, Mouse pos y: %i", mx, my);
-		//slog("TILE CLICKED ON: %i", get_world_tile_mouse(get_current_world(), gfc_vector2i(mx, my)));
-		set_world_tile_mouse(get_current_world(), gfc_vector2i(mx, my), 1);
+	else if (data->editorMode == true) {
+		if (mouseState & 1) {
+			slog("Mouse pos x: %i, Mouse pos y: %i", mx, my);
+			//slog("TILE CLICKED ON: %i", get_world_tile_mouse(get_current_world(), gfc_vector2i(mx, my)));
+			set_world_tile_mouse(get_current_world(), gfc_vector2i(mx, my), 1);
+		}
+		if (gfc_input_command_down("spawnHeal") && data->partSwitchCooldown == 0) {
+			slog("PRESSING HEAL");
+			data->partSwitchCooldown = 70;
+			spawn_interactable_command(gfc_vector2d(mx, my), Healing_Field);
+		}
+		if (gfc_input_command_down("spawnSpeed") && data->partSwitchCooldown == 0) {
+			data->partSwitchCooldown = 70;
+			spawn_interactable_command(gfc_vector2d(mx, my), Speed_Gel);
+		}
+		if (gfc_input_command_down("spawnChanger") && data->partSwitchCooldown == 0) {
+			data->partSwitchCooldown = 70;
+			spawn_interactable_command(gfc_vector2d(mx, my), Part_Changer);
+		}
+		if (gfc_input_command_down("spawnStar") && data->partSwitchCooldown == 0) {
+			data->partSwitchCooldown = 70;
+			spawn_interactable_command(gfc_vector2d(mx, my), Star_Power);
+		}
+		if (gfc_input_command_down("spawnTeleport") && data->partSwitchCooldown == 0) {
+			data->partSwitchCooldown = 70;
+			spawn_interactable_command(gfc_vector2d(mx, my), Teleporter);
+		}
+		if (gfc_input_command_down("spawnEnemy1") && data->partSwitchCooldown == 0) {
+			data->partSwitchCooldown = 70;
+			spawn_enemy_command(gfc_vector2d(mx, my), 1);
+		}
+		if (gfc_input_command_down("spawnEnemy2") && data->partSwitchCooldown == 0) {
+			data->partSwitchCooldown = 70;
+			spawn_enemy_command(gfc_vector2d(mx, my), 2);
+		}
+		if (gfc_input_command_down("spawnEnemy3") && data->partSwitchCooldown == 0) {
+			data->partSwitchCooldown = 70;
+			spawn_enemy_command(gfc_vector2d(mx, my), 3);
+		}
+		if (gfc_input_command_down("spawnEnemy4") && data->partSwitchCooldown == 0) {
+			data->partSwitchCooldown = 70;
+			spawn_enemy_command(gfc_vector2d(mx, my), 4);
+		}
+		if (gfc_input_command_down("spawnEnemy5") && data->partSwitchCooldown == 0) {
+			data->partSwitchCooldown = 70;
+			spawn_enemy_command(gfc_vector2d(mx, my), 5);
+		}
+		if (gfc_input_command_down("spawnEnemyBoss") && data->partSwitchCooldown == 0) {
+			data->partSwitchCooldown = 70;
+			spawn_enemy_command(gfc_vector2d(mx, my), 6);
+		}
 	}
+
+	if ((mouseState & 1) && data->canChangeParts && data->partSwitchCooldown == 0) {
+		if ((mx >= 1180 && mx <= 1280) && (my >= 200 && my <= 300)) {
+			data->partSwitchCooldown = 70;
+			player_next_head(self);
+			player_do_max_health(self);
+		}
+		else if ((mx >= 1180 && mx <= 1280) && (my >= 300 && my <= 400)) {
+			data->partSwitchCooldown = 70;
+			player_next_arm(self);
+		}
+		else if ((mx >= 1180 && mx <= 1280) && (my >= 400 && my <= 500)) {
+			data->partSwitchCooldown = 70;
+			player_next_torso(self);
+			player_do_max_health(self);
+		}
+		else if ((mx >= 1180 && mx <= 1280) && (my >= 500 && my <= 600)) {
+			data->partSwitchCooldown = 70;
+			player_next_leg(self);
+			player_do_max_health(self);
+		}
+	}
+
 
 	self->collideEntities = entity_collide_all(self);
 }
@@ -679,9 +778,37 @@ void player_output_current_head(Entity* self) {
 	}
 }
 
-void spawn_interactable_command(Entity* self, Uint8 type) {
+void spawn_interactable_command(GFC_Vector2D position, Uint8 type) {
 	slog("SPAWN COMMAND STARTED");
-	interactable_new(self->position, type);
+
+	interactable_new(position, type);
+}
+
+void spawn_enemy_command(GFC_Vector2D position, Uint8 type) {
+	slog("SPAWN ENEMY COMMAND STARTED");
+
+	switch (type) {
+		case 1:
+			enemy_new_entity(position);
+			break;
+		case 2:
+			enemy2_new_entity(position);
+			break;
+		case 3:
+			enemy3_new_entity(position);
+			break;
+		case 4:
+			enemy4_new_entity(position);
+			break;
+		case 5:
+			enemy5_new_entity(position);
+			break;
+		case 6:
+			boss_new_entity(position);
+			break;
+
+	}
+	
 }
 
 void free_the_player() {
