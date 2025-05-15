@@ -170,8 +170,8 @@ void entity_draw(Entity* self)
 	sightRect.x += offset.x;
 	sightRect.y += offset.y;
 
-	gf2d_draw_rect(drawRect, GFC_COLOR_RED);
-	gf2d_draw_rect(sightRect, GFC_COLOR_YELLOW);
+	//gf2d_draw_rect(drawRect, GFC_COLOR_RED);
+	//gf2d_draw_rect(sightRect, GFC_COLOR_YELLOW);
 }
 
 Uint8 entity_collision_check(Entity* self, Entity* other) {

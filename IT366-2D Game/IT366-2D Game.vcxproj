@@ -250,6 +250,7 @@
     <None Include="..\defs\torsos.json" />
     <None Include="..\gfc\sample_config\input.cfg" />
     <None Include="..\maps\mainMenu.json" />
+    <None Include="..\maps\room1.json" />
     <None Include="..\maps\testWorld.json" />
     <None Include="..\maps\testWorld2.json" />
   </ItemGroup>

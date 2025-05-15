@@ -1,3 +1,4 @@
+#include <SDL_mixer.h>
 #include "simple_logger.h"
 #include "gfc_vector.h"
 #include "gfc_audio.h"
@@ -7,6 +8,7 @@
 #include "particles.h"
 
 Entity* boss_new_entity(GFC_Vector2D position) {
+	Mix_Music* battle_b2;
 	Entity* self;
 	BossData* bData;
 	self = entity_new();
@@ -34,6 +36,13 @@ Entity* boss_new_entity(GFC_Vector2D position) {
 	self->type = ET_Boss;
 	self->health = 30;
 
+	Mix_HaltMusic();
+	battle_b2 = Mix_LoadMUS("music/Battle-b2.mp3");
+	if (battle_b2) {
+		Mix_PlayMusic(battle_b2, -1);
+	}
+
+	return self;
 }
 
 void boss_think(Entity* self) {
@@ -48,6 +57,7 @@ void boss_update(Entity* self) {
 	BossData* bData;
 	ProjectileData* pData;
 	GFC_Sound* hitSound;
+	Mix_Music* battle_a2;
 	bData = self->data;
 	if (!bData)return NULL;
 
@@ -71,6 +81,13 @@ void boss_update(Entity* self) {
 
 	gfc_list_clear(self->collideEntities);
 	if (self->health <= 0) {
+
+		Mix_HaltMusic();
+		battle_a2 = Mix_LoadMUS("music/Battle-a2.mp3");
+		if (battle_a2) {
+			Mix_PlayMusic(battle_a2, -1);
+		}
+
 		entity_free(self);
 	}
 }
