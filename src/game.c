@@ -57,7 +57,7 @@ int main(int argc, char * argv[])
     //Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 8, 2048);
 
     gfc_audio_init(32, 8, 1, 1, true, false);
-    Mix_VolumeMusic(32);
+    Mix_VolumeMusic(24);
     
 
     /*demo setup*/
@@ -130,7 +130,7 @@ void start_game() {
     disable_start_buttons();
 
     player = player_new_entity(gfc_vector2d(150, 80));
-    world_load("maps/testWorld.json", 1);
+    world_load("maps/room1.json", 0);
     world_setup_camera();
     init_huds();
 }
@@ -150,6 +150,7 @@ void main_menu() {
 
     enable_start_buttons();
     set_current_world(world_load("maps/mainMenu.json", 0));
+    world_setup_camera();
 
     init_start_buttons();
 }
@@ -163,4 +164,5 @@ void start_edit() {
     player = player_new_entity(gfc_vector2d(150, 80));
     enable_editor_mode();
     set_current_world(world_load("maps/mainMenu.json", 0));
+    world_setup_camera();
 }

@@ -2,6 +2,7 @@
 #include "simple_logger.h"
 #include "gfc_input.h"
 
+#include "game.h"
 #include "player.h"
 #include "world.h"
 #include "camera.h"
@@ -194,29 +195,6 @@ void player_think(Entity* self) {
 		player_next_leg(self);
 		player_do_max_health(self);
 	}
-	/*
-	if (gfc_input_command_down("spawnHeal") && data->partSwitchCooldown == 0) {
-		slog("PRESSING HEAL");
-		data->partSwitchCooldown = 70;
-		spawn_interactable_command(self, Healing_Field);
-	}
-	if (gfc_input_command_down("spawnSpeed") && data->partSwitchCooldown == 0) {
-		data->partSwitchCooldown = 70;
-		spawn_interactable_command(self, Speed_Gel);
-	}
-	if (gfc_input_command_down("spawnChanger") && data->partSwitchCooldown == 0) {
-		data->partSwitchCooldown = 70;
-		spawn_interactable_command(self, Part_Changer);
-	}
-	if (gfc_input_command_down("spawnStar") && data->partSwitchCooldown == 0) {
-		data->partSwitchCooldown = 70;
-		spawn_interactable_command(self, Star_Power);
-	}
-	if (gfc_input_command_down("spawnTeleport") && data->partSwitchCooldown == 0) {
-		data->partSwitchCooldown = 70;
-		spawn_interactable_command(self, Teleporter);
-	}
-	*/
 
 	gfc_vector2d_normalize(&self->velocity);
 	mouseState = SDL_GetMouseState(&mx, &my);
@@ -374,6 +352,7 @@ void player_update(Entity* self) {
 					
 					world_free(get_current_world());
 					world_load(doorMapName, doorSpawnIndex);
+					world_setup_camera();
 				}
 				else if (collider->type == ET_PartPickup) {
 					partpickupData = collider->data;
@@ -425,6 +404,10 @@ void player_update(Entity* self) {
 	camera_bounds_check();
 
 	gfc_list_clear(self->collideEntities);
+
+	if (data->currentHealth <= 0) {
+		main_menu();
+	}
 }
 
 void player_shoot(GFC_Vector2D position, GFC_Vector2D velocity, Entity* self) {
@@ -522,7 +505,7 @@ void player_draw(Entity* self){
 	drawRect = self->bounds;
 	drawRect.x += offset.x;
 	drawRect.y += offset.y;
-	gf2d_draw_rect(drawRect, GFC_COLOR_RED);
+	//gf2d_draw_rect(drawRect, GFC_COLOR_RED);
 }
 
 void player_set_head(Head* currentHead, SJson* selectedHead) {

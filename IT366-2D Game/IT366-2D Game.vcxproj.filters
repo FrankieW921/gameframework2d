@@ -358,5 +358,14 @@
     <None Include="..\maps\room1.json">
       <Filter>Resource Files\maps</Filter>
     </None>
+    <None Include="..\maps\room2.json">
+      <Filter>Resource Files\maps</Filter>
+    </None>
+    <None Include="..\maps\room3.json">
+      <Filter>Resource Files\maps</Filter>
+    </None>
+    <None Include="..\maps\bossRoom.json">
+      <Filter>Resource Files\maps</Filter>
+    </None>
   </ItemGroup>
 </Project>
